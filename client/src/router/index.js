@@ -1,29 +1,35 @@
-import { createRouter, createWebHistory } from "vue-router";
-import Home from "../views/Home.vue";
-import Orders from "../views/Orders.vue";
-import CreateOrder from "../views/CreateOrder.vue";
+import { createRouter, createWebHistory } from 'vue-router';
+import Home from '../views/Home.vue';
+import AdminLayout from '../layout/AdminLayout.vue';
+import Dashboard from '../components/admin/Dashboard.vue';
+import FoodSet from '../components/admin/FoodSet.vue';
 
 const routes = [
-    {
-        path: "/",
-        name: "Home",
-        component: Home
-    },
-    {
-        path: "/orders",
-        name: "Orders",
-        component: Orders
-    },
-    {
-        path: "/create-order",
-        name: "CreateOrder",
-        component: CreateOrder
-    }
+  { path: '/', name: 'Home', component: Home },
+  {
+    path: '/admin',
+    component: AdminLayout,
+    meta: { requiresAuth: true },
+    children: [
+      { path: 'dashboard', component: Dashboard },
+      { path: 'foodset', component: FoodSet },
+    ],
+  },
 ];
 
 const router = createRouter({
-    history: createWebHistory(process.env.BASE_URL),
-    routes
+  history: createWebHistory(),
+  routes,
+});
+
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = true; // Проверка аутентификации пользователя
+
+  if (to.meta.requiresAuth && !isAuthenticated){
+    next("/");
+  } else {
+    next();
+  }
 });
 
 export default router;
