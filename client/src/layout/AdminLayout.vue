@@ -20,7 +20,7 @@ export default {
 <style scoped>
 .admin-layout {
     display: flex;
-    height: 100%;
+    height: 100vh;
 }
 
 .admin-content {

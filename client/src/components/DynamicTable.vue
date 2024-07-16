@@ -7,7 +7,6 @@
       <thead>
         <tr>
           <th v-for="(value, columnIndex) in columns" :key="columnIndex"> {{ value }}</th>
-          <th>Действия</th>
         </tr>
       </thead>
       <tbody>
@@ -16,7 +15,7 @@
               {{ value }}
           </td>
           <td>
-            <button @click="$emit('edit', row)">Редактировать</button>
+            <button v-if="editBtn" @click="$emit('edit', row)">Редактировать</button>
             <button @click="$emit('delete', row)">Удалить</button>
           </td>
         </tr>
@@ -27,11 +26,21 @@
 
 <script>
 export default {
-    props: {
-      columns: Array,
-      rows: Array,
+  props: {
+    columns: {
+      type: Array,
+      required: true
+    },
+    rows: {
+      type: Array,
+      required: true
+    },
+    editBtn: {
+      Boolean,
+      default: true
     }
   }
+}
 </script>
 
 <style scoped>

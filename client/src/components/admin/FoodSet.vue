@@ -2,7 +2,11 @@
     <div class="admin-foodset">
         <h2>Управление FoodSet</h2>
 
-        <DynamicTable :columns="columns" :rows="rows" @add="openModal('add')" @edit="openModal('edit', $event)"
+        <DynamicTable 
+            :columns="columns" 
+            :rows="rows" 
+            @add="openModal('add')" 
+            @edit="openModal('edit', $event)"
             @delete="openModal('delete', $event)" />
 
         <AdminModal :is-visible="showModal" @close="closeModal">
@@ -52,7 +56,7 @@ export default {
     },
     data() {
         return {
-            columns: ["Название", "Фото", "Цена", "Описание", "Дата добавления", "Состояние на сайте"],
+            columns: ["Название", "Фото", "Цена", "Описание", "Дата добавления", "Состояние на сайте", "Действия"],
             rows: [
                 { id: 1, img: " ", name: 'Classic', price: '49,5 zł', description: 'Пустое', isActive: true },
                 { id: 2, img: " ", name: 'XL', price: '59,5 zł', description: 'Пустое', isActive: true },

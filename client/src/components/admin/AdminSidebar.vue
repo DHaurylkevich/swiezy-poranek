@@ -7,6 +7,7 @@
             <div class="nav-links">
                 <router-link to="/admin/dashboard">Dashboard</router-link>
                 <router-link to="/admin/foodset">FoodSet</router-link>
+                <router-link to="/admin/orders">Orders</router-link>
             </div>
         </div>
         <div class="logout">
@@ -36,7 +37,7 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 95vh;
+    height: 100vh;
 }
 
 .container {
@@ -45,7 +46,6 @@ export default {
 }
 
 .logo {
-    flex: 1;
     color: #FCB825;
     font-size: 28px;
     font-weight: bold;
@@ -69,7 +69,6 @@ export default {
 }
 
 .logout button {
-    flex: 1;
     width: 100%;
     padding: 10px;
     background-color: #dc3545;
