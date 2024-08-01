@@ -1,6 +1,12 @@
 <template>
     <div class="admin-orders">
-        <h2>Управление заказами</h2>
+        <h1>Управление заказами</h1>
+
+        <section class="statistics">
+            <div class="stat-card">Общее количество заказов: {{ totalOrders }}</div>
+            <div class="stat-card">Общее количество пользователей: {{ totalUsers }}</div>
+            <div class="stat-card">Общий доход: {{ totalRevenue }}</div>
+        </section>
 
         <DynamicTable 
             :columns="columns" 
@@ -27,8 +33,8 @@
 </template>
 
 <script>
-import AdminModal from './AdminModal.vue';
-import DynamicTable from '../DynamicTable.vue';
+import AdminModal from '@/components/Modal.vue';
+import DynamicTable from '@/components/DynamicTable.vue';
 //import orderService from '../../services/orderService'; // Подключаем сервис для работы с API
 
 
@@ -48,6 +54,9 @@ export default {
             ],
             showModal: false,
             currentRow: null,
+            totalOrders: null,
+            totalUsers: null,
+            totalRevenue: null
         }
     },
     methods:{
@@ -70,24 +79,16 @@ export default {
 
 <style scoped>
 .admin-orders {
-  padding: 20px;
+    padding: 20px;
 }
 
-button {
-    padding: 10px 15px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-right: 10px;
+.statistics{
+    margin-top: 15px;
+
 }
 
-button:hover {
-    background-color: #45a049;
+.stat-card{
+    margin-top: 5px;
 }
 
-button:last-child {
-    margin-right: 0;
-}
 </style>

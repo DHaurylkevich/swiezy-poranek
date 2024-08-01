@@ -1,6 +1,6 @@
 <template>
     <div class="admin-foodset">
-        <h2>Управление FoodSet</h2>
+        <h1>Управление FoodSet</h1>
 
         <DynamicTable 
             :columns="columns" 
@@ -43,13 +43,13 @@
         </AdminModal>
     </div>
 </template>
-  
+
 <script>
-import AdminModal from './AdminModal.vue';
-import DynamicTable from '../DynamicTable.vue';
+import AdminModal from '@/components/Modal.vue';
+import DynamicTable from '@/components/DynamicTable.vue';
 
 export default {
-    name: 'AdminFoodSet',
+    name: 'FoodSet',
     components: {
         AdminModal,
         DynamicTable

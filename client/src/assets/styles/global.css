@@ -10,25 +10,47 @@ html, body, #app {
   -moz-osx-font-smoothing: grayscale;
   margin: 0;
   padding: 0;
-  font-size: 16px;
 
 }
 
 a {
-  /* color: #42b983; */
+  color: #000000; 
   text-decoration: none;
 }
 
-a:hover {
-  text-decoration: underline;
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--width-btn);
+  height: var(--hight-btn);
+  border-radius: 40px;
+  transition: background-color 0.3s ease;
 }
 
-@media (max-width: 768px) {
-    html, body {
-      font-size: 14px;
-    }
-  
-    button, .button {
-      padding: 8px 16px;
-    }
-  }
+.btn a {
+  font-size: var(--font-size-base);
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+  line-height: 48px;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+:root {
+  --primary-color: #FCB825;
+  --background-color: #FFFFFF;
+  --font-size-base: 16px;
+  --font-size-large: 24px;
+  --font-size-medium: 20px;
+  --text-color: #000000;
+  --width-btn: 128px;
+  --hight-btn: 48px;
+  --spacing-unit: 8px;
+  --spacing-section: 100px;
+  --card-size: 213px;
+  --radius-section: 25px;
+}

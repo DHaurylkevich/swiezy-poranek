@@ -1,18 +1,20 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Home from '../views/Home.vue';
-import AdminLayout from '../layout/AdminLayout.vue';
-import Dashboard from '../components/admin/Dashboard.vue';
-import FoodSet from '../components/admin/FoodSet.vue';
-import Orders from '../components/admin/Orders.vue';
+import Home from "../layout/DefaultLayout.vue";
+import AdminLayout from "../layout/AdminLayout.vue";
+import FoodSet from '../views/admin/FoodSet.vue';
+import Orders from '../views/admin/Orders.vue';
 
 const routes = [
-  { path: '/', name: 'Home', component: Home },
+  { path: '/', 
+    component: Home,
+  },
   {
     path: '/admin',
     component: AdminLayout,
-    meta: { requiresAuth: true },
+    meta: { 
+      requiresAuth: true 
+    },
     children: [
-      { path: "dashboard", component: Dashboard },
       { path: "foodset", component: FoodSet },
       { path: "orders", component: Orders },
     ],
@@ -25,7 +27,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const isAuthenticated = true; // Проверка аутентификации пользователя
+  const isAuthenticated = true; 
 
   if (to.meta.requiresAuth && !isAuthenticated){
     next("/");

@@ -21,7 +21,7 @@
 
 <script>
 export default {
-    name: "AdminModal",
+    name: "ModalComponent",
     props: {
         isVisible: {
             type: Boolean,

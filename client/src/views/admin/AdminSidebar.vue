@@ -5,9 +5,12 @@
                 <p>Swiezy Poranek</p>
             </div>
             <div class="nav-links">
-                <router-link to="/admin/dashboard">Dashboard</router-link>
-                <router-link to="/admin/foodset">FoodSet</router-link>
-                <router-link to="/admin/orders">Orders</router-link>
+                <router-link to="/admin/foodset"
+                :class="{'active': isRouteActive('/admin/foodset') }"
+                >FoodSet</router-link>
+                <router-link to="/admin/orders"
+                :class="{'active': isRouteActive('/admin/orders') }"
+                >Orders</router-link>
             </div>
         </div>
         <div class="logout">
@@ -24,11 +27,14 @@ export default {
     methods: {
         logout() {
             // Логика выхода
+        },
+        isRouteActive(path) {
+            return this.$route.path.startsWith(path);
         }
     }
-};
+}
 </script>
-  
+
 <style scoped>
 .admin-sidebar {
     width: 250px;
@@ -42,26 +48,43 @@ export default {
 
 .container {
     display: grid;
+    flex-direction: column;
     gap: 5vh;
 }
 
 .logo {
     color: #FCB825;
     font-size: 28px;
-    font-weight: bold;
-    margin-bottom: 20px;
+    font-weight: 900;
+    text-align: center;
+    margin-top: 20px;
 }
 
+.nav-links {
+    display: flex;
+    flex-direction: column;
+}
 .nav-links a {
-    flex: 1;
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    margin-top: 20px;
     padding: 15px 0;
     color: #333;
     text-decoration: none;
+    text-align: center;
+}
+
+.nav-links a.active {
+    background-color: #e9ecef;
+    font-weight: bold;
+    border-radius: 5px;
 }
 
 .nav-links a:hover {
     background-color: #e9ecef;
+    border-radius: 5px;
 }
 
 .logout {
@@ -79,4 +102,7 @@ export default {
 
 .logout button:hover {
     background-color: #c82333;
-}</style>
+}
+
+
+</style>

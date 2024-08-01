@@ -6,17 +6,18 @@
         </div>
     </div>
 </template>
-  
+
 <script>
-import AdminSidebar from "../components/admin/AdminSidebar.vue";
+import AdminSidebar from "../views/admin/AdminSidebar.vue";
 
 export default {
+    name: "AdminLayout",
     components: {
         AdminSidebar
     }
 };
 </script>
-  
+
 <style scoped>
 .admin-layout {
     display: flex;

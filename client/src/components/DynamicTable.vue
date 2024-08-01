@@ -1,6 +1,5 @@
-<!-- src/components/DynamicTable.vue -->
 <template>
-  <div>
+  <div class="container">
     <button @click="$emit('add')" class="btn-create" >Добавить запись</button>
 
     <table>
@@ -15,8 +14,8 @@
               {{ value }}
           </td>
           <td>
-            <button v-if="editBtn" @click="$emit('edit', row)">Редактировать</button>
-            <button @click="$emit('delete', row)">Удалить</button>
+            <button v-if="editBtn" @click="$emit('edit', row)" class="btn" >Редактировать</button>
+            <button @click="$emit('delete', row)" class="btn">Удалить</button>
           </td>
         </tr>
       </tbody>
@@ -36,7 +35,7 @@ export default {
       required: true
     },
     editBtn: {
-      Boolean,
+      type: Boolean,
       default: true
     }
   }
@@ -44,14 +43,26 @@ export default {
 </script>
 
 <style scoped>
+.container{
+  padding: 20px;
+}
+button{
+  background-color: #4CAF50;
+  border: none;
+  padding: 10px 20px;
+  color: #fff;
+  font-size: 15px;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 10px;
+}
 .btn-create {
-    margin-bottom: 10px;
-    display: inline-block;
-    padding: 8px 12px;
-    background-color: #007bff;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 4px;
+  margin-bottom: 15px;
+}
+
+.btn {
+  margin: 5px;
+  border-radius: 10px;
 }
 table {
   width: 100%;
@@ -67,11 +78,14 @@ th {
   background-color: #f2f2f2;
   text-align: left;
 }
+@media (max-width: 768px) {
+  .btn-create {
+    margin-bottom: 10px;
+    padding: 8px 16px;
+  }
 
-button {
-  margin-top: 10px;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
+  .btn {
+    padding: 8px 16px;
+  }
 }
 </style>
