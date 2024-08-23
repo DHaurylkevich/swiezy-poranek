@@ -1,41 +1,20 @@
 <template>
     <HeaderComponent />
     <main>
-        <HomeSection />
-        <InstructionSection />
-        <FoodSetSection />
-        <!-- <BlogSection/> -->
-        <GallerySection />
+        <router-view />
     </main>
     <FooterComponent />
 </template>
-<script>
-import FooterComponent from '@/components/Footer.vue';
-import HeaderComponent from '@/components/Header.vue';
-import HomeSection from "../views/home/Home.vue";
-import InstructionSection from "../views/home/Instruction.vue";
-import FoodSetSection from "../views/home/FoodSet.vue";
-// import BlogSection from "../views/home/Blog.vue";
-import GallerySection from "../views/home/Gallery.vue";
 
+<script>
+import HeaderComponent from '@/components/common/Header.vue';
+import FooterComponent from '@/components/common/Footer.vue';
 
 export default {
     name: "DefaultLayout",
     components: {
-        FooterComponent,
         HeaderComponent,
-        HomeSection,
-        InstructionSection,
-        FoodSetSection,
-        GallerySection,
-        // BlogSection
+        FooterComponent,
     }
 };
 </script>
-
-<style>
-main {
-    flex: 1;
-    background-color: var(--primary-color);
-}
-</style>

@@ -45,8 +45,8 @@
 </template>
 
 <script>
-import AdminModal from '@/components/Modal.vue';
-import DynamicTable from '@/components/DynamicTable.vue';
+import AdminModal from '@/components/ui/Modal.vue';
+import DynamicTable from '@/components/ui/DynamicTable.vue';
 
 export default {
     name: 'FoodSet',

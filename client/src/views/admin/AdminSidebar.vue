@@ -5,11 +5,11 @@
                 <p>Swiezy Poranek</p>
             </div>
             <div class="nav-links">
-                <router-link to="/admin/foodset"
-                :class="{'active': isRouteActive('/admin/foodset') }"
+                <router-link to="/admin/AdminFoodSet"
+                :class="{'active': isRouteActive('/admin/AdminFoodSets') }"
                 >FoodSet</router-link>
-                <router-link to="/admin/orders"
-                :class="{'active': isRouteActive('/admin/orders') }"
+                <router-link to="/admin/AdminOrders"
+                :class="{'active': isRouteActive('/admin/AdminOrders') }"
                 >Orders</router-link>
             </div>
         </div>

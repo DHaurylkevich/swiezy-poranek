@@ -1,21 +1,21 @@
 const express = require('express');
 const router = express.Router();
 const articleController = require('../controllers/articleController');
-const { authenticateJWT, authorizeAdmin } = require('../middleware/authMiddleware');
+// const { authenticateJWT, authorizeAdmin } = require('../middleware/authMiddleware');
 
 // Создание новой статьи
-router.post('/', authenticateJWT, authorizeAdmin, articleController.createArticle);
+router.post('/', articleController.createArticle);
 
 // Получение всех статей
-router.get('/', authenticateJWT, authorizeAdmin, articleController.getAllArticles);
+router.get('/', articleController.getAllArticles);
 
 // Получение статьи по ID
-router.get('/:id', authenticateJWT, authorizeAdmin, articleController.getArticleById);
+router.get('/:id', articleController.getArticleById);
 
 // Обновление статьи
-router.put('/:id', authenticateJWT, authorizeAdmin, articleController.updateArticle);
+router.put('/:id', articleController.updateArticle);
 
 // Удаление статьи
-router.delete('/:id', authenticateJWT, authorizeAdmin, articleController.deleteArticle);
+router.delete('/:id', articleController.deleteArticle);
 
 module.exports = router;

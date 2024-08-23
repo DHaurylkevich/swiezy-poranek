@@ -33,8 +33,8 @@
 </template>
 
 <script>
-import AdminModal from '@/components/Modal.vue';
-import DynamicTable from '@/components/DynamicTable.vue';
+import AdminModal from '@/components/ui/Modal.vue';
+import DynamicTable from '@/components/ui/DynamicTable.vue';
 //import orderService from '../../services/orderService'; // Подключаем сервис для работы с API
 
 

@@ -1,24 +1,78 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import Home from "../layout/DefaultLayout.vue";
-import AdminLayout from "../layout/AdminLayout.vue";
-import FoodSet from '../views/admin/FoodSet.vue';
-import Orders from '../views/admin/Orders.vue';
+import { createRouter, createWebHistory } from "vue-router";
+
+// Компоненты
+const HomeLayout = () => import("../layout/DefaultLayout.vue");
+const AdminLayout = () => import("../layout/AdminLayout.vue");
+const AdminFoodSets = () => import("../views/admin/AdminFoodSets.vue");
+const AdminOrders = () => import("../views/admin/AdminOrders.vue");
+const HomeSection = () => import("../views/home/Home.vue");
+const OrderPage = () => import("../views/order/Order.vue");
+const SelectPackage = () => import("../views/order/SelectPackage.vue");
+const SelectAddons = () => import("../views/order/SelectAddons.vue");
+const AddressData = () => import("../views/order/AddressData.vue");
+const OrderSummary = () => import("../views/order/OrderSummary.vue");
 
 const routes = [
-  { path: '/', 
-    component: Home,
+  { 
+    path: "/", 
+    component: HomeLayout,
+    children: [
+      {
+        path: "", 
+        name: "Home", 
+        component: HomeSection
+      },
+      {
+        path: "order",
+        component: OrderPage,
+        children: [
+          { 
+            path: "", 
+            redirect: "zestawy" 
+          },
+          { 
+            path: "zestawy", 
+            name: "SelectPackage", 
+            component: SelectPackage 
+          },
+          {
+            path: "dodatki",
+            name: "SelectAddons",
+            component: SelectAddons
+          },
+          {
+            path: "dane-dostawy",
+            name: "AddressData",
+            component: AddressData
+          },
+          {
+            path: "podsumowanie",
+            name: "OrderSummary",
+            component: OrderSummary
+          }
+        ]
+      }
+    ]
   },
   {
-    path: '/admin',
+    path: "/admin",
     component: AdminLayout,
     meta: { 
       requiresAuth: true 
     },
     children: [
-      { path: "foodset", component: FoodSet },
-      { path: "orders", component: Orders },
+      { 
+        path: "zestawy", 
+        name: "AdminFoodSets",
+        component: AdminFoodSets 
+      },
+      { 
+        path: "orders", 
+        name: "AdminOrders",
+        component: AdminOrders 
+      }
     ],
-  },
+  }
 ];
 
 const router = createRouter({
@@ -27,9 +81,9 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const isAuthenticated = true; 
+  const isAuthenticated = true; // В реальном проекте должна быть логика проверки аутентификации
 
-  if (to.meta.requiresAuth && !isAuthenticated){
+  if (to.meta.requiresAuth && !isAuthenticated) {
     next("/");
   } else {
     next();

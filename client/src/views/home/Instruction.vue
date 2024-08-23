@@ -1,33 +1,12 @@
 <template>
     <section class="how-it-works">
         <div class="main-container">
-            <div class="card">
-                <div class="number">1</div>
+            <div class="card" v-for="(step, index) in steps" :key="index">
+                <div class="number">{{ index + 1 }}</div>
                 <div class="icon">
-                    <img src="@/assets/img/instruction/menu-card.svg" alt="Wybierz dietę">
+                    <img :src="step.icon" :alt="step.alt">
                 </div>
-                <p class="text">Wybierz dietę</p>
-            </div>
-            <div class="card">
-                <div class="number">2</div>
-                <div class="icon">
-                    <img src="@/assets/img/instruction/shop-card.svg" alt="Zamawiasz zestaw">
-                </div>
-                <p class="text">Zamawiasz zestaw</p>
-            </div>
-            <div class="card">
-                <div class="number">3</div>
-                <div class="icon">
-                    <img src="@/assets/img/instruction/car-card.svg" alt="Otrzymujesz dostawe">
-                </div>
-                <p class="text">Otrzymujesz dostawe</p>
-            </div>
-            <div class="card">
-                <div class="number">4</div>
-                <div class="icon">
-                    <img src="@/assets/img/instruction/eat-card.svg" alt="Cieszysz się smakiem">
-                </div>
-                <p class="text">Cieszysz się smakiem</p>
+                <p class="text">{{ step.text }}</p>
             </div>
         </div>
     </section>
@@ -35,20 +14,31 @@
 
 <script>
 export default {
-    name: "InstructionSection"
+    name: "InstructionSection",
+    data() {
+        return {
+            steps: [
+                { icon: require("@/assets/img/instruction/menu-card.svg"), alt: "Wybierz dietę", text: "Wybierz dietę" },
+                { icon: require("@/assets/img/instruction/shop-card.svg"), alt: "Zamawiasz zestaw", text: "Zamawiasz zestaw" },
+                { icon: require("@/assets/img/instruction/car-card.svg"), alt: "Otrzymujesz dostawe", text: "Otrzymujesz dostawe" },
+                { icon: require("@/assets/img/instruction/eat-card.svg"), alt: "Cieszysz się smakiem", text: "Cieszysz się smakiem" }
+            ]
+        };
+    }
 };
 </script>
 
 <style scoped>
 .how-it-works {
-    padding: var(--spacing-section) 0;
+    padding: var(--spacing-inline) 0;
 }
 
 .main-container {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: 76px;
+    gap: 56px;
 }
 
 .card {
@@ -56,35 +46,72 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 190px;
-    height: 200px;
-    background-color: white;
-    border-radius: 20px;
-    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.25);
     position: relative;
-    padding: 10px;
+    width: 224px;
+    height: 232px;
+    background-color: var(--background-color);
+    border-radius: 16px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    /* padding: 16px; */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
 }
 
 .card .number {
     position: absolute;
     top: 10px;
-    left: 10px;
-    font-size: var(--font-size-medium);
+    left: 20px;
+    font-size: 30px;
     font-weight: bold;
+    color: var(--primary-color);
 }
 
 .card .icon {
-    margin-bottom: 10px;
+    margin-bottom: 16px;
+    width: auto;
+    height: auto;
 }
 
 .icon img {
     width: 100%;
-    height: 100%;
+    height: auto;
+    object-fit: contain;
 }
 
 .card .text {
-    font-size: var(--font-size-medium);
+    font-size: var(--font-size-large);
+    font-weight: 600;
     text-align: center;
-    padding-inline: 20px;
+    padding-inline: 40px;
 }
+
+@media (max-width: 576px) {
+    .main-container {
+        gap: 32px;
+        padding: 50px 0;
+    }
+
+    .card {
+        width: 206px;
+        height: 216px;
+    }
+    .card .icon {
+        margin-bottom: 8px;
+    }
+
+    .card .text {
+        padding-inline: 24px;
+        line-height: 1.2;
+    }
+}
+
+@media (min-width: 577px) and (max-width: 768px) {}
+
+@media (min-width: 769px) and (max-width: 1024px) {}
+
+@media (min-width: 1025px) {}
 </style>

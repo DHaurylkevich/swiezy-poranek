@@ -1,61 +1,42 @@
 <template>
     <section class="food-set">
-        <div class="title">
+        <header class="section-title">
             <div class="icon">
-                <img src="@/assets/img/foodset/sun.svg">
+                <img src="@/assets/img/foodset/sun.svg" alt="Sun Icon">
             </div>
-            <div class="text">
-                <p>Zestawy</p>
-            </div>
+            <h2 class="text">Zestawy</h2>
+        </header>
+        <div v-if="packages.length > 4" class="carousel-container">
+            <Carousel :items="packages" :type="'carousel'" />
         </div>
-        <div class="carousel">
-            <div class="cards-container">
-                <p> - </p>
-                <dic class="card">
-                    <div class="card-img">
-                        <img src="@/assets/img/foodset/vege.png" alt="Meal Image">
-                    </div>
-                    <p class="text">Wego</p>
-                    <div class="description">
-                        <p>Symphony of garlic-infused, creating a delightful masterpiece captivates senses.</p>
-                    </div>
-                    <button class="btn">
-                        <router-link to="/order">Zamawiam</router-link>
-                    </button>
-                </dic>
-                <dic class="card">
-                    <div class="card-img">
-                        <img src="@/assets/img/foodset/vege.png" alt="Meal Image">
-                    </div>
-                    <p class="text">Classic</p>
-                    <div class="description">
-                        <p>Symphony of garlic-infused, creating a delightful masterpiece captivates senses.</p>
-                    </div>
-                    <button class="btn">
-                        <router-link to="/order">Zamawiam</router-link>
-                    </button>
-                </dic>
-                <dic class="card">
-                    <div class="card-img">
-                        <img src="@/assets/img/foodset/vege.png" alt="Meal Image">
-                    </div>
-                    <p class="text">Classic</p>
-                    <div class="description">
-                        <p>Symphony of garlic-infused, creating a delightful masterpiece captivates senses.</p>
-                    </div>
-                    <button class="btn">
-                        <router-link to="/order">Zamawiam</router-link>
-                    </button>
-                </dic>
-                <p> - </p>
-            </div>
+        <div v-else class="cards-container">
+            <Card v-for="(pkg, index) in packages" :key="index" :title="pkg.title" :image="pkg.image" :price="pkg.price"
+                :description="pkg.description" />
         </div>
     </section>
 </template>
 
 <script>
+import Card from "@/components/ui/FoodSetCard.vue"
+import Carousel from "@/components/ui/Carousel.vue"
+
 export default {
-    name: "FoodSetSection"
+    name: "FoodSetSection",
+    components: {
+        Card,
+        Carousel,
+    },
+    data() {
+        return {
+            packages: [
+                { title: "Classic", image: require("@/assets/img/foodset/vege.png"), price: 45, description: "Symphony of garlic-infused, creating a delightful masterpiece captivates senses." },
+                { title: "XL", image: require("@/assets/img/foodset/vege.png"), price: 55, description: "Symphony of garlic-infused, creating a delightful masterpiece captivates senses." },
+                { title: "Obiad + Zupka", image: require("@/assets/img/foodset/vege.png"), price: 24, description: "Symphony of garlic-infused, creating a delightful masterpiece captivates senses." },
+                { title: "Śniadanie + salatka", image: require("@/assets/img/foodset/vege.png"), price: 20, description: "Symphony of garlic-infused, creating a delightful masterpiece captivates senses." },
+                { title: "3 sałatki dziennie", image: require("@/assets/img/foodset/vege.png"), price: 32, description: "Symphony of garlic-infused, creating a delightful masterpiece captivates senses." },
+            ]
+        }
+    }
 }
 </script>
 
@@ -69,13 +50,7 @@ export default {
     padding-top: 16px;
     padding-bottom: 100px;
 }
-.title {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.title .icon {
+.section-title .icon {
     display: flex;
     align-items: center;
 }
@@ -85,75 +60,60 @@ export default {
     height: auto;
 }
 
-.title .text {
+.section-title .text {
     font-size: var(--font-size-large);
     font-weight: bold;
 }
 
-.carousel {
+
+.carousel-container{
+    position: relative;
+    padding-inline: var(--spacing-inline);
+    width: 100%;
+}
+
+/* .cards-container {
+    display: flex;
     margin-top: 36px;
-    display: flex;
     justify-content: space-between;
-    align-items: center
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+} */
+
+@media (max-width: 576px) {
+    .food-set {
+        padding-bottom: 80px;
+    }
+
+    /* .cards-container {
+        margin-top: 16px;
+        justify-content: center;
+    } */
+    .section-title{
+        padding-bottom: 8px;
+    }
 }
 
-.cards-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 50px;
+@media (min-width: 577px) and (max-width: 768px) {
+    .section-title{
+        padding-bottom: 8px;
+    }
+    .cards-container {
+        /* gap: 30px; */
+    }
+}
+/*
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .cards-container {
+        gap: 40px;
+    }
 }
 
-.card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 264px;
-    height: auto;
-    /* padding: 20px; */
-    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
-    background-color: white;
-    border-radius: 20px;
-}
-
-.card .card-img {
-    display: flex;
-    align-items: center;
-}
-
-.card-img img {
-    max-width: 100%;
-    height: auto;
-    object-fit: cover;
-}
-
-.card .text {
-    font-size: var(--font-size-medium);
-    font-weight: bold;
-}
-
-.card .description {
-    margin: 8px 0;
-    font-size: var(--font-size-base);
-    color: #333;
-}
-
-.btn {
-    background-color: var(--primary-color);
-    color: var(--background-color);
-    border: none;
-}
-
-.btn a {
-    color: var(--background-color);
-}
-
-.btn:hover {
-    background-color: var(--background-color);
-    border: 1px solid var(--primary-color);
-}
-
-.btn:hover a {
-    color: var(--primary-color);
-}
+@media (min-width: 1025px) {
+    .cards-container {
+        gap: 50px;
+    }
+} */
 </style>

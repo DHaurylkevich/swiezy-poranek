@@ -1,21 +1,21 @@
 const express = require('express');
 const router = express.Router();
-const foodSetController = require('../controllers/foodSet');
-const { authenticateJWT, authorizeAdmin } = require('../middleware/authMiddleware');
+const foodSetController = require('../controllers/foodSetController');
+const { authenticateJWT, authorizeAdmin } = require('../middleware/auth');
 
-// Создание нового зестава
+// Создание нового набора 
 router.post('/', authenticateJWT, authorizeAdmin, foodSetController.createFoodSet);
 
-// Получение всех зеставов
-router.get('/', authenticateJWT, authorizeAdmin, foodSetController.getAllFoodSets);
+// Получение всех наборов
+router.get('/', foodSetController.getAllFoodSets);
 
-// Получение зестава по ID
-router.get('/:id', authenticateJWT, authorizeAdmin, foodSetController.getFoodSetById);
+// Получение набора по ID
+router.get('/:id', foodSetController.getFoodSetById);
 
-// Обновление зестава
+// Обновление набора
 router.put('/:id', authenticateJWT, authorizeAdmin, foodSetController.updateFoodSet);
 
-// Удаление зестава
+// Удаление набора
 router.delete('/:id', authenticateJWT, authorizeAdmin, foodSetController.deleteFoodSet);
 
 module.exports = router;

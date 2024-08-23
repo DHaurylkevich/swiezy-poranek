@@ -11,7 +11,7 @@
     </div>
 </template>
 
-<script>
+<script>    
 import { getOrders, deleteOrder } from '../services/orderServices';
 
 export default {

@@ -9,21 +9,25 @@
             </p>
         </div>
         <div class="gallery-container ">
-            <div class="gallery">
-                <img src="@/assets/img/gallery/img1.jpg"/>
-                <img src="@/assets/img/gallery/img1.jpg"/>
-            </div>
-            <div class="gallery">
-                <img src="@/assets/img/gallery/img2.jpg"/>
-                <img src="@/assets/img/gallery/img2.jpg"/>
-            </div>
+            <Carousel :items="carouselItems"/>
         </div>
     </section>
 </template>
 
 <script>
+import Carousel from '@/components/ui/Carousel.vue';
 export default {
-    name: "GallerySection"
+    name: "GallerySection",
+    components: {
+        Carousel
+    },data() {
+        return {
+            carouselItems: [
+                require("@/assets/img/gallery/img1.jpg"),
+                require("@/assets/img/gallery/img2.jpg"),
+            ],
+        }
+    }
 }
 </script>
 
@@ -64,22 +68,29 @@ export default {
     white-space: nowrap;
     animation: scroll 30s linear infinite;
 }
+.scroll-column {
+    width: 50vw;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
 
 .gallery img {
     max-width: 100%;
-    height: 100%;
-    height: 184px;
-    width: 322px;
+    height: 268px;
+    width: 240px;
+    gap: 15px;
     border-radius: 25px;
     object-fit: cover; 
 }
-/* @keyframes scroll {
-            0% {
-                transform: translateX(0);
-            }
-            100% {
-                transform: translateX(calc(-250px * 8));
-            }
-        } */
+
+@keyframes left {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-33.33%);
+    }
+}
 
 </style>
