@@ -116,8 +116,14 @@ a:hover {
   }
 }
 
-/* Стиль для планшетов */
 @media (min-width: 577px) and (max-width: 768px) {
+  html,
+  body,
+  #app {
+    font-family: var(--font-family);
+    font-size: 14px;
+  }
+
   :root {
     --spacing-inline: 40px;
     --width-btn: 108px;
@@ -132,8 +138,17 @@ a:hover {
 
 /* Стиль для десктопов */
 @media (min-width: 769px) and (max-width: 1024px) {
+  html,
+  body,
+  #app {
+    font-family: var(--font-family);
+    font-size: 14px;
+  }
+
   :root {
-    --spacing-inline: 50px;
+    --spacing-inline: 48px;
+    --width-btn: 108px;
+    --hight-btn: 40px;
   }
 }
 

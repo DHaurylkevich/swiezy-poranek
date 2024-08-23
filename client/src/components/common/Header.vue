@@ -150,29 +150,37 @@ img {
 }
 
 @media (max-width: 576px) {
-    .container{
+    .container {
         padding: 16px var(--spacing-inline);
     }
+
     .links {
         display: none;
     }
 }
 
 @media (min-width: 577px) and (max-width: 768px) {
-    .container{
+    .container {
         padding: 16px var(--spacing-inline);
     }
-    .logo a {
-        width: 90px;
-    }
+
     .links {
         width: 288px;
         height: 32px;
         gap: 8px;
     }
-    .btn{
+
+    .btn {
         width: 90px;
     }
 }
 
-</style>
+@media (min-width: 769px) and (max-width: 1024px) {
+    .links {
+        width: 400px;
+    }
+
+    .logo img{
+        height: auto;
+    }
+}</style>
