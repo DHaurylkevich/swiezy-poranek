@@ -1,15 +1,15 @@
 <template>
     <section class="gallery-section">
-        <div class="title-section">
-            <p class="title">
+        <header class="title-section">
+            <h2 class="title">
                 Gallery
-            </p>
+            </h2>
             <p class="text">
                 Pyszny widok
             </p>
-        </div>
+        </header>
         <div class="gallery-container ">
-            <Carousel :items="carouselItems"/>
+            <Carousel :items="carouselItems" />
         </div>
     </section>
 </template>
@@ -20,10 +20,13 @@ export default {
     name: "GallerySection",
     components: {
         Carousel
-    },data() {
+    }, data() {
         return {
             carouselItems: [
                 require("@/assets/img/gallery/img1.jpg"),
+                require("@/assets/img/gallery/img2.jpg"),
+                require("@/assets/img/gallery/img2.jpg"),
+                require("@/assets/img/gallery/img2.jpg"),
                 require("@/assets/img/gallery/img2.jpg"),
             ],
         }
@@ -32,18 +35,19 @@ export default {
 </script>
 
 <style scoped>
-.gallery-section{
+.gallery-section {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 56px;
-    padding-bottom: 100px;
+    padding-top: 24px;
+    padding-bottom: 80px;
 }
 
-.title-section{
+.title-section {
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-bottom: 24px;
 }
 
 .title-section .title {
@@ -55,19 +59,19 @@ export default {
     font-size: var(--font-size-medium);
 }
 
-.gallery-container  {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    margin-top: 36px;
+.gallery-container {
+    position: relative;
+    padding-inline: var(--spacing-inline);
+    width: 100%;
 }
 
-.gallery{
+.gallery {
     display: flex;
     align-items: center;
     white-space: nowrap;
     animation: scroll 30s linear infinite;
 }
+
 .scroll-column {
     width: 50vw;
     height: 100vh;
@@ -81,16 +85,16 @@ export default {
     width: 240px;
     gap: 15px;
     border-radius: 25px;
-    object-fit: cover; 
+    object-fit: cover;
 }
 
 @keyframes left {
     0% {
         transform: translateX(0);
     }
+
     100% {
         transform: translateX(-33.33%);
     }
 }
-
 </style>

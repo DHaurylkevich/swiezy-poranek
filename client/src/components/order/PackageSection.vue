@@ -4,14 +4,8 @@
       <h3>{{ sectionTitle }}</h3>
     </div>
     <div class="packages-list">
-      <PackageCard 
-        v-for="(pkg, index) in packages" 
-        :key="index" 
-        :title="pkg.title" 
-        :image="pkg.image" 
-        :price="pkg.price"
-        @click="handleToggleSelect(pkg)" 
-        :isSelected="pkg === selected" />
+      <PackageCard v-for="(pkg, index) in packages" :key="index" :title="pkg.title" :image="pkg.image" :price="pkg.price"
+        @click="handleToggleSelect(pkg)" :isSelected="pkg === selected" />
     </div>
   </div>
 </template>
@@ -49,20 +43,18 @@ export default {
 };
 </script>
 
-
 <style scoped>
 .section-header {
   margin-bottom: 8px;
 }
 
 .section-header h2 {
-  font-size: 1.5em;
+  font-size: var(--font-size-medium);
 }
 
 .packages-list {
   display: flex;
-  gap: 24px;
   flex-wrap: wrap;
-  width: 936px;
+  gap: 16px;
 }
 </style>

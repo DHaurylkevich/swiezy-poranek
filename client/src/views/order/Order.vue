@@ -1,20 +1,18 @@
 <template>
     <StepsSection />
     <section class="packet-page">
-        <div class="main-section">
+        <div :class="{ 'last-page': isSummaryPage, 'main-section': !isSummaryPage }">
             <router-view />
-            <div v-if="this.$route.path === '/order/podsumowanie'" class="buttons">
-                <router-link v-if="this.$route.path !== '/order/zestawy'" class="mini-btn"
-                    :to="isBackActive()">Wrócić</router-link>
-                <router-link class="mini-btn" :to="isStepActive()">Dalej</router-link>
+            <div v-if="isSummaryPage" class="buttons">
+                <router-link v-if="!isFirstStep" class="mini-btn" :to="previousStep">Wrócić</router-link>
+                <router-link class="mini-btn" :to="nextStep">Dalej</router-link>
             </div>
-        </div>
-        <div v-if="this.$route.path !== '/order/podsumowanie'" class="container">
-            <BasketComponent class="basket" />
-            <div class="buttons">
-                <router-link v-if="this.$route.path !== '/order/zestawy'" class="mini-btn"
-                    :to="isBackActive()">Wrócić</router-link>
-                <router-link class="mini-btn" :to="isStepActive()">Dalej</router-link>
+            <div v-if="!isSummaryPage" class="container">
+                <BasketComponent class="basket" />
+                <div class="buttons">
+                    <router-link v-if="!isFirstStep" class="mini-btn" :to="previousStep">Wrócić</router-link>
+                    <router-link class="mini-btn" :to="nextStep">Dalej</router-link>
+                </div>
             </div>
         </div>
     </section>
@@ -41,7 +39,21 @@ export default {
                 '/order/dane-dostawy',
                 '/order/podsumowanie'
             ];
-        }
+        },
+        isSummaryPage() {
+            return this.$route.path === '/order/podsumowanie'
+        },
+        isFirstStep() {
+            return this.$route.path === '/order/zestawy'
+        },
+        previousStep() {
+            const currentStepIndex = this.steps.indexOf(this.currentPath) - 1;
+            return this.steps[currentStepIndex] || "#";
+        },
+        nextStep() {
+            const currentStepIndex = this.steps.indexOf(this.currentPath) + 1;
+            return this.steps[currentStepIndex] || "#";
+        },
     },
     methods: {
         isStepActive() {
@@ -58,26 +70,23 @@ export default {
 .packet-page {
     display: flex;
     min-height: 600px;
-    padding: 16px var(--spacing-section);
-    gap: 24px;
+    padding: 16px var(--spacing-inline);
 }
 
 .main-section {
     display: flex;
-    flex-direction: column;
     gap: 24px;
     width: 100%;
-    max-width: 936px;
+    justify-content: space-between;
 }
 
 .container {
     display: flex;
-    width: 100%;
     gap: 16px;
     flex-direction: column;
 }
 
-.buttons{
+.buttons {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
@@ -94,5 +103,24 @@ export default {
     background-color: var(--background-color);
     color: var(--primary-color);
     border: 1px solid var(--primary-color);
+}
+
+
+@media (max-width: 576px) {
+    .main-section {
+        flex-direction: column;
+    }
+}
+
+@media (min-width: 577px) and (max-width: 768px) {
+    .container {
+        width: 40%;
+    }
+}
+
+@media (min-width: 769px) {
+    .container {
+        width: 30%;
+    }
 }
 </style>

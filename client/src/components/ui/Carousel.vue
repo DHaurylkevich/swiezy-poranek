@@ -1,17 +1,18 @@
 <template>
     <div class="carousel" ref="carousel">
-        <div v-if="type === 'gallery'" class="carousel-inner img">
-            <div class="carousel-img" v-for="(item, index) in items" :key="index">
-                <img :src="item" :alt="item.alt" />
-            </div>
+        <div v-if="type === 'gallery'" class="carousel-inner">
+            <ul class="carousel-items">
+                <li v-for="(item, index) in items" :key="index" class="image" ref="card">
+                    <img :src="item" :alt="item.alt" />
+                </li>
+            </ul>
         </div>
         <div v-else class="carousel-inner">
             <ul class="carousel-items">
-                <li v-for="(item, index) in items" :key="index">
+                <li v-for="(item, index) in items" :key="index" class="card" ref="card">
                     <Card :key="index" :title="item.title" :image="item.image" :price="item.price"
-                        :description="item.description" />
+                        :description="item.description"/>
                 </li>
-
             </ul>
         </div>
     </div>
@@ -47,35 +48,21 @@ export default {
         };
     },
     methods: {
-        updateCardsToShow() {
-            const screenWidth = window.innerWidth;
+        scroll(direction) {
+            const carousel = this.$refs.carousel;
+            const card = this.$refs.card;
 
-            if (screenWidth < 576) {
-                this.visibleItems = 0.56;
-            } else if (screenWidth >= 577 && screenWidth <= 1000) {
-                this.visibleItems = 0.32;
-            } else {
-                this.visibleItems = 4;
+            console.log('Ширина карточки без border:', card[0].offsetWidth);
+
+
+            const scrollAmount = card[0].offsetWidth;
+
+            if (direction === 'prev') {
+                carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+            } else if (direction === 'next') {
+                carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
             }
         },
-        scroll(direction) {
-                const carousel = this.$refs.carousel;
-                const scrollAmount = carousel.offsetWidth * this.visibleItems;
-
-                if (direction === 'prev') {
-                    carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-                } else if (direction === 'next') {
-                    carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-                }
-        },
-    },
-    mounted() {
-        this.updateCardsToShow();
-
-        window.addEventListener("resize", this.updateCardsToShow);
-    },
-    beforeUnmount() {
-        window.removeEventListener("resize", this.updateCardsToShow);
     }
 };
 </script>
@@ -91,21 +78,12 @@ export default {
     transition: transform 0.5s ease;
 }
 
-/* .carousel-inner .img {
-    width: 100%;
-}
-
-.carousel-img {
-    width: 100%;
-    height: 100%;
-}
-
-.carousel-img img {
+img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 16px;
 }
-*/
 
 .carousel-items {
     display: inline-flex;
@@ -115,8 +93,13 @@ export default {
     list-style: none;
 }
 
-.carousel-items li {
-    min-width: 208px;
+.carousel-items .card {
+    min-width: 284px;
+    height: auto;
+}
+
+.carousel-items .image {
+    min-width: 30%;
     height: auto;
 }
 
@@ -124,6 +107,7 @@ export default {
 .container-btn {
     position: absolute;
     display: flex;
+    gap: 8px;
     bottom: -48px;
     right: var(--spacing-inline);
 }
@@ -143,8 +127,12 @@ export default {
         gap: 16px;
     }
 
-    .carousel-items li {
+    .carousel-items .card {
         min-width: 208px;
+    }
+
+    .carousel-items .image {
+        min-width: 232px;
     }
 }
 
@@ -153,21 +141,27 @@ export default {
         gap: 24px;
     }
 
-    .carousel-items li {
+    .carousel-items .card {
         min-width: 232px;
     }
+
+    .carousel-items .image {
+        min-width: 284px;
+    }
 }
-
-
 
 /*
 
 @media (min-width: 577px) and (max-width: 768px) {}
 */
 @media (min-width: 769px) and (max-width: 1024px) {
-    .carousel-items li {
+    .carousel-items .card {
         min-width: 284px;
     }
+
+    .carousel-items .image {
+        min-width: 45%;
+        height: auto;
+    }
 }
-/*
-@media (min-width: 1025px) {} */</style>
+</style>

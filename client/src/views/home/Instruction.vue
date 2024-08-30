@@ -18,9 +18,9 @@ export default {
     data() {
         return {
             steps: [
-                { icon: require("@/assets/img/instruction/menu-card.svg"), alt: "Wybierz dietę", text: "Wybierz dietę" },
+                { icon: require("@/assets/img/instruction/menu-card.svg"), alt: "Wybierasz dietę", text: "Wybierasz dietę" },
                 { icon: require("@/assets/img/instruction/shop-card.svg"), alt: "Zamawiasz zestaw", text: "Zamawiasz zestaw" },
-                { icon: require("@/assets/img/instruction/car-card.svg"), alt: "Otrzymujesz dostawe", text: "Otrzymujesz dostawe" },
+                { icon: require("@/assets/img/instruction/car-card.svg"), alt: "Otrzymujesz dostawe", text: "Otrzymujesz dostawę" },
                 { icon: require("@/assets/img/instruction/eat-card.svg"), alt: "Cieszysz się smakiem", text: "Cieszysz się smakiem" }
             ]
         };
@@ -51,8 +51,7 @@ export default {
     height: 232px;
     background-color: var(--background-color);
     border-radius: 16px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    /* padding: 16px; */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -91,14 +90,40 @@ export default {
 
 @media (max-width: 576px) {
     .main-container {
-        gap: 32px;
-        padding: 50px 0;
+        gap: 16px;
+        /* padding: 50px 0; */
     }
 
     .card {
-        width: 206px;
-        height: 216px;
+        width: 184px;
+        height: 190px;
+        padding: 8px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
     }
+
+    .card .icon {
+        margin-bottom: 8px;
+        width: 60%;
+    }
+
+    .card .text {
+        padding-inline: 24px;
+        line-height: 1.2;
+    }
+}
+
+@media (min-width: 426px) and (max-width: 576px) {
+    .main-container {
+        gap: 15px;
+
+    }
+
+    .card {
+        width: 208px;
+        height: 216px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+
     .card .icon {
         margin-bottom: 8px;
     }
@@ -108,10 +133,37 @@ export default {
         line-height: 1.2;
     }
 }
+@media (min-width: 769px) and (max-width: 880px){
+    .how-it-works{
+        padding: var(--spacing-inline) 24%;
+    }
+}
+@media (min-width: 769px) and (max-width: 1108px) {
+    .main-container {
+        gap: 24px;
+        /* padding: 50px 0; */
+    }
 
-@media (min-width: 577px) and (max-width: 768px) {}
+    .card {
+        width: 184px;
+        height: 190px;
+        padding: 8px;
+    }
 
-@media (min-width: 769px) and (max-width: 1024px) {}
+    .card .icon {
+        margin-bottom: 8px;
+        width: 60%;
+    }
 
-@media (min-width: 1025px) {}
+    .card .text {
+        padding-inline: 24px;
+        line-height: 1.2;
+    }
+}
+
+/* @media (min-width: 1024px) and (max-width: 1108px) {
+    .how-it-works {
+        padding: var(--spacing-inline) 150px;
+    }
+} */
 </style>

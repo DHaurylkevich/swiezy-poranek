@@ -1,5 +1,5 @@
 <template>
-    <section class="delivery-form">
+    <section class="order-section delivery-form">
         <h2>Данные для доставки</h2>
         <form @submit.prevent="submitForm">
             <div class="form-group">
@@ -59,12 +59,13 @@ export default {
 
 <style scoped>
 .delivery-form {
-    width: 100%;
     margin: 0 auto;
     padding: 20px;
     background-color: #fff;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
+    border: 1px solid #ddd;
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .delivery-form h2 {

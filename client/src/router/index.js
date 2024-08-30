@@ -28,7 +28,7 @@ const routes = [
         children: [
           { 
             path: "", 
-            redirect: "zestawy" 
+            redirect: "order/zestawy" 
           },
           { 
             path: "zestawy", 

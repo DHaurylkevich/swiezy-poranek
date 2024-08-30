@@ -1,11 +1,8 @@
 <template>
-    <div class="package-card"
-        @click="addToBasket" 
-        :class="{ 'selected': isSelected }"
-        >
-        <img  v-if="image" :src=image :alt="title" class="package-image" />
+    <div class="package-card" @click="addToBasket" :class="{ 'selected': isSelected }">
+        <img v-if="image" :src=image :alt="title" class="package-image" />
         <div class="package-details">
-            <h3 class="package-title">{{ title }}</h3>
+            <p class="package-title">{{ title }}</p>
             <p v-if="this.price" class="package-price">{{ formattedPrice }}</p>
         </div>
     </div>
@@ -55,15 +52,16 @@ export default {
 <style scoped>
 .package-card {
     display: flex;
+    flex: 0 1 calc(35% - 26px);
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     padding: 16px;
     border: 1px solid #efefef;
     border-radius: 16px;
-    overflow: hidden;
-    width: var(--wight-card);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     cursor: pointer;
+    overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -76,24 +74,83 @@ export default {
     border-color: var(--primary-color);
     transform: scale(1.05);
 }
+
 .package-image {
-    width: 128px;
+    width: 56%;
     height: auto;
     object-fit: cover;
 }
 
 .package-details {
     text-align: center;
+    font-size: var(--font-size-base);
 }
 
 .package-title {
-    font-size: var(--font-size-medium);
     color: var(--text-color);
+    /* font-size: var(--font-size-base); */
+    font-weight: bold;
 }
 
 .package-price {
-    font-size: var(--font-size-medium);
     font-weight: bold;
     color: var(--primary-color);
+}
+
+@media (max-width: 425px) {
+    .package-card {
+        flex: 0 1 calc(50% - 8px);
+        padding: var(--font-size-base);
+    }
+
+    .package-details {
+        text-align: center;
+        font-size: var(--font-size-base);
+    }
+
+    .package-image {
+        width: 80%;
+    }
+}
+
+@media (min-width: 426px) and (max-width: 577px) {
+    .package-card {
+        flex: 0 1 calc(35% - 20px);
+        padding: var(--font-size-base);
+    }
+
+    .package-details {
+        text-align: center;
+        font-size: var(--font-size-base);
+    }
+
+    .package-image {
+        width: 80%;
+    }
+}
+
+@media (min-width: 578px) and (max-width: 768px) {
+    .package-card {
+        flex: 0 1 calc(50% - 8px);
+    }
+
+    .package-image {
+        width: 72%;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .package-card {
+        flex: 0 1 calc(35% - 24px);
+    }
+
+    .package-details {
+        text-align: center;
+        font-size: var(--font-size-base);
+    }
+
+    .package-image {
+        width: 72%;
+    }
 }
 </style>

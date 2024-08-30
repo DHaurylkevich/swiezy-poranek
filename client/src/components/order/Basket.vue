@@ -4,10 +4,10 @@
         <ul class="basket-items">
             <li v-for="(item, index) in basketItems" :key="index" class="basket-item">
                 <div class="item-details">
-                    <span v-if="item.type !== ''" class="item-title">{{ item.title }}</span>
+                    <span v-if="item.type === ''" class="item-title">{{ item.title }}</span>
                     <span v-else class="item-title">{{ item.title }} - {{ item.type }} - {{ item.period }}</span>
                 </div>
-                <div class="container">
+                <div class="cost">
                     <span class="item-price">{{ item.price }}</span>
                     <button class="delete" @click="removeItem(index)">X</button>
                 </div>
@@ -61,6 +61,8 @@ export default {
     border: 1px solid #ddd;
     border-radius: 16px;
     max-height: 312px;
+    width: 100%;
+    padding: 16px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
@@ -87,6 +89,7 @@ export default {
     background-color: #f8f8f8;
     border-radius: 12px;
     padding: 12px 16px;
+    gap: 16px;
     transition: background-color 0.3s;
 }
 
@@ -100,14 +103,12 @@ export default {
     gap: 4px;
 }
 
-.item-title {
+.item-price, .item-title {
     font-size: var(--font-size-base);
     font-weight: bold;
 }
 
 .item-price {
-    font-size: var(--font-size-base);
-    font-weight: bold;
     color: var(--primary-color);
 }
 
@@ -120,15 +121,15 @@ export default {
     font-weight: bold;
 }
 
-.container {
+.cost {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
 }
 
 .basket-total {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     width: 100%;
     color: #333;
     font-size: var(--font-size-base);
@@ -141,4 +142,41 @@ export default {
     font-weight: bold;
     color: var(--primary-color);
 }
-</style>
+
+@media (max-width: 576px) {
+    .basket {
+        width: 100%;
+    }
+
+    .basket-item{
+        padding: 16px 24px;
+    }
+
+    .item-price, .item-title {
+    font-size: var(--font-size-medium);
+    }
+}
+
+@media (min-width: 577px) and (max-width: 768px) {
+    .basket {
+        width: 35vw;
+        padding-inline: 8px;
+
+    }
+
+    .basket-item {
+        padding-inline: 8px;
+        gap: 4px
+    }
+
+    .cost {
+        gap: 4px;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .basket {
+        width: 28vw;
+        padding: 16px;
+    }
+}</style>

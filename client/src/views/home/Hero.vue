@@ -8,7 +8,7 @@
                         <img class="food-img" src="@/assets/img/home/eat-half.webp" alt="Food Image" />
                     </div>
                     <p class="text">
-                        Catering <span class="color-text">Swiezy Poranek</span> oświetli Twój ranek uśmiechem i
+                        Catering <span class="color-text">Świeży Poranek</span> oświetli Twój ranek uśmiechem i
                         dodatkową inspiracją na cały dzień
                     </p>
                     <router-link class="btn" to="/order/zestawy">Zamów</router-link>
@@ -54,7 +54,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 92px;
+    margin-top: 100px;
 }
 
 .textual-content {
@@ -65,14 +65,12 @@ export default {
 }
 
 .logo {
-    flex: 12;
     display: flex;
     align-items: center;
 }
 
 .logo img {
     width: 100%;
-    height: auto;
     object-fit: contain;
 }
 
@@ -89,7 +87,8 @@ export default {
 
 .text {
     text-align: center;
-    margin: 80px 120px 0px;
+    margin-top: 80px;
+    padding-inline: 35px;
     font-size: var(--font-size-medium);
     font-weight: 500;
 }
@@ -120,7 +119,6 @@ export default {
 
 .features-section {
     display: flex;
-    /* justify-content: end; */
     align-items: center;
     gap: 16px;
     padding-right: 32px;
@@ -128,20 +126,25 @@ export default {
     margin-right: auto;
     margin-top: 56px;
     box-shadow: 0 19px 40px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
 }
 
 .feature {
-    font-size: 16px;
     display: flex;
     align-items: center;
-    gap: 20px;
-    margin: 20px 0px;
-    border-radius: 5px;
+    font-size: var(--font-size-base);
+    gap: 16px;
+    margin: 24px 0px;
+}
+
+.feature img {
+    width: 56px;
+    height: auto
 }
 
 .visual-content {
     display: flex;
-    /* flex: 1; */
+    flex: 1;
     align-items: center;
     margin-right: 50px;
 }
@@ -166,8 +169,6 @@ export default {
 
 @media (max-width: 425px) {
     .logo {
-        flex: auto;
-        justify-content: center;
         margin-left: 0;
     }
 
@@ -184,12 +185,6 @@ export default {
     .container {
         margin-top: 80px;
     }
-
-    /* .branding {
-        margin: 0;
-        align-items: center;
-        gap: 24px;
-    } */
 
     .text {
         margin: 0 24px;
@@ -314,11 +309,14 @@ export default {
         height: auto;
     }
 }
+@media (max-width: 768px){
+    .headline {
+        padding-left: 0px;
+    }
+}
 
 @media (min-width: 769px) and (max-width: 1024px) {
-    .container{
-        margin-top:100px;
-    }
+
     .visual-content {
         margin-right: auto;
         flex: 1;
@@ -333,27 +331,18 @@ export default {
         margin: 0 24px;
         line-height: 1.6;
     }
-    .features-section {
-        gap: 8px;
-        padding-right: 0;
-    }
 
     .feature {
-        gap: 8px;
-        font-size: var(--font-size-base);
         margin: 24px 0;
         width: 45%;
     }
 
     .feature img {
         width: 44px;
-        height: auto;
     }
 
-    /* .feature p {
+    .feature p {
         line-height: 1.2;
-    } */
+    }
 }
-
-@media (min-width: 1025px) {}
 </style>

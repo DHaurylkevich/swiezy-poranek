@@ -9,7 +9,7 @@
                     <button class="mini-btn" @click="scrollToSection('#home')">Home</button>
                 </li>
                 <li :class="{ 'active': currentSection === 'zestaw' }">
-                    <button class="mini-btn" @click="scrollToSection('#zestawy')">Zestawy</button>
+                    <button class="mini-btn" @click="scrollToSection('#zestawy')">Menu</button>
                 </li>
                 <li :class="{ 'active': currentSection === 'gallery-section' }">
                     <button class="mini-btn" @click="scrollToSection('#gallery')">Gallery</button>
@@ -82,11 +82,13 @@ header {
 .logo {
     display: flex;
     align-items: center;
+    width: var(--width-btn);
+    height: var(--hight-btn);
 }
 
 .logo a {
-    width: var(--width-btn);
-    height: var(--hight-btn);
+    /* width: var(--width-btn);
+    height: var(--hight-btn); */
 }
 
 img {
@@ -170,7 +172,7 @@ img {
         gap: 8px;
     }
 
-    .btn {
+    .logo, .btn {
         width: 90px;
     }
 }

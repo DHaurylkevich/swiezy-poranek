@@ -1,25 +1,25 @@
 <template>
     <div class="home-section">
         <HeroSection id="home" />
-        <!-- <InstructionSection />
-        <FoodSetSection id="zestaw" /> -->
-        <!-- <GallerySection id="gallery" /> -->
+        <InstructionSection />
+        <FoodSetSection id="zestaw" />
+        <GallerySection id="gallery" />
     </div>
 </template>
 
 <script>
 import HeroSection from "./Hero.vue";
-// import InstructionSection from "./Instruction.vue";
-// import FoodSetSection from "./FoodSet.vue";
-// import GallerySection from "./Gallery.vue";
+import InstructionSection from "./Instruction.vue";
+import FoodSetSection from "./FoodSet.vue";
+import GallerySection from "./Gallery.vue";
 
 export default {
     name: "HomeSection",
     components: {
         HeroSection,
-        // InstructionSection,
-        // FoodSetSection,
-        // GallerySection,
+        InstructionSection,
+        FoodSetSection,
+        GallerySection,
     }
 };
 </script>
