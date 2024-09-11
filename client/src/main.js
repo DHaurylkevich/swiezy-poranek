@@ -1,16 +1,14 @@
 import { createApp } from 'vue';
-import App from './App.vue';
+import App from "./App.vue";
 import router from './router';
+import VueScrollTo from "vue-scrollto";
+import VueObserveVisibility from "vue-observe-visibility";
+import store from "./store";
+import './assets/styles/global.css';
 
-// Проверка наличия конфигурации
-if (!router) {
-  console.error("Router или Store не определены");
-}
-
-// Создание и настройка приложения
-const app = createApp(App);
-
-// Использование маршрутизатора и хранилища состояний (если есть)
-app.use(router);
-
-app.mount('#app');
+createApp(App)
+    .use(router)
+    .use(VueScrollTo)
+    .use(VueObserveVisibility)
+    .use(store)
+    .mount("#app");

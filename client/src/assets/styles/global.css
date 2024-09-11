@@ -1,0 +1,145 @@
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap');
+  /* <div> Автор иконок: <a href="https://www.flaticon.com/ru/authors/eucalyp" title="Eucalyp"> Eucalyp </a> from <a href="https://www.flaticon.com/ru/" title="Flaticon">www.flaticon.com'</a></div> */
+
+  /* , "Poppins", sans-serif */
+  :root {
+    --font-family: "Red Hat Display", Arial, sans-serif;
+    --primary-color: #FCB825;
+    --background-color: #FFFFFF;
+    --font-size-base: 1rem;
+    --font-size-medium: 1.25rem;
+    --font-size-large: 1.5rem;
+    --width-btn: 128px;
+    --hight-btn: 48px;
+    --wight-card: 296px;
+    --spacing-unit: 8px;
+    --spacing-inline: 92px;
+    --card-size: 213px;
+    --radius-section: 25px;
+  }
+
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html,
+  body,
+  #app {
+    font-family: var(--font-family);
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    /* line-height: 1.6; */
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  main {
+    flex: 1;
+  }
+
+  a {
+    color: var(--text-color);
+    text-decoration: none;
+  }
+
+  .mini-btn,
+  .btn {
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 40px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+
+  .mini-btn {
+    width: 112px;
+    height: 40px;
+  }
+
+  .btn {
+    width: var(--width-btn);
+    height: var(--hight-btn);
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    text-align: center;
+  }
+  
+  a:hover {
+    text-decoration: none;
+  }
+  
+  @media (max-width: 425px) {
+    :root {
+      --spacing-inline: 20px;
+      --width-btn: 96px;
+      --hight-btn: 40px;
+    }
+  }
+
+  @media(min-width: 578px){
+  .order-section{
+    width: 70%;
+  }
+}
+  @media (min-width: 426px) and (max-width: 576px) {
+    :root {
+      --spacing-inline: 32px;
+      --width-btn: 110px;
+      --hight-btn: 40px;
+    }
+
+    .mini-btn {
+      width: 88px;
+      height: 40px;
+    }
+  }
+
+
+  @media (min-width: 577px) and (max-width: 768px) {
+    :root {
+      --spacing-inline: 32px;
+      --width-btn: 108px;
+      --hight-btn: 40px;
+    }
+
+    .mini-btn {
+      width: 88px;
+      height: 32px;
+    }
+  }
+
+  @media (min-width: 769px) and (max-width: 1024px) {
+
+    html,
+    body,
+    #app {
+      font-family: var(--font-family);
+      font-size: 14px;
+    }
+
+    :root {
+      --spacing-inline: 40px;
+      --width-btn: 108px;
+      --hight-btn: 40px;
+    }
+  }
+
+  @media (max-width: 1024px) {
+
+    html,
+    body,
+    #app {
+      font-size: 14px;
+    }
+  }
