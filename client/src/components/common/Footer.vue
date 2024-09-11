@@ -1,37 +1,64 @@
 <template>
     <footer class="footer">
         <div class="container contacts">
-            <p class="title">Контакты</p>
+            <p class="title">Kontakty</p>
             <div class="text">
                 <div class="icons">
-                    <img src="@/assets/icons/facebook.svg" alt="Facebook" />
-                    <img src="@/assets/icons/instagram.svg" alt="Instagram" />
+                    <p>{{ contact.phone }}</p>
+                    <p>{{ contact.email }}</p>
                 </div>
                 <div class="icons">
-                    <p>+48 000-000-000</p>
-                    <p>gmaiiiil@gmail.com</p>
+                    <a :href="contact.facebook"><img src="@/assets/icons/facebook.svg" alt="Facebook" /></a>
+                    <a :href="contact.instagram"><img src="@/assets/icons/instagram.svg" alt="Instagram" /></a>
                 </div>
             </div>
         </div>
         <div class="container info">
-            <p class="title">Открыто</p>
+            <p class="title">Otwarto</p>
             <div>
-                <p class="adres">ул. Улица</p>
-                <p class="time">Пн - Пт 10:10 - 19:00</p>
+                <p class="adres">{{contact.address}}</p>
+                <p class="time">{{ contact.openingHours }}</p>
             </div>
         </div>
         <div class="container legal">
             <div class="logo">
                 <img src="@/assets/logo.svg" alt="Logo" />
             </div>
-            <p class="info">© 2024 Swiezy Poranek</p>
+            <p class="info">©2024 Swiezy Poranek</p>
         </div>
     </footer>
 </template>
 
 <script>
+import { getContactInfo } from "@/services/contactsServices"
+
 export default {
-    name: "FooterComponent"
+    name: "FooterComponent",
+    data() {
+        return {
+            contact: {
+                facebook: "",
+                instagram: "",
+                phone: "",
+                email: "",
+                address: "",
+                openingHours: "",
+            },
+        };
+    },
+    async created() {
+        await this.loadContactForm()
+    },
+    methods: {
+        async loadContactForm() {
+            try {
+                this.contact = await getContactInfo();
+                console.log("Contact", this.contact);
+            } catch (e) {
+                console.error("Failed to load packages:", e);
+            }
+        },
+    }
 }
 </script>
 
@@ -46,7 +73,7 @@ export default {
 .container {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
 }
 
 .title {
@@ -74,13 +101,13 @@ export default {
 
 .contacts .text {
     display: flex;
-    gap: 4px;
+    gap: 16px;
 }
 
 .contacts .icons {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
 }
 
 .icons img {

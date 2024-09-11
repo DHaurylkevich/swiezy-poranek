@@ -4,7 +4,7 @@
       <h3>{{ sectionTitle }}</h3>
     </div>
     <div class="packages-list">
-      <PackageCard v-for="(pkg, index) in packages" :key="index" :title="pkg.title" :image="pkg.image" :price="pkg.price"
+      <PackageCard v-for="(pkg, index) in packages" :key="index" :title="pkg.title" :image="pkg.image" :price="pkg.price" :opis="pkg.description"
         @click="handleToggleSelect(pkg)" :isSelected="pkg === selected" />
     </div>
   </div>

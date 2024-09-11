@@ -17,8 +17,10 @@
 </template>
 
 <script>
-import Card from "@/components/ui/FoodSetCard.vue"
-import Carousel from "@/components/ui/Carousel.vue"
+import Card from "@/components/ui/CardComponent.vue";
+import Carousel from "@/components/ui/Carousel.vue";
+import { getPackages } from "@/services/packageServices";
+
 
 export default {
     name: "FoodSetSection",
@@ -29,12 +31,20 @@ export default {
     data() {
         return {
             packages: [
-                { title: "Classic", image: require("@/assets/img/foodset/vege.png"), price: 45, description: "Symphony of garlic-infused, creating a delightful masterpiece captivates senses." },
-                { title: "XL", image: require("@/assets/img/foodset/vege.png"), price: 55, description: "Symphony of garlic-infused, creating a delightful masterpiece captivates senses." },
-                { title: "Obiad + Zupka", image: require("@/assets/img/foodset/vege.png"), price: 24, description: "Symphony of garlic-infused, creating a delightful masterpiece captivates senses." },
-                { title: "Śniadanie + salatka", image: require("@/assets/img/foodset/vege.png"), price: 20, description: "Symphony of garlic-infused, creating a delightful masterpiece captivates senses." },
-                { title: "3 sałatki dziennie", image: require("@/assets/img/foodset/vege.png"), price: 32, description: "Symphony of garlic-infused, creating a delightful masterpiece captivates senses." },
+            //     { title: "Classic", image: require("@/assets/img/foodset/vege.png"), price: 45, description: "Symphony of garlic-infused, creating a delightful masterpiece captivates senses." },
+            //     { title: "XL", image: require("@/assets/img/foodset/vege.png"), price: 55, description: "Symphony of garlic-infused, creating a delightful masterpiece captivates senses." },
+            //     { title: "Obiad + Zupka", image: require("@/assets/img/foodset/vege.png"), price: 24, description: "Symphony of garlic-infused, creating a delightful masterpiece captivates senses." },
+            //     { title: "Śniadanie + salatka", image: require("@/assets/img/foodset/vege.png"), price: 20, description: "Symphony of garlic-infused, creating a delightful masterpiece captivates senses." },
+            //     { title: "3 sałatki dziennie", image: require("@/assets/img/foodset/vege.png"), price: 32, description: "Symphony of garlic-infused, creating a delightful masterpiece captivates senses." },
             ]
+        }
+    },
+    async created() {
+        try {
+            this.packages = await getPackages();
+            console.log(this.packages)
+        } catch (error) {
+            console.error('Failed to load packages:', error);
         }
     }
 }

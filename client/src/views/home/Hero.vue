@@ -1,6 +1,6 @@
 <template>
     <section class="home">
-        <div class="container">
+        <div class="container" >
             <div class="textual-content">
                 <div class="headline">
                     <div class="logo">

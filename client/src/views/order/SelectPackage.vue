@@ -14,9 +14,9 @@
         </transition>
     </section>
 </template>
-
 <script>
 import PackageSection from '@/components/order/PackageSection.vue';
+import { getPackages } from "@/services/packageServices";
 import { mapMutations } from "vuex";
 
 export default {
@@ -26,11 +26,11 @@ export default {
     data() {
         return {
             packages: [
-                { title: "Classic", image: require("@/assets/img/foodset/vege.png"), price: 45 },
-                { title: "XL", image: require("@/assets/img/foodset/vege.png"), price: 55 },
-                { title: "Obiad + Zupka", image: require("@/assets/img/foodset/vege.png"), price: 24 },
-                { title: "Śniadanie + salatka", image: require("@/assets/img/foodset/vege.png"), price: 20 },
-                { title: "3 sałatki dziennie", image: require("@/assets/img/foodset/vege.png"), price: 32 },
+                // { title: "Classic", image: require("@/assets/img/foodset/vege.png"), price: 45 },
+                // { title: "XL", image: require("@/assets/img/foodset/vege.png"), price: 55 },
+                // { title: "Obiad + Zupka", image: require("@/assets/img/foodset/vege.png"), price: 24 },
+                // { title: "Śniadanie + salatka", image: require("@/assets/img/foodset/vege.png"), price: 20 },
+                // { title: "3 sałatki dziennie", image: require("@/assets/img/foodset/vege.png"), price: 32 },
             ],
             TypePackages: [
                 { title: "Standard" },
@@ -46,6 +46,14 @@ export default {
             selectedPeriod: null,
             basketItems: []
         };
+    },
+    async created() {
+        try {
+            this.packages = await getPackages();
+            console.log(this.packages)
+        } catch (error) {
+            console.error('Failed to load packages:', error);
+        }
     },
     methods: {
         ...mapMutations(['addToBasket']),

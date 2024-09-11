@@ -3,14 +3,25 @@
         <img v-if="image" :src=image :alt="title" class="package-image" />
         <div class="package-details">
             <p class="package-title">{{ title }}</p>
+            <ToolTip>
+                <template #content>
+                    {{opis}}
+                </template>
+                <p>Opis</p>
+            </ToolTip>
             <p v-if="this.price" class="package-price">{{ formattedPrice }}</p>
         </div>
     </div>
 </template>
 
 <script>
+import ToolTip from "../ui/tooltip.vue";
+
 export default {
-    name: 'PackageCard',
+    components: {
+        ToolTip
+    },
+    name: "PackageCard",
     props: {
         title: {
             type: String,
@@ -22,6 +33,10 @@ export default {
         },
         price: {
             type: Number,
+            required: true
+        },
+        opis:{
+            type: String,
             required: true
         },
         isSelected: {

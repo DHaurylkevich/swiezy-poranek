@@ -2,16 +2,16 @@
     <transition name="fade">
         <div class="card">
             <div class="card-img">
-                <img v-if="image" :src=image :alt="title" class="package-image" />
+                <img v-if="image" :src="image" :alt="title" class="package-image" />
             </div>
             <div class="card-body">
                 <h3 class="package-title">{{ title }}</h3>
-                <p v-if="this.price" class="package-price">{{ formattedPrice }}</p>
+                <p v-if="price" class="package-price">{{ formattedPrice }}</p>
                 <div class="description">
                     <p>{{ description }}</p>
                 </div>
             </div>
-            <router-link to="/order/zestawy" class="btn">Zamawiam</router-link>
+            <router-link v-if="buyButton" to="/order/zestawy" class="btn">Zamawiam</router-link>
         </div>
     </transition>
 </template>
@@ -35,6 +35,18 @@ export default {
         description: {
             type: String,
             required: true
+        },
+        buyButton: {
+            type: Boolean,
+            default: true
+        }
+    },
+    computed: {
+        formattedPrice() {
+            return new Intl.NumberFormat('pl-PL', {
+                style: 'currency',
+                currency: 'PLN',
+            }).format(this.price);
         }
     }
 }

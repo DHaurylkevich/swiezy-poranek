@@ -39,7 +39,7 @@ import DynamicTable from '@/components/ui/DynamicTable.vue';
 
 
 export default {
-    name: 'AdminOrders',
+    name: "AdminOrders",
     components: {
         AdminModal,
         DynamicTable

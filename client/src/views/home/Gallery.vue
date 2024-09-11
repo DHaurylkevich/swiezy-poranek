@@ -9,7 +9,7 @@
             </p>
         </header>
         <div class="gallery-container ">
-            <Carousel :items="carouselItems" />
+            <Carousel :items="carouselItems"  :type="'gallery'"/>
         </div>
     </section>
 </template>

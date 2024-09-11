@@ -1,21 +1,34 @@
 const express = require("express");
-const bodyParser = require('body-parser');
 const connectDB = require("./src/config/db");
 const dotenv = require("dotenv");
-dotenv.config()
+const cors = require('cors');
+const path = require('path');
 
+
+dotenv.config();
 const app = express();
-app.use(bodyParser.json());
 
 connectDB();
 
-app.use("/api", require("../server/src/routes"));
+// Настройка CORS
+app.use(cors({
+    origin: "http://localhost:8080", 
+    credentials: true 
+}));
+
+app.use(express.json());
+
+// Маршруты API
+app.use("/api", require("./src/routes"));
+
+
+app.use('/uploads', express.static(path.join(__dirname, "./uploads")));
 
 app.get("/", (req, res) => {
-    res.send("Server is running")
+    res.send("Server is running");
 });
 
 const port = process.env.PORT || 5000;
-app.listen(port, ()=> {
+app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });

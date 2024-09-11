@@ -6,13 +6,19 @@
             </div>
             <ul class="links">
                 <li :class="{ 'active': currentSection === 'home' }">
-                    <button class="mini-btn" @click="scrollToSection('#home')">Home</button>
+                    <router-link :to="{ name: 'Home', hash: '#home' }" v-scroll-to="'#home'">
+                        <button class="mini-btn">Home</button>
+                    </router-link>
                 </li>
-                <li :class="{ 'active': currentSection === 'zestaw' }">
-                    <button class="mini-btn" @click="scrollToSection('#zestawy')">Menu</button>
+                <li :class="{ 'active': currentSection === 'zestawy' }">
+                    <router-link :to="{ name: 'Home', hash: '#zestawy' }" v-scroll-to="'#zestawy'">
+                        <button class="mini-btn">Menu</button>
+                    </router-link>
                 </li>
-                <li :class="{ 'active': currentSection === 'gallery-section' }">
-                    <button class="mini-btn" @click="scrollToSection('#gallery')">Gallery</button>
+                <li :class="{ 'active': currentSection === 'gallery' }">
+                    <router-link :to="{ name: 'Home', hash: '#gallery' }" v-scroll-to="'#gallery'">
+                        <button class="mini-btn">Gallery</button>
+                    </router-link>
                 </li>
             </ul>
             <router-link class="btn" to="/order/zestawy">Zamów</router-link>
@@ -21,48 +27,16 @@
 </template>
 
 <script>
-import VueScrollTo from 'vue-scrollto';
 
 export default {
     name: "HeaderComponent",
-    data() {
-        return {
-            currentSection: ''
-        };
-    },
-    methods: {
-        scrollToSection(sectionId) {
-            VueScrollTo.scrollTo(sectionId, 500);
-        },
-        handleScroll(entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    this.currentSection = entry.target.id;
-                }
-            });
-        }
-    },
-    mounted() {
-        const options = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.5
-        };
-        this.observer = new IntersectionObserver(this.handleScroll, options);
-
-        const sections = document.querySelectorAll('section');
-        sections.forEach(section => {
-            this.observer.observe(section);
-        });
-    },
-    beforeUnmount() {
-        if (this.observer) {
-            this.observer.disconnect();
+    computed: {
+        currentSection() {
+            return this.$store.getters.currentSection;
         }
     }
-}
+};
 </script>
-
 
 <style scoped>
 header {
@@ -86,36 +60,26 @@ header {
     height: var(--hight-btn);
 }
 
-.logo a {
-    /* width: var(--width-btn);
-    height: var(--hight-btn); */
-}
-
-img {
+.logo img {
     max-width: 100%;
-    height: 100%;
-    object-fit: contain;
+    height: auto;
 }
 
 .links {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    list-style: none;
     gap: 20px;
-    font-size: var(--font-size-base);
+    list-style: none;
     border: 2px solid var(--primary-color);
     border-radius: 40px;
-    width: 448px;
     height: 40px;
+    align-items: center;
+    font-size: var(--font-size-base);
 }
 
 .links li {
     display: flex;
     align-items: center;
     justify-content: center;
-    /* width: 112px;
-    height: 40px; */
 }
 
 .mini-btn {
@@ -123,15 +87,17 @@ img {
     border: none;
 }
 
-.active .mini-btn {
-    background-color: var(--primary-color);
-    font-weight: bold;
-    border-radius: 40px;
-}
-
 .mini-btn:hover {
     background-color: var(--primary-color);
+    color: #fff;
+    font-weight: bold;
+    border-radius: 40px;
     transition: background-color 0.3s ease;
+}
+
+.active .mini-btn {
+    background-color: var(--primary-color);
+    color: #fff;
     font-weight: bold;
     border-radius: 40px;
 }
@@ -145,10 +111,7 @@ img {
 
 .btn:hover {
     background-color: var(--primary-color);
-}
-
-.btn:hover {
-    color: #FFF;
+    color: #fff;
 }
 
 @media (max-width: 576px) {
@@ -172,7 +135,8 @@ img {
         gap: 8px;
     }
 
-    .logo, .btn {
+    .logo img,
+    .btn {
         width: 90px;
     }
 }
@@ -181,8 +145,5 @@ img {
     .links {
         width: 400px;
     }
-
-    .logo img{
-        height: auto;
-    }
-}</style>
+}
+</style>

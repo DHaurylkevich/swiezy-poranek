@@ -1,16 +1,19 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-// Компоненты
 const HomeLayout = () => import("../layout/DefaultLayout.vue");
 const AdminLayout = () => import("../layout/AdminLayout.vue");
-const AdminFoodSets = () => import("../views/admin/AdminFoodSets.vue");
+const AdminPackage = () => import("../views/admin/AdminPackage.vue");
 const AdminOrders = () => import("../views/admin/AdminOrders.vue");
-const HomeSection = () => import("../views/home/Home.vue");
+const AdminContacts = () => import("../views/admin/AdminContacts.vue");
+const AdminGallery = () => import("../views/admin/AdminGallery.vue");
+const LoginPage = () => import("../views/admin/LoginPage.vue");
+import HomeSection from "../views/home/Home.vue";
 const OrderPage = () => import("../views/order/Order.vue");
 const SelectPackage = () => import("../views/order/SelectPackage.vue");
 const SelectAddons = () => import("../views/order/SelectAddons.vue");
 const AddressData = () => import("../views/order/AddressData.vue");
 const OrderSummary = () => import("../views/order/OrderSummary.vue");
+
 
 const routes = [
   { 
@@ -55,6 +58,11 @@ const routes = [
     ]
   },
   {
+    path: "/login",
+    name: "LoginPage",
+    component: LoginPage
+  },
+  {
     path: "/admin",
     component: AdminLayout,
     meta: { 
@@ -64,12 +72,22 @@ const routes = [
       { 
         path: "zestawy", 
         name: "AdminFoodSets",
-        component: AdminFoodSets 
+        component: AdminPackage 
       },
       { 
         path: "orders", 
         name: "AdminOrders",
         component: AdminOrders 
+      },
+      { 
+        path: "contacts", 
+        name: "AdminContacts",
+        component: AdminContacts 
+      },
+      { 
+        path: "gallery", 
+        name: "AdminGallery",
+        component: AdminGallery 
       }
     ],
   }

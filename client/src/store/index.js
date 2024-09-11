@@ -3,7 +3,8 @@ import { createStore } from 'vuex';
 export default createStore({
     state() {
         return {
-            basketItems: [] 
+            basketItems: [],
+            currentSection: "",
         };
     },
     mutations: {
@@ -12,9 +13,13 @@ export default createStore({
         },
         removeFromBasket(state, index) {
         state.basketItems.splice(index, 1);
+        },
+        SET_SECTION(state, section) {
+            state.currentSection = section;
         }
     },
     getters: {
-            items: (state) => state.basketItems
+            items: (state) => state.basketItems,
+            currentSection: state => state.currentSection
     }
 });

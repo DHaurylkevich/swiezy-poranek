@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import Card from "@/components/ui/FoodSetCard.vue"
+import Card from "@/components/ui/CardComponent.vue"
 
 export default {
     name: 'CarouselComponent',
@@ -37,7 +37,6 @@ export default {
         },
         type: {
             type: String,
-            required: true,
             default: "gallery",
         }
     },
@@ -106,6 +105,7 @@ img {
 
 .container-btn {
     position: absolute;
+    z-index: 2;
     display: flex;
     gap: 8px;
     bottom: -48px;
