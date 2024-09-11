@@ -20,7 +20,7 @@ export const createPackage = async (formData) => {
         });
     } catch (e) {
         console.error("Ошибка при создании пакета:", e);
-        throw new Error(e.response?.data?.message || 'Ошибка на сервере');
+        throw new Error(e.response?.data?.message || "Ошибка на сервере");
     }
 };
 
@@ -33,7 +33,7 @@ export const updatePackage = async (id, formData) => {
         });
     } catch (e) {
         console.error("Ошибка при обновлении пакета:", e);
-        throw new Error(e.response?.data?.message || 'Ошибка на сервере');
+        throw new Error(e.response?.data?.message || "Ошибка на сервере");
     }
 };
 
@@ -41,7 +41,6 @@ export const deletePackage = async (id) => {
     try {
         await axios.delete(`${API_URL}/${id}`);
     } catch (e) {
-        console.error("Ошибка при создании пакета:", e);
-        throw new Error(e.response?.data?.message || 'Ошибка на сервере');
+        throw new Error(e.response?.data?.message || "Ошибка на сервере");
     }
 }

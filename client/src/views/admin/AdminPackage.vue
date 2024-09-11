@@ -163,7 +163,7 @@ export default {
 };
 </script>
 <style scoped>
-ё.admin-foodset {
+.admin-foodset {
     display: flex;
     flex-direction: column;
     gap: 32px;

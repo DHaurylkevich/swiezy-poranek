@@ -13,7 +13,7 @@ const packageSchema = new Schema({
   versionKey: false
 });
 
-packageSchema.post('findOneAndDelete', function (doc) {
+packageSchema.post("findOneAndDelete", function (doc) {
   if (doc.image && doc.image !== "" && doc.image.split('/').pop() !== "vege.png") {
     const imagePath = path.join(__dirname, '../../uploads', doc.image.split('/').pop());
 

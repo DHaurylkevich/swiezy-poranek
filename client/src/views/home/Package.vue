@@ -1,6 +1,6 @@
 <template>
     <section class="food-set">
-        <header class="title-section">
+        <header class="section-title">
             <div class="icon">
                 <img src="@/assets/img/foodset/sun.svg" alt="Sun Icon">
             </div>
@@ -61,13 +61,13 @@ export default {
     padding-bottom: 100px;
 }
 
-.title-section {
+.section-title {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.title-section .icon {
+.section-title .icon {
     display: flex;
     align-items: center;
 }
@@ -88,24 +88,10 @@ export default {
     width: 100%;
 }
 
-/* .cards-container {
-    display: flex;
-    margin-top: 36px;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 20px;
-    flex-wrap: wrap;
-} */
-
 @media (max-width: 576px) {
     .food-set {
         padding-bottom: 80px;
     }
-
-    /* .cards-container {
-        margin-top: 16px;
-        justify-content: center;
-    } */
     .section-title {
         padding-bottom: 8px;
     }
@@ -115,23 +101,5 @@ export default {
     .section-title {
         padding-bottom: 8px;
     }
-
-    .cards-container {
-        /* gap: 30px; */
-    }
 }
-
-/*
-
-@media (min-width: 769px) and (max-width: 1024px) {
-    .cards-container {
-        gap: 40px;
-    }
-}
-
-@media (min-width: 1025px) {
-    .cards-container {
-        gap: 50px;
-    }
-} */
 </style>
