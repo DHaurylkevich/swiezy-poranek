@@ -1,11 +1,11 @@
 <template>
-    <div class="package-card" @click="addToBasket" :class="{ 'selected': isSelected }">
+    <div class="package-card" :class="{ 'selected': isSelected }">
         <img v-if="image" :src=image :alt="title" class="package-image" />
         <div class="package-details">
             <p class="package-title">{{ title }}</p>
-            <ToolTip>
+            <ToolTip v-if="description">
                 <template #content>
-                    {{opis}}
+                    {{ description }}
                 </template>
                 <p>Opis</p>
             </ToolTip>
@@ -35,7 +35,7 @@ export default {
             type: Number,
             required: true
         },
-        opis:{
+        description: {
             type: String,
             required: true
         },
@@ -50,15 +50,6 @@ export default {
                 style: 'currency',
                 currency: 'PLN',
             }).format(this.price);
-        }
-    },
-    methods: {
-        addToBasket() {
-            this.$emit('addToBasket', {
-                title: this.title,
-                image: this.image,
-                price: this.price
-            });
         }
     }
 };
@@ -80,7 +71,7 @@ export default {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.package-card:hover {
+.package-card:hover{
     transform: translateY(-5px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }

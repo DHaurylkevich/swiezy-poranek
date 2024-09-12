@@ -2,42 +2,20 @@
     <section class="step-section">
         <div class="create-order">
             <div class="steps-container">
-                <div class="ordinal">
-                    <p>1</p>
-                    <img class="circle" src="@/assets/icons/circle.svg" alt="Step 1" />
-                </div>
                 <ul class="steps">
-                    <li :class="{ 'step-active': isStepActive('/order/zestawy') }" class="step">
-                        Wybierz zestaw
-                    </li>
-                    <li class="ordinal">
-                        <p>2</p>
-                        <p class="little-arrow">❯</p>
-                    </li>
-                    <li :class="{ 'step-active': isStepActive('/order/dodatki') }" class="step">
-                        Wybierz dodatki
-                    </li>
-                    <li class="ordinal">
-                        <p>3</p>
-                        <p class="little-arrow">❯</p>
-                    </li>
-                    <li :class="{ 'step-active': isStepActive('/order/dane-dostawy') }" class="step">
-                        Dane dostawy
-                    </li>
-                    <li class="ordinal">
-                        <p>4</p>
-                        <p class="little-arrow">❯</p>
-                    </li>
-                    <li :class="{ 'step-active': isStepActive('/order/podsumowanie') }" class="step">
-                        Twoje dane
-                    </li>
+                    <template v-for="(step, index) in visibleSteps" :key="step">
+                        <li :class="{ 'step-active': isStepActive(step) }" class="step">
+                            {{ stepTitle(step) }}
+                        </li>
+                        <li v-if="index < visibleSteps.length - 1" class="ordinal">
+                            <p class="little-arrow">❯</p>
+                        </li>
+                    </template>
                 </ul>
-                <img class="circle" src="@/assets/icons/circle.svg" alt="Final Step" />
             </div>
         </div>
     </section>
 </template>
-
 
 <script>
 export default {
@@ -48,25 +26,40 @@ export default {
         },
         steps() {
             return [
-                '/order/zestawy',
-                '/order/dodatki',
-                '/order/dane-dostawy',
-                '/order/podsumowanie'
+                "/order/zestawy",
+                "/order/dodatki",
+                "/order/dane-dostawy",
+                "/order/podsumowanie"
             ];
         },
         currentStepIndex() {
             return this.steps.indexOf(this.currentPath);
+        },
+        visibleSteps() {
+            if (window.innerWidth <= 576) {
+                const prevStepIndex = Math.max(this.currentStepIndex, 0);
+                const nextStepIndex = Math.min(this.currentStepIndex + 1, this.steps.length - 1);
+                return this.steps.slice(prevStepIndex, nextStepIndex + 1);
+            }
+            return this.steps;
         }
     },
     methods: {
         isStepActive(stepPath) {
             return this.steps.indexOf(stepPath) <= this.currentStepIndex;
+        },
+        stepTitle(stepPath) {
+            const titles = {
+                "/order/zestawy": "Wybierz zestaw",
+                "/order/dodatki": "Wybierz dodatki",
+                "/order/dane-dostawy": "Dane dostawy",
+                "/order/podsumowanie": "Podsumowanie"
+            };
+            return titles[stepPath] || '';
         }
     }
-
 };
 </script>
-
 
 <style scoped>
 .create-order {
@@ -74,12 +67,14 @@ export default {
     justify-content: center;
     align-items: center;
     padding-top: 100px;
-    /* padding-inline: var(--spacing-inline); */
 }
 
 .steps-container {
     display: flex;
     align-items: center;
+    width: 100vw;
+    padding-inline: var(--spacing-inline);
+    justify-content: space-between;
     gap: 8px
 }
 
@@ -93,28 +88,13 @@ export default {
     font-weight: 700;
 }
 
-.ordinal p {
-    position: absolute;
-    margin-bottom: 30px;
-}
-
-.ordinal .circle {
-    width: 100%;
-    object-fit: fill;
-}
-
-.ordinal .arrow {
-    /* display: none; */
-    width: 100%;
-    object-fit: contain;
-}
-
 .ordinal .little-arrow {
     display: contents;
 }
 
 .steps {
     display: flex;
+    width: 100%;
     align-items: center;
     justify-content: space-between;
     gap: 16px;
@@ -126,7 +106,8 @@ export default {
     justify-content: center;
     align-items: center;
     height: 40px;
-    width: 18.5vw;
+    /* width: 18.5vw; */
+    width: 100%;
     border: 1px solid var(--primary-color);
     border-radius: 24px;
     font-size: 20px;
@@ -138,12 +119,14 @@ export default {
     font-weight: 700;
 }
 
-@media (max-width: 576px) {
+@media (max-width: 577px) {
     .create-order {
         padding-top: 72px;
     }
 
     .steps-container {
+        width: 100%;
+        padding-inline: var(--spacing-inline);
         gap: 4px;
     }
 
@@ -156,18 +139,20 @@ export default {
     }
 
     .steps {
+        width: 100%;
         gap: 4px;
     }
 
     .step-active,
     .step {
+        width: 100%;
         /* width: 17vw; */
         font-size: var(--font-size-base);
     }
 }
 
 
-@media (min-width: 577px) and (max-width: 1024px) {
+@media (min-width: 578px) and (max-width: 1024px) {
     .create-order {
         padding-top: 88px;
     }
@@ -183,15 +168,11 @@ export default {
     .step-active,
     .step {
         width: 20vw;
-        font-size: var(--font-size-medium);
+        font-size: var(--font-size-base);
     }
 }
 
 @media (max-width: 1024px) {
-
-    .ordinal .arrow {
-        display: none;
-    }
 
     .ordinal .little-arrow {
         display: contents;
@@ -203,6 +184,4 @@ export default {
         text-align: center;
     }
 }
-
-@media (min-width: 1025px) {}
 </style>

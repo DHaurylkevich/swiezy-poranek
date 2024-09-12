@@ -4,7 +4,7 @@
 
         <div class="summary-details">
             <h3>Twoje zamówienie</h3>
-            <ul>
+            <ul v-if="basketItems.length">
                 <li v-for="item in basketItems" :key="item.title">
                     <span>{{ item.title }}</span>
                     <span>{{ item.price }} PLN</span>
@@ -14,58 +14,29 @@
                     <span>{{ totalAmount }} PLN</span>
                 </li>
             </ul>
+            <div v-else class="text-container">
+                <p class="text"> Koszyk jest pusty</p>
+            </div>
         </div>
 
-        <div class="payment-section">
-            <h3>Informacje płatnicze</h3>
-            <form @submit.prevent="submitPayment">
-                <div class="form-group">
-                    <label for="cardName">Имя на карте</label>
-                    <input type="text" id="cardName" v-model="paymentData.cardName" required
-                        placeholder="Введите имя, как указано на карте" />
-                </div>
-                <div class="form-group">
-                    <label for="cardNumber">Номер карты</label>
-                    <input type="text" id="cardNumber" v-model="paymentData.cardNumber" required
-                        placeholder="Введите номер карты" pattern="\d{16}" />
-                </div>
-                <div class="form-group">
-                    <label for="expiryDate">Срок действия</label>
-                    <input type="text" id="expiryDate" v-model="paymentData.expiryDate" required placeholder="MM/ГГ"
-                        pattern="(0[1-9]|1[0-2])\/\d{2}" />
-                </div>
-                <div class="form-group">
-                    <label for="cvc">CVC</label>
-                    <input type="text" id="cvc" v-model="paymentData.cvc" required
-                        placeholder="Три цифры с обратной стороны" pattern="\d{3}" />
-                </div>
-                <button type="submit" class="submit-button">Оплатить</button>
-            </form>
+        <div v-if="basketItems.length" class="payment-section">
+            <button type="submit" class="submit-button">Оплатить</button>
         </div>
     </section>
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
-    data() {
-        return {
-            basketItems: [
-                { title: "Classic", price: 45 },
-                { title: "XL", price: 55 },
-                { title: "Obiad + Zupka", price: 24 }
-            ],
-            paymentData: {
-                cardName: '',
-                cardNumber: '',
-                expiryDate: '',
-                cvc: ''
-            }
-        };
-    },
     computed: {
         totalAmount() {
+            console.log(this.basketItems)
             return this.basketItems.reduce((total, item) => total + item.price, 0);
-        }
+        },
+        ...mapState({
+            basketItems: state => state.basketItems
+        })
     },
     methods: {
         submitPayment() {

@@ -26,11 +26,6 @@ export default {
     data() {
         return {
             packages: [
-                // { title: "Classic", image: require("@/assets/img/foodset/vege.png"), price: 45 },
-                // { title: "XL", image: require("@/assets/img/foodset/vege.png"), price: 55 },
-                // { title: "Obiad + Zupka", image: require("@/assets/img/foodset/vege.png"), price: 24 },
-                // { title: "Śniadanie + salatka", image: require("@/assets/img/foodset/vege.png"), price: 20 },
-                // { title: "3 sałatki dziennie", image: require("@/assets/img/foodset/vege.png"), price: 32 },
             ],
             TypePackages: [
                 { title: "Standard" },
@@ -41,9 +36,10 @@ export default {
                 { title: "2 tygodnie" },
                 { title: "1 miesiąc" }
             ],
-            selectedPackage: null,
+            selectedPackage:  null,
             selectedType: null,
             selectedPeriod: null,
+            totalIndex: "",
             basketItems: []
         };
     },
@@ -59,6 +55,7 @@ export default {
         ...mapMutations(['addToBasket']),
         selectPackage(packageItem) {
             this.selectedPackage = packageItem;
+            this.totalIndex = null;
             this.selectedType = null;
             this.selectedPeriod = null;
         },
@@ -68,22 +65,29 @@ export default {
         },
         selectPeriod(period) {
             this.selectedPeriod = period;
+            this.totalIndex = `${this.selectedPackage.index}${this.selectedType.index}${this.selectedPeriod.index}`;
+            console.log(this.totalIndex)
             const fullPackage = {
-                ...this.selectedPackage,
+                index: this.totalIndex,
+                title: this.selectedPackage.title,
+                price: this.selectedPackage.price,
                 type: this.selectedType.title,
-                period: this.selectedPeriod.title
+                period: this.selectedPeriod.title,
+                count: 0
             };
+            console.log(fullPackage)
             this.addToBasket(fullPackage);
             this.selectedPackage = null;
             this.selectedType = null;
             this.selectedPeriod = null;
+            this.totalIndex = "";
         },
         beforeEnter(el) {
             el.style.opacity = 0;
         },
         enter(el, done) {
             el.offsetHeight;
-            el.style.transition = 'opacity 0.5s ease';
+            el.style.transition = 'opacity 0.3s ease';
             el.style.opacity = 1;
             done();
         },
@@ -96,6 +100,7 @@ export default {
     }
 };
 </script>
+
 <style scoped>
 .select-package {
     display: flex;
