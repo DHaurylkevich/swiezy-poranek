@@ -12,7 +12,7 @@ connectDB();
 
 // Настройка CORS
 app.use(cors({
-    origin: "http://localhost:8080", 
+    origin: "http://localhost:8000" || "http://192.168.0.186:8000", 
     credentials: true 
 }));
 
@@ -20,7 +20,6 @@ app.use(express.json());
 
 // Маршруты API
 app.use("/api", require("./src/routes"));
-
 
 app.use('/uploads', express.static(path.join(__dirname, "./uploads")));
 

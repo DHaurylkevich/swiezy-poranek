@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3000/api/package";
+const API_URL = "http://localhost:4242/api/package";
 
 export const getPackages = async () => {
     try {

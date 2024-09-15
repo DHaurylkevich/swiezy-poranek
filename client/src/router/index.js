@@ -102,7 +102,7 @@ router.beforeEach((to, from, next) => {
   const isAuthenticated = true; // В реальном проекте должна быть логика проверки аутентификации
 
   if (to.meta.requiresAuth && !isAuthenticated) {
-    next("/");
+    next({ name: "LoginPage" });
   } else {
     next();
   }

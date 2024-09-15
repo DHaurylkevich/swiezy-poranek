@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-const API_URL = "http://localhost:3000/api/admin";
+const API_URL = "http://localhost:4242/api/admin";
 
 export const loginAdmin = async (email, password) => {
     try {

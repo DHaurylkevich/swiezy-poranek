@@ -13,7 +13,7 @@ const imageSchema = new mongoose.Schema(
 
 imageSchema.post("findOneAndDelete", function (doc) {
     if (doc.url && doc.url !== "") {
-        const imagePath = path.join(__dirname, "../../uploads", doc.url.split("/").pop());
+        const imagePath = path.join(__dirname, "../../uploads", doc.url);
 
         if (fs.existsSync(imagePath)) {
             fs.unlinkSync(imagePath);

@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-const API_URL = "http://localhost:3000/api/image";
+const API_URL = "http://localhost:4242/api/image";
 
 export const saveImage = async (formData) => {
     try {

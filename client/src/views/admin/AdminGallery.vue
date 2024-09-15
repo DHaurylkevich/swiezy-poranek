@@ -58,6 +58,7 @@ export default {
             try {
                 const response = await getImages();
                 this.images = response;
+                console.log(this.images)
             } catch (error) {
                 console.error("loadImages:", error);
             }
