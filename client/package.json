@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "serve": "webpack-dev-server",
-    "ALLSDLS": "NODE_ENV='production' webpack",
-    "build": "webpack",
+    "build": "NODE_ENV='production' webpack",
+    "buildd": "webpack",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
