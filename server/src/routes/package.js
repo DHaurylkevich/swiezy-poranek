@@ -3,7 +3,7 @@ const router = express.Router();
 const packageController = require('../controllers/packageController');
 const upload = require("../middleware/upload");
 
-const { authenticateJWT, authorizeAdmin } = require('../middleware/auth');
+// const { authenticateJWT, authorizeAdmin } = require('../middleware/auth');
 
 // Создание нового набора 
 router.post('/create',  upload.single("image"), packageController.createPackage);
