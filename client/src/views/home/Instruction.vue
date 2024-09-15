@@ -18,10 +18,10 @@ export default {
     data() {
         return {
             steps: [
-                { icon: require("@/assets/img/instruction/menu-card.svg"), alt: "Wybierasz dietę", text: "Wybierasz dietę" },
-                { icon: require("@/assets/img/instruction/shop-card.svg"), alt: "Zamawiasz zestaw", text: "Zamawiasz zestaw" },
-                { icon: require("@/assets/img/instruction/car-card.svg"), alt: "Otrzymujesz dostawe", text: "Otrzymujesz dostawę" },
-                { icon: require("@/assets/img/instruction/eat-card.svg"), alt: "Cieszysz się smakiem", text: "Cieszysz się smakiem" }
+                { icon: require("@/assets/img/instruction/menu.svg"), alt: "Wybierasz dietę", text: "Wybierasz dietę" },
+                { icon: require("@/assets/img/instruction/shop.svg"), alt: "Zamawiasz zestaw", text: "Zamawiasz zestaw" },
+                { icon: require("@/assets/img/instruction/car.svg"), alt: "Otrzymujesz dostawe", text: "Otrzymujesz dostawę" },
+                { icon: require("@/assets/img/instruction/eat.svg"), alt: "Cieszysz się smakiem", text: "Cieszysz się smakiem" }
             ]
         };
     }

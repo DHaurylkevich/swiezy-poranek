@@ -67,7 +67,7 @@ header {
 
 .links {
     display: flex;
-    gap: 20px;
+    justify-content: space-between;
     list-style: none;
     border: 2px solid var(--primary-color);
     border-radius: 40px;

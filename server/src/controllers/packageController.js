@@ -1,19 +1,19 @@
 const packageService = require("../services/packageService");
 
-// Получение всех наборов
+// Получение всех пакетов
 exports.getAllPackages = async (req, res) => {
     try {
-        const packages = await packageService.getAllPackage();
+        const packages = await packageService.getAllPackage(req);
         res.status(200).json(packages);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 };
 
-// Получение набора по ID
+// Получение пакета по ID
 exports.getPackageById = async (req, res) => {
     try {
-        const package = await packageService.getPackageById(req.params.id);
+        const package = await packageService.getPackageById(req, req.params.id);
         if (!package) {
             return res.status(404).json({ error: 'Набор не найден' });
         }
@@ -23,10 +23,10 @@ exports.getPackageById = async (req, res) => {
     }
 };
 
-// Создание нового набора
+// Создание нового пакета
 exports.createPackage = async (req, res) => {
     const { title, description, price, active } = req.body;
-    const image = req.file ? `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}` : "http://localhost:3000/uploads/vege.png";
+    const image = req.file ? `${req.file.filename}` : "vege.png";
 
     try {
         const createdPackage = await packageService.createPackage({ title, description, price, image, active });
@@ -36,16 +36,16 @@ exports.createPackage = async (req, res) => {
     }
 };
 
-// Обновление набора
+// Обновление пакета
 exports.updatePackage = async (req, res) => {
     const { id } = req.params;
     const { title, description, price, active } = req.body;
-    let { image } = req.body
+    let { image } = req.body;
 
-    console.log("new", req.file, "old", image);
     if (!image && image !== "") {
-        image = req.file ? `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}` : "http://localhost:3000/uploads/vege.png";
+        image = req.file ? `${req.file.filename}` : "vege.png";
     }
+
     try {
         const updatedPackage = await packageService.updatePackage(id, { title, description, price, image, active });
         if (!updatedPackage) {
@@ -57,7 +57,7 @@ exports.updatePackage = async (req, res) => {
     }
 };
 
-// Удаление набора
+// Удаление пакета
 exports.deletePackage = async (req, res) => {
     try {
         const deletedPackage = await packageService.deletePackage(req.params.id);

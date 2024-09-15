@@ -3,7 +3,9 @@ const imageService = require("../services/imageService");
 
 exports.getAllImages = async (req, res) => {
     try {
-        const images = await imageService.getImages()
+        const url = `${req.protocol}://${req.get('host')}/uploads/`;
+        const images = await imageService.getImages(url);
+        
         res.status(200).json(images);
     }catch(e){
         res.status(500).json({ message: e.message });
@@ -13,7 +15,7 @@ exports.getAllImages = async (req, res) => {
 exports.uploadImage = async (req, res) => {
     try{
         const title = req.body.title;
-        const url = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
+        const url = `${req.file.filename}`;
 
         const uploadedImage = await imageService.saveImage(title, url)
 

@@ -1,6 +1,6 @@
 <template>
     <section class="home">
-        <div class="container" >
+        <div class="container">
             <div class="textual-content">
                 <div class="headline">
                     <div class="logo">
@@ -8,7 +8,8 @@
                         <img class="food-img" src="@/assets/img/home/eat-half.webp" alt="Food Image" />
                     </div>
                     <p class="text">
-                        Catering <span class="color-text">Świeży Poranek</span> oświetli Twój ranek uśmiechem i
+                        Catering <span class="color-text">Świeży
+                            Poranek</span> oświetli Twój ranek uśmiechem i
                         dodatkową inspiracją na cały dzień
                     </p>
                     <router-link class="btn" to="/order/zestawy">Zamów</router-link>
@@ -309,7 +310,8 @@ export default {
         height: auto;
     }
 }
-@media (max-width: 768px){
+
+@media (max-width: 768px) {
     .headline {
         padding-left: 0px;
     }
