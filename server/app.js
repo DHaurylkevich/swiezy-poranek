@@ -12,7 +12,7 @@ connectDB();
 
 // Настройка CORS
 app.use(cors({
-    origin: "http://localhost:8000" || "http://192.168.0.186:8000", 
+    origin: "http://localhost:8000" || "http://192.168.0.186:8000" || "https://swiezy-poranek.vercel.app", 
     credentials: true 
 }));
 
