@@ -1,5 +1,6 @@
 const express = require("express");
 const connectDB = require("./src/config/db");
+const morgan = require('morgan');
 const dotenv = require("dotenv");
 const cors = require('cors');
 const path = require('path');
@@ -21,13 +22,10 @@ app.use(cors({
     credentials: true
 }));
 
+// Логирование запросов
+app.use(morgan("dev"));
 app.use(express.json());
 
-// Логирование запросов
-app.use((req, res, next) => {
-    console.log(`${req.method} ${req.url}`);
-    next();
-});
 
 // Маршруты API
 app.use("/api", require("./src/routes"));
@@ -43,11 +41,13 @@ app.get("/", (req, res) => {
 // Обработка ошибок
 app.use((err, req, res, next) => {
     console.error(err.stack);
-    res.status(500).send('Что-то пошло не так!');
+    res.status(500).send('Internal Server Error');
 });
 
 // Запуск сервера
 const port = process.env.PORT || 5000;
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+app.listen(3001, () => {
+    console.log(`Server is running on port ${3001}`);
 });
+
+module.exports = app;
