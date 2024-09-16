@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const dotenv = require("dotenv");
 const cors = require('cors');
 const path = require('path');
+const { exit } = require("process");
 
 dotenv.config();
 const app = express();
@@ -45,6 +46,7 @@ app.use((err, req, res, next) => {
 
 // Запуск сервера
 const port = process.env.PORT || 5000;
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+
+app.listen(3001, () => {
+    console.log(`Server is running on port ${3001}`);
 });
