@@ -1,4 +1,4 @@
-const Package = require("../models/Package");
+const Package = require("../models/package");
 const path = require("path");
 const fs = require("fs");
 
