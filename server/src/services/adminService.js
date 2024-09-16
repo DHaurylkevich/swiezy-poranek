@@ -1,7 +1,7 @@
-import { findOne } from "../models/Admin";
+const Admin = require("../models/Admin");
 
-import { compare } from "bcrypt";
-import { generateToken } from "../utility/jwt";
+const bcrypt = require("bcrypt");
+const jwt = require("../utility/jwt");
 
 
 const loginAdmin = async (email, password) => {
@@ -11,7 +11,7 @@ const loginAdmin = async (email, password) => {
     const isMatch = await comparePassword(password, adminExist.password);
     if (!isMatch) throw new Error("Invalid credentials");
 
-    return generateToken(adminExist);
+    return jwt.generateToken(adminExist);
 }
 
 const changePassword = async (oldPassword, newPassword, email) => {
@@ -30,7 +30,7 @@ const changePassword = async (oldPassword, newPassword, email) => {
 
 const findAdminByEmail = async (email) => {
     try {
-        return await findOne({ email });
+        return await Admin.findOne({ email });
     } catch (err) {
         throw new Error("Database error occurred");
     }
@@ -38,13 +38,13 @@ const findAdminByEmail = async (email) => {
 
 const comparePassword = async (verifiablePassword, hashPassword) => {
     try {
-        return await compare(verifiablePassword, hashPassword);
+        return await bcrypt.compare(verifiablePassword, hashPassword);
     } catch (err) {
         throw err;
     }
 }
 
-export default {
+module.exports = {
     loginAdmin,
     changePassword,
     findAdminByEmail,
