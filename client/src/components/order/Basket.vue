@@ -4,12 +4,16 @@
         <ul class="basket-items">
             <li v-for="(item, index) in basketItems" :key="index" class="basket-item">
                 <div class="item-details">
-                    <span v-if="item.type === ''" class="item-title">{{ item.title }}</span>
-                    <span v-else class="item-title">{{ item.title }} - {{ item.type }} - {{ item.period }}</span>
+                    <div class="item-title">{{ item.title }}</div>
+                    <div v-if="item.type" class="item-type">Rodzaj: {{ item.type }}</div>
+                    <div v-if="item.period" class="item-period">Okres: {{ item.period }}</div>
+                    <div v-if="item.count" class="item-period">Ilość: {{ item.count }}</div>
                 </div>
                 <div class="cost">
                     <span class="item-price">{{ item.price }}</span>
-                    <button class="delete" @click="removeItem(index)">X</button>
+                    <button class="delete" @click="removeItem(index)">
+                        <i>X</i>
+                    </button>
                 </div>
             </li>
         </ul>
@@ -27,10 +31,7 @@ export default {
     name: "BasketComponent",
     computed: {
         totalPrice() {
-            if (!this.basketItems) {
-                return 0;
-            }
-            const price = this.basketItems.reduce((sum, item) => sum + item.price, 0);
+            const price = this.basketItems.reduce((sum, item) => sum + (item.price * item.count), 0);
             return new Intl.NumberFormat('pl-PL', {
                 style: 'currency',
                 currency: 'PLN',
@@ -103,9 +104,15 @@ export default {
     gap: 4px;
 }
 
-.item-price, .item-title {
+.item-price,
+.item-title {
     font-size: var(--font-size-base);
     font-weight: bold;
+}
+
+.item-type,
+.item-period {
+    margin-left: 0.5vw;
 }
 
 .item-price {
@@ -148,12 +155,13 @@ export default {
         width: 100%;
     }
 
-    .basket-item{
+    .basket-item {
         padding: 16px 24px;
     }
 
-    .item-price, .item-title {
-    font-size: var(--font-size-medium);
+    .item-price,
+    .item-title {
+        font-size: var(--font-size-medium);
     }
 }
 
@@ -179,4 +187,5 @@ export default {
         width: 28vw;
         padding: 16px;
     }
-}</style>
+}
+</style>

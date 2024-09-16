@@ -1,6 +1,6 @@
-import axios from 'axios';
+const axios = require("axios");
 
-const API_URL = "http://localhost:3000/api/admin";
+const API_URL = "http://localhost:4242/api/admin";
 
 export const loginAdmin = async (email, password) => {
     try {
@@ -9,7 +9,7 @@ export const loginAdmin = async (email, password) => {
             password
         }, {
             headers: {
-                'Content-Type': 'application/json'
+                "Content-Type": "application/json"
             }
         });
 

@@ -2,7 +2,9 @@
     <nav class="admin-sidebar">
         <div class="container">
             <div class="logo">
-                <p>Swiezy Poranek</p>
+                <router-link to="/">
+                    Swiezy Poranek
+                </router-link>
             </div>
             <div class="nav-links">
                 <router-link to="/admin/zestawy"

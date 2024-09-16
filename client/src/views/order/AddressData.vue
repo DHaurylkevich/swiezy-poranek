@@ -1,35 +1,30 @@
 <template>
     <section class="order-section delivery-form">
-        <h2>Данные для доставки</h2>
+        <h2>Dane dostawy</h2>
         <form @submit.prevent="submitForm">
             <div class="form-group">
-                <label for="fullName">ФИО</label>
+                <label for="fullName">Imię i nazwisko</label>
                 <input type="text" id="fullName" v-model="deliveryData.fullName" required
-                    placeholder="Введите ваше полное имя" />
+                    placeholder="Imię i nazwisko" />
             </div>
             <div class="form-group">
-                <label for="phone">Телефон</label>
-                <input type="tel" id="phone" v-model="deliveryData.phone" required placeholder="+7 (___) ___-__-__"
+                <label for="phone">Telefon</label>
+                <input type="tel" id="phone" v-model="deliveryData.phone" required placeholder=""
                     pattern="^\+?\d{0,13}" />
             </div>
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" v-model="deliveryData.email" required placeholder="Введите ваш email" />
+                <input type="email" id="email" v-model="deliveryData.email" required placeholder="Email" />
             </div>
             <div class="form-group">
-                <label for="address">Адрес</label>
-                <input type="text" id="address" v-model="deliveryData.address" required placeholder="Введите ваш адрес" />
+                <label for="address">Adres</label>
+                <input type="text" id="address" v-model="deliveryData.address" required placeholder="Adres" />
             </div>
             <div class="form-group">
-                <label for="deliveryDate">Дата доставки</label>
-                <input type="date" id="deliveryDate" v-model="deliveryData.deliveryDate" required />
-            </div>
-            <div class="form-group">
-                <label for="comment">Комментарий</label>
+                <label for="comment">Komentarz</label>
                 <textarea id="comment" v-model="deliveryData.comment"
-                    placeholder="Ваш комментарий по доставке (необязательно)"></textarea>
+                    placeholder="Komentarz dotyczący dostawy (opcjonalnie)"></textarea>
             </div>
-            <button type="submit" class="submit-button">Оформить заказ</button>
         </form>
     </section>
 </template>
@@ -59,7 +54,6 @@ export default {
 
 <style scoped>
 .delivery-form {
-    margin: 0 auto;
     padding: 20px;
     background-color: #fff;
     border: 1px solid #ddd;

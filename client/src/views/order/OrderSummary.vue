@@ -4,7 +4,7 @@
 
         <div class="summary-details">
             <h3>Twoje zamówienie</h3>
-            <ul>
+            <ul v-if="basketItems.length">
                 <li v-for="item in basketItems" :key="item.title">
                     <span>{{ item.title }}</span>
                     <span>{{ item.price }} PLN</span>
@@ -14,65 +14,83 @@
                     <span>{{ totalAmount }} PLN</span>
                 </li>
             </ul>
+            <div v-else class="text-container">
+                <p class="text">Koszyk jest pusty</p>
+            </div>
         </div>
 
-        <div class="payment-section">
-            <h3>Informacje płatnicze</h3>
-            <form @submit.prevent="submitPayment">
-                <div class="form-group">
-                    <label for="cardName">Имя на карте</label>
-                    <input type="text" id="cardName" v-model="paymentData.cardName" required
-                        placeholder="Введите имя, как указано на карте" />
-                </div>
-                <div class="form-group">
-                    <label for="cardNumber">Номер карты</label>
-                    <input type="text" id="cardNumber" v-model="paymentData.cardNumber" required
-                        placeholder="Введите номер карты" pattern="\d{16}" />
-                </div>
-                <div class="form-group">
-                    <label for="expiryDate">Срок действия</label>
-                    <input type="text" id="expiryDate" v-model="paymentData.expiryDate" required placeholder="MM/ГГ"
-                        pattern="(0[1-9]|1[0-2])\/\d{2}" />
-                </div>
-                <div class="form-group">
-                    <label for="cvc">CVC</label>
-                    <input type="text" id="cvc" v-model="paymentData.cvc" required
-                        placeholder="Три цифры с обратной стороны" pattern="\d{3}" />
-                </div>
-                <button type="submit" class="submit-button">Оплатить</button>
+            <form id="payment-form" @submit.prevent="handlePayment">
+                <div id="payment-element"></div>
+                <button id="submit" :disabled="isProcessing">
+                    <div class="spinner hidden" id="spinner"></div>
+                    <span id="button-text">{{ isProcessing ? 'Przetwarzanie...' : 'Pay now' }}</span>
+                </button>
             </form>
-        </div>
+            <div id="payment-message" class="hidden"></div>
     </section>
 </template>
 
 <script>
+import { mapState } from "vuex";
+import { loadStripe } from "@stripe/stripe-js";
+const axios = require("axios");
+
 export default {
     data() {
         return {
-            basketItems: [
-                { title: "Classic", price: 45 },
-                { title: "XL", price: 55 },
-                { title: "Obiad + Zupka", price: 24 }
-            ],
-            paymentData: {
-                cardName: '',
-                cardNumber: '',
-                expiryDate: '',
-                cvc: ''
-            }
+            stripe: null,
+            elements: null,
+            clientSecret: null,
+            isProcessing: false,
+            items: [{ id: "xl-tshirt", amount: 1000 }],
         };
     },
     computed: {
         totalAmount() {
             return this.basketItems.reduce((total, item) => total + item.price, 0);
-        }
+        },
+        ...mapState({
+            basketItems: (state) => state.basketItems,
+        }),
+    },
+    async mounted() {
+        // Загружаем Stripe
+        this.stripe = await loadStripe("pk_test_51PyZBU069nJjIh9tvQvPV1s4pnrniFcmmQf4y1zq9d5cSR9YpHCvUj02k15o2xrNJoPAFTUR6Mz27RLBWp8stN7g00roSPYADU");
+
+        // Запрашиваем clientSecret для оплаты
+        const response = await axios.post("http://localhost:4242/api/stripe/create-payment-intent", { items: this.items });
+        this.clientSecret = response.data.clientSecret;
+
+        // Создаем элементы Stripe
+        const appearance = { theme: "stripe" };
+        this.elements = this.stripe.elements({ appearance, clientSecret: this.clientSecret });
+
+        // Создаем элемент оплаты и монтируем его в форму
+        const paymentElement = this.elements.create("payment");
+        paymentElement.mount("#payment-element");
     },
     methods: {
-        submitPayment() {
-            console.log('Данные для оплаты:', this.paymentData);
-            // Здесь можно добавить логику обработки платежа с помощью API платежной системы.
-        }
-    }
+        async handlePayment() {
+            this.isProcessing = true;
+
+            // Подтверждение оплаты
+            const { error, paymentIntent } = await this.stripe.confirmPayment({
+                elements: this.elements,
+                confirmParams: {
+                    return_url: "https://your-domain.com/order-confirmation",
+                },
+            });
+
+            if (error) {
+                document.querySelector("#payment-message").innerText = error.message;
+                document.querySelector("#payment-message").classList.remove("hidden");
+                this.isProcessing = false;
+            } else if (paymentIntent.status === "succeeded") {
+                alert("Оплата прошла успешно!");
+                this.isProcessing = false;
+            }
+        },
+    },
 };
 </script>
 
@@ -129,36 +147,11 @@ export default {
     margin-bottom: 15px;
 }
 
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: var(--primary-color);
-}
-
-.form-group input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-    outline: none;
-    transition: border-color 0.3s;
-}
-
-.form-group input:focus {
-    border-color: var(--primary-color);
-}
-
-.submit-button {
+button {
     width: 100%;
     padding: 12px;
     background-color: var(--primary-color);
-    color: #fff;
+    color: white;
     border: none;
     border-radius: 5px;
     font-size: 18px;
@@ -166,7 +159,15 @@ export default {
     transition: background-color 0.3s;
 }
 
-.submit-button:hover {
-    background-color: var(--primary-color-dark);
+button:disabled {
+    background-color: grey;
+}
+
+#payment-message {
+    color: red;
+}
+
+.spinner.hidden {
+    display: none;
 }
 </style>

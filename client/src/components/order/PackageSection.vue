@@ -4,8 +4,9 @@
       <h3>{{ sectionTitle }}</h3>
     </div>
     <div class="packages-list">
-      <PackageCard v-for="(pkg, index) in packages" :key="index" :title="pkg.title" :image="pkg.image" :price="pkg.price" :opis="pkg.description"
-        @click="handleToggleSelect(pkg)" :isSelected="pkg === selected" />
+      <PackageCard v-for="(pkg, index) in packages" :key="index" :title="pkg.title" :image="pkg.image || ''"
+        :price="pkg.price || 0" :description="pkg.description || ''" @click="handleToggleSelect(pkg)"
+        :isSelected="selected && pkg.title === selected.title"/>
     </div>
   </div>
 </template>
@@ -26,18 +27,26 @@ export default {
     packages: {
       type: Array,
       required: true,
-      validator(value) {
-        return value.every(pkg => 'title' in pkg && 'image' in pkg);
-      }
     },
     selected: {
-      type: Object,
-      default: null
-    }
+        type: Object,
+        default: null
+      }
   },
   methods: {
-    handleToggleSelect(pkg) {
-      this.$emit('addToBasket', pkg);
+    handleToggleSelect(pkg, index) {
+      if (pkg.price) {
+        this.$emit('addToBasket', {
+          index: index,
+          title: pkg.title,
+          price: pkg.price
+        });
+      } else {
+        this.$emit('addToBasket', {
+          index: index,
+          title: pkg.title,
+        });
+      }
     }
   }
 };

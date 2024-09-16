@@ -105,6 +105,13 @@ export default {
     border: 1px solid var(--primary-color);
 }
 
+.last-page {
+    display: flex;
+    gap: 24px;
+    width: 100%;
+    flex-direction: column;
+}
+
 
 @media (max-width: 576px) {
     .main-section {

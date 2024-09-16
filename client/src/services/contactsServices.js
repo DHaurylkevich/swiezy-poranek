@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3000/api/contacts/66dedc0117c1de03b35e07b4";
+const API_URL = "http://localhost:4242/api/contacts/66dedc0117c1de03b35e07b4";
 
 
 export const getContactInfo = async () => {

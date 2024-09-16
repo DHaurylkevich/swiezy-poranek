@@ -9,27 +9,43 @@
             </p>
         </header>
         <div class="gallery-container ">
-            <Carousel :items="carouselItems"  :type="'gallery'"/>
+            <Carousel :items="carouselItems" :type="'gallery'" />
         </div>
     </section>
 </template>
 
 <script>
 import Carousel from '@/components/ui/Carousel.vue';
+import { getImages } from '@/services/imageServices';
+
 export default {
     name: "GallerySection",
     components: {
         Carousel
-    }, data() {
+    },
+    data() {
         return {
             carouselItems: [
-                require("@/assets/img/gallery/img1.jpg"),
-                require("@/assets/img/gallery/img2.jpg"),
-                require("@/assets/img/gallery/img2.jpg"),
-                require("@/assets/img/gallery/img2.jpg"),
-                require("@/assets/img/gallery/img2.jpg"),
+                // require("@/assets/img/gallery/img1.jpg"),
+                // require("@/assets/img/gallery/img2.jpg"),
+                // require("@/assets/img/gallery/img2.jpg"),
+                // require("@/assets/img/gallery/img2.jpg"),
+                // require("@/assets/img/gallery/img2.jpg"),
             ],
         }
+    },
+    async created() {
+        this.loadImages();
+    },
+    methods: {
+        async loadImages() {
+            try {
+                const response = await getImages();
+                this.carouselItems = response;
+            } catch (error) {
+                console.error("loadImages:", error);
+            }
+        },
     }
 }
 </script>

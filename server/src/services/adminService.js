@@ -1,4 +1,5 @@
-const Admin = require("../models/Admin");
+const Admin = require('../models/admin');
+
 const bcrypt = require("bcrypt");
 const jwt = require("../utility/jwt");
 
