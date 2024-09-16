@@ -26,7 +26,6 @@ app.use(cors({
 app.use(morgan("dev"));
 app.use(express.json());
 
-
 // Маршруты API
 app.use("/api", require("./src/routes"));
 

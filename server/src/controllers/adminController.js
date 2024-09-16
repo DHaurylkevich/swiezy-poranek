@@ -1,4 +1,4 @@
-const AdminService = require("../services/adminService");
+const AdminService = require("../services/adminService").default;
 
 //Вход  в систему
 exports.loginAdmin = async (req, res) => {
