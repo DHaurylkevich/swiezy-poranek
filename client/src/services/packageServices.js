@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = VUE_APP_API_URL + "package";
+const API_URL = VUE_APP_API_URL + "/package";
 
 export const getPackages = async () => {
     try {
