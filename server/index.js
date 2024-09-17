@@ -8,6 +8,7 @@ const path = require('path');
 dotenv.config();
 const app = express();
 
+
 connectDB();
 
 // Настройка CORS
