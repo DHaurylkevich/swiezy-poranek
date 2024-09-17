@@ -14,8 +14,8 @@ router.use("/contacts", contactRouter);
 router.use("/image", imageRouter);
 router.use("/stripe", stripeRouter)
 
-router.use("/", () => {
-    console.log(`API`)
+router.get("/", (req, res) => {
+    es.send("API")
 })
 
 module.exports = router;
