@@ -56,6 +56,7 @@ module.exports = {
         new VueLoaderPlugin(),
         new webpack.DefinePlugin({
             "process.env.BASE_URL": JSON.stringify(process.env.BASE_URL || "http://localhost:8080"),
+            "process.env.API_URL": JSON.stringify(process.env.API_URL || "http://localhost:8080"),
             __VUE_OPTIONS_API__: true,
             __VUE_PROD_DEVTOOLS__: false,
             __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false,
