@@ -1,6 +1,7 @@
 const axios = require("axios");
+require("dotenv").config();
 
-const API_URL = "http://localhost:4242/api/image";
+const API_URL = process.env.API_URL + "/image";
 
 export const saveImage = async (formData) => {
     try {

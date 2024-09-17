@@ -1,6 +1,7 @@
 import axios from "axios";
+require("dotenv").config();
 
-const API_URL = "http://localhost:4242/api/package";
+const API_URL = process.env.API_URL + "package";
 
 export const getPackages = async () => {
     try {

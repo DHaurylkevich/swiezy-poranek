@@ -1,6 +1,7 @@
 import axios from "axios";
+require("dotenv").config();
 
-const API_URL = "http://localhost:4242/api/orders";
+const API_URL = process.env.API_URL + "/orders";
 
 export const createOrder = async (orderData) => {
     const response = await axios.post(`${API_URL}/create`, orderData);

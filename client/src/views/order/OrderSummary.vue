@@ -33,6 +33,8 @@
 <script>
 import { mapState } from "vuex";
 import { loadStripe } from "@stripe/stripe-js";
+require("dotenv").config();
+
 const axios = require("axios");
 
 export default {
@@ -58,7 +60,7 @@ export default {
         this.stripe = await loadStripe("pk_test_51PyZBU069nJjIh9tvQvPV1s4pnrniFcmmQf4y1zq9d5cSR9YpHCvUj02k15o2xrNJoPAFTUR6Mz27RLBWp8stN7g00roSPYADU");
 
         // Запрашиваем clientSecret для оплаты
-        const response = await axios.post("http://localhost:4242/api/stripe/create-payment-intent", { items: this.items });
+        const response = await axios.post(`${process.env.API_URL}/stripe/create-payment-intent`, { items: this.items });
         this.clientSecret = response.data.clientSecret;
 
         // Создаем элементы Stripe

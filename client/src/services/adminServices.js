@@ -1,6 +1,7 @@
 const axios = require("axios");
+require("dotenv").config();
 
-const API_URL = "http://localhost:4242/api/admin";
+const API_URL = process.env.API_URL + "/admin";
 
 export const loginAdmin = async (email, password) => {
     try {
