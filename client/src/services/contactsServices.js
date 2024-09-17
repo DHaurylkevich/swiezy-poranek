@@ -1,7 +1,6 @@
 import axios from "axios";
-require("dotenv").config();
 
-const API_URL = process.env.VUE_APP_API_URL + "/contacts/66dedc0117c1de03b35e07b4";
+const API_URL = VUE_APP_API_URL + "/contacts/66dedc0117c1de03b35e07b4";
 
 
 export const getContactInfo = async () => {

@@ -1,7 +1,6 @@
 const axios = require("axios");
-require("dotenv").config();
 
-const API_URL = process.env.VUE_APP_API_URL + "/admin";
+const API_URL = VUE_APP_API_URL + "/admin";
 
 export const loginAdmin = async (email, password) => {
     try {

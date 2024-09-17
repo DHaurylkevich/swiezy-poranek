@@ -4,8 +4,8 @@
             <div class="textual-content">
                 <div class="headline">
                     <div class="logo">
-                        <img class="logo-img" src="@/assets/logo.svg" alt="Company Logo" />
-                        <img class="food-img" src="@/assets/img/home/eat-half.webp" alt="Food Image" />
+                        <img rel="preload" class="logo-img" src="@/assets/logo.svg" alt="Company Logo" />
+                        <img rel="preload" class="food-img" src="@/assets/img/home/eat-half.webp" alt="Food Image" />
                     </div>
                     <p class="text">
                         Catering <span class="color-text">Świeży
@@ -27,7 +27,7 @@
 
             </div>
             <div class="visual-content">
-                <img src="@/assets/img/home/eat.webp" alt="Food Image" />
+                <img rel="preload" src="@/assets/img/home/eat.webp" alt="Food Image" />
             </div>
         </div>
         <div class="info">

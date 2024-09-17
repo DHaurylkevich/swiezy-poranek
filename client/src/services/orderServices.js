@@ -1,7 +1,6 @@
 import axios from "axios";
-require("dotenv").config();
 
-const API_URL = process.env.VUE_APP_API_URL + "/orders";
+const API_URL = VUE_APP_API_URL + "/orders";
 
 export const createOrder = async (orderData) => {
     const response = await axios.post(`${API_URL}/create`, orderData);

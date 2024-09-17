@@ -4,7 +4,7 @@
             <div class="card" v-for="(step, index) in steps" :key="index">
                 <div class="number">{{ index + 1 }}</div>
                 <div class="icon">
-                    <img :src="step.icon" :alt="step.alt">
+                    <img :src="step.icon" :alt="step.alt" loading="lazy">
                 </div>
                 <p class="text">{{ step.text }}</p>
             </div>

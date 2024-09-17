@@ -33,7 +33,6 @@
 <script>
 import { mapState } from "vuex";
 import { loadStripe } from "@stripe/stripe-js";
-require("dotenv").config();
 
 const axios = require("axios");
 

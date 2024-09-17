@@ -2,7 +2,6 @@ const path = require('path');
 const { VueLoaderPlugin } = require('vue-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
-require('dotenv').config();
 
 module.exports = {
     mode: process.env.NODE_ENV === "production" ? "production" : "development",
@@ -55,8 +54,8 @@ module.exports = {
         }),
         new VueLoaderPlugin(),
         new webpack.DefinePlugin({
-            "process.env.BASE_URL": JSON.stringify(process.env.BASE_URL || "http://localhost:8080"),
-            "process.env.API_URL": JSON.stringify(process.env.VUE_APP_API_URL || "http://localhost:8080"),
+            "process.env.BASE_URL": JSON.stringify(/Świeży Poranek/ || "http://localhost:8080"),
+            "VUE_APP_API_URL": JSON.stringify("https://swiezy-api.vercel.app/api" || "http://localhost:8080"),
             __VUE_OPTIONS_API__: true,
             __VUE_PROD_DEVTOOLS__: false,
             __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false,

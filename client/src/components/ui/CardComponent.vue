@@ -2,7 +2,7 @@
     <transition name="fade">
         <div class="card">
             <div class="card-img">
-                <img v-if="image" :src="image" :alt="title" class="package-image" />
+                <img v-if="image" :src="image" :alt="title" class="package-image" loading="lazy"/>
             </div>
             <div class="card-body">
                 <h3 class="package-title">{{ title }}</h3>
