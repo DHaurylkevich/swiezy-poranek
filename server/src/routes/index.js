@@ -15,7 +15,7 @@ router.use("/image", imageRouter);
 router.use("/stripe", stripeRouter)
 
 router.get("/", (req, res) => {
-    es.send("API")
+    res.send("API")
 })
 
 module.exports = router;
