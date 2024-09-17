@@ -1,7 +1,7 @@
 import axios from "axios";
 require("dotenv").config();
 
-const API_URL = process.env.API_URL + "package";
+const API_URL = process.env.VUE_APP_API_URL + "package";
 
 export const getPackages = async () => {
     try {
