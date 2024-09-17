@@ -1,5 +1,6 @@
 const path = require('path');
 const { VueLoaderPlugin } = require('vue-loader');
+const TerserPlugin = require('terser-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 
@@ -8,7 +9,7 @@ module.exports = {
     entry: "./src/main.js",
     output: {
         path: path.resolve(__dirname, "dist"),
-        filename: "bundle.js",
+        filename: "[name].[contenthash].js",
         clean: true,
         publicPath: '/',
     },
@@ -47,6 +48,13 @@ module.exports = {
             }
         ],
     },
+    optimization: {
+        minimize: true,
+        minimizer: [new TerserPlugin()],
+        splitChunks: {
+            chunks: 'all',
+        },
+    },
     plugins: [
         new HtmlWebpackPlugin({
             template: "./public/index.html",
@@ -65,7 +73,7 @@ module.exports = {
         static: path.join(__dirname, 'public'),
         compress: true,
         port: 8000,
-        historyApiFallback: true, 
+        historyApiFallback: true,
         hot: true,
     },
     devtool: 'source-map',
