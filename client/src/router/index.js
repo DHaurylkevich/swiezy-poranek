@@ -9,7 +9,7 @@ const AdminGallery = () => import("../views/admin/AdminGallery.vue");
 const LoginPage = () => import("../views/admin/LoginPage.vue");
 import HomeSection from "../views/home/Home.vue";
 const OrderPage = () => import("../views/order/Order.vue");
-const SelectPackage = () => import("../views/order/SelectPackage.vue");
+import SelectPackage from ("../views/order/SelectPackage.vue");
 const SelectAddons = () => import("../views/order/SelectAddons.vue");
 const AddressData = () => import("../views/order/AddressData.vue");
 const OrderSummary = () => import("../views/order/OrderSummary.vue");

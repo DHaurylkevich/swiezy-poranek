@@ -44,12 +44,10 @@ exports.deletePackage = async (id) => {
 
 // Функция для добавления полного URL к изображениям
 const createFullUrl = (hostUrl, packages) => {
-    if (!Array.isArray(packages)) packages = [packages]; 
-
-    const updatedPackages = packages.map(pkg => ({
+    const isSingle = !Array.isArray(packages);
+    const updatedPackages = (isSingle ? [packages] : packages).map(pkg => ({
         ...pkg,
         image: `${hostUrl}${pkg.image}`
     }));
-
-    return updatedPackages;
+    return isSingle ? updatedPackages[0] : updatedPackages;
 };

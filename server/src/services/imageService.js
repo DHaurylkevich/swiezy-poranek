@@ -19,13 +19,11 @@ exports.deleteImage = async (id) => {
     return await Image.findByIdAndDelete(id);
 }
 
-const createFullUrl = (hostUrl, images) => {
-    if (!Array.isArray(images)) images = [images]; 
-
-    const updatedImages = images.map(img => ({
-        ...img,
-        url: `${hostUrl}${img.url}`
+const createFullUrl = (hostUrl, packages) => {
+    const isSingle = !Array.isArray(packages);
+    const updatedPackages = (isSingle ? [packages] : packages).map(pkg => ({
+        ...pkg,
+        image: `${hostUrl}${pkg.image}`
     }));
-
-    return updatedImages;
+    return isSingle ? updatedPackages[0] : updatedPackages;
 };
