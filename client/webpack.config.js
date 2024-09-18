@@ -62,7 +62,7 @@ module.exports = {
         }),
         new VueLoaderPlugin(),
         new webpack.DefinePlugin({
-            "BASE_URL": JSON.stringify("Świeży Poranek" || "http://localhost:8080"),
+            "BASE_URL": JSON.stringify("https://swiezy-poranek.vercel.app" || "http://localhost:8080"),
             "VUE_APP_API_URL": JSON.stringify("https://swiezy-api.vercel.app/api" || "http://localhost:8080"),
             __VUE_OPTIONS_API__: true,
             __VUE_PROD_DEVTOOLS__: false,
