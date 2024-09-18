@@ -14,10 +14,10 @@
         </transition>
     </section>
 </template>
+
 <script>
-import PackageSection from '@/components/order/PackageSection.vue';
-import { getPackages } from "@/services/packageServices";
-import { mapMutations } from "vuex";
+import PackageSection from "@/components/order/PackageSection.vue";
+import { mapMutations, mapGetters } from "vuex";
 
 export default {
     components: {
@@ -25,8 +25,6 @@ export default {
     },
     data() {
         return {
-            packages: [
-            ],
             TypePackages: [
                 { title: "Standard" },
                 { title: "Vegetarian" }
@@ -36,23 +34,17 @@ export default {
                 { title: "2 tygodnie" },
                 { title: "1 miesiąc" }
             ],
-            selectedPackage:  null,
+            selectedPackage: null,
             selectedType: null,
             selectedPeriod: null,
-            totalIndex: "",
-            basketItems: []
+            totalIndex: ""
         };
     },
-    async created() {
-        try {
-            this.packages = await getPackages();
-            console.log(this.packages)
-        } catch (error) {
-            console.error('Failed to load packages:', error);
-        }
+    computed: {
+        ...mapGetters(["packages"]),
     },
     methods: {
-        ...mapMutations(['addToBasket']),
+        ...mapMutations(["addToBasket"]),
         selectPackage(packageItem) {
             this.selectedPackage = packageItem;
             this.totalIndex = null;
@@ -75,8 +67,10 @@ export default {
                 period: this.selectedPeriod.title,
                 count: 0
             };
-            console.log(fullPackage)
             this.addToBasket(fullPackage);
+            this.resetSelection();
+        },
+        resetSelection() {
             this.selectedPackage = null;
             this.selectedType = null;
             this.selectedPeriod = null;
@@ -87,14 +81,18 @@ export default {
         },
         enter(el, done) {
             el.offsetHeight;
-            el.style.transition = 'opacity 0.3s ease';
+            el.style.transition = "opacity 0.3s ease";
             el.style.opacity = 1;
+
+            el.scrollIntoView({ behavior: "smooth", block: "center" });
+
             done();
         },
         leave(el, done) {
-
-            el.style.transition = 'opacity 0.2s ease';
+            el.style.transition = "opacity 0.2s ease";
             el.style.opacity = 0;
+            window.scrollTo({ top: 0, behavior: "smooth" });
+
             setTimeout(done, 200);
         }
     }

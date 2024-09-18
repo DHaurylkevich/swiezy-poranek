@@ -1,6 +1,6 @@
 <template>
     <div class="home-section">
-        <HeroSection id="home"/>
+        <HeroSection id="home" />
         <InstructionSection />
         <FoodSetSection id="zestawy" />
         <GallerySection id="gallery" />

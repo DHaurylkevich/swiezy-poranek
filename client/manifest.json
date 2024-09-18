@@ -1,6 +1,6 @@
 {
-    "name": "Świeży Poranek",
-    "short_name": "Świeży Poranek",
+    "name":"Świeży Poranek",
+    "short_name":"Świeży",
     "icons": [
         {
             "src": "./public/android-chrome-192x192.png",
@@ -13,8 +13,8 @@
             "type": "image/png"
         }
     ],
-    "start_url": "/index.html",
-    "theme_color": "#ffffff",
-    "background_color": "#ffffff",
-    "display": "standalone"
+    "start_url":"/index.html",
+    "theme_color":"#ffffff",
+    "background_color":"#ffffff",
+    "display":"standalone"
 }

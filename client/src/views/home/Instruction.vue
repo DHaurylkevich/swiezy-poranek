@@ -55,11 +55,6 @@ export default {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-}
-
 .card .number {
     position: absolute;
     top: 10px;
@@ -115,7 +110,6 @@ export default {
 @media (min-width: 426px) and (max-width: 576px) {
     .main-container {
         gap: 15px;
-
     }
 
     .card {
@@ -141,7 +135,6 @@ export default {
 @media (min-width: 769px) and (max-width: 1108px) {
     .main-container {
         gap: 24px;
-        /* padding: 50px 0; */
     }
 
     .card {
@@ -160,10 +153,4 @@ export default {
         line-height: 1.2;
     }
 }
-
-/* @media (min-width: 1024px) and (max-width: 1108px) {
-    .how-it-works {
-        padding: var(--spacing-inline) 150px;
-    }
-} */
 </style>

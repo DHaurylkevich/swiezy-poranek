@@ -5,7 +5,7 @@
     </div>
     <div class="packages-list">
       <PackageCard v-for="(pkg, index) in packages" :key="index" :title="pkg.title" :image="pkg.image || ''"
-        :price="pkg.price || 0" :description="pkg.description || ''" @click="handleToggleSelect(pkg)"
+        :price="pkg.price || 0" :description="pkg.description || ''" @click="handleToggleSelect(pkg, index)"
         :isSelected="selected && pkg.title === selected.title"/>
     </div>
   </div>
@@ -35,6 +35,7 @@ export default {
   },
   methods: {
     handleToggleSelect(pkg, index) {
+      console.log(index)
       if (pkg.price) {
         this.$emit('addToBasket', {
           index: index,
