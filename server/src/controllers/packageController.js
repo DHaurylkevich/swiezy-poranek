@@ -1,4 +1,5 @@
 const packageService = require("../services/packageService");
+const { deleteFromCloud } = require("../middleware/upload");
 
 // Получение всех пакетов
 exports.getAllPackages = async (req, res) => {
@@ -26,10 +27,10 @@ exports.getPackageById = async (req, res) => {
 // Создание нового пакета с загрузкой изображения в Cloudinary
 exports.createPackage = async (req, res) => {
     const { title, description, price, active } = req.body;
-    let image = "vege.png"; // Значение по умолчанию
+    let image = "https://res.cloudinary.com/da3vwohmo/image/upload/v1726819829/packages/vege.png";
 
     if (req.file) {
-        image = req.file.path; // Получаем путь загруженного изображения из multer
+        image = req.file.path; 
     }
 
     try {
@@ -66,9 +67,15 @@ exports.deletePackage = async (req, res) => {
     try {
         const deletedPackage = await packageService.deletePackage(req.params.id);
         if (!deletedPackage) {
-            return res.status(404).json({ error: 'Набор не найден' });
+            return res.status(404).json({ error: "Набор не найден" });
         }
-        res.status(200).json({ message: 'Набор удален' });
+        const deletedFromCloud = await deleteFromCloud(req.body.image);
+
+        if (!deletedFromCloud) {
+            return res.status(404).json({ error: "Фото не найден" });
+        }
+
+        res.status(200).json({ message: "Набор удален" });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }

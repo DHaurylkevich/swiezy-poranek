@@ -20,7 +20,7 @@
                     <img :src="image.url" :alt="image.title" class="gallery-image" />
                     <div class="gallery-item-info">
                         <p>{{ image.title }}</p>
-                        <button @click="handleDeleteImage(image._id)" class="delete-button">Удалить</button>
+                        <button @click="handleDeleteImage(image._id, image.url)" class="delete-button">Удалить</button>
                     </div>
                 </li>
             </ul>
@@ -72,9 +72,9 @@ export default {
                 console.error("uploadImage:", e);
             }
         },
-        async handleDeleteImage(id) {
+        async handleDeleteImage(id, url) {
             try {
-                await deleteImage(id);
+                await deleteImage(id,url);
                 await this.loadImages();
             } catch (e) {
                 console.error("handleDeleteImage:", e);

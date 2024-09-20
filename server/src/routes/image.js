@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const upload = require("../middleware/upload");
+const uploadImages = require("../middleware/upload").uploadImages;
 const imageController = require("../controllers/imageController");
 
 //Загрузка в базу данных изображения
-router.post("/", upload.single("image"), imageController.uploadImage)
+router.post("/", uploadImages.single("image"), imageController.uploadImage)
 
 //Получение всех изображений
 router.get("/", imageController.getAllImages);

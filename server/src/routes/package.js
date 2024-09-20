@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const packageController = require('../controllers/packageController');
-const upload = require("../middleware/upload");
+const uploadPackages = require("../middleware/upload").uploadPackages;
 
 // const { authenticateJWT, authorizeAdmin } = require('../middleware/auth');
 
 // Создание нового набора 
-router.post('/create',  upload.single("image"), packageController.createPackage);
+router.post('/create',  uploadPackages.single("image"), packageController.createPackage);
 
 // Получение всех наборов
 router.get('/', packageController.getAllPackages);
@@ -15,7 +15,7 @@ router.get('/', packageController.getAllPackages);
 router.get('/:id', packageController.getPackageById);
 
 // Обновление набора
-router.put('/:id', upload.single('image'), packageController.updatePackage);
+router.put('/:id', uploadPackages.single("image"), packageController.updatePackage);
 
 // Удаление набора
 router.delete('/:id', packageController.deletePackage);

@@ -1,6 +1,4 @@
 const mongoose = require("mongoose");
-const path = require("path");
-const fs = require("fs");
 
 const imageSchema = new mongoose.Schema(
     {
@@ -9,16 +7,5 @@ const imageSchema = new mongoose.Schema(
     }, {
 }
 );
-
-imageSchema.post("findOneAndDelete", function (doc) {
-    if (doc.url && doc.url !== "") {
-        const imagePath = path.join(__dirname, "../../uploads", doc.url);
-
-        if (fs.existsSync(imagePath)) {
-            fs.unlinkSync(imagePath);
-            console.log("Delete", imagePath);
-        }
-    }
-});
 
 module.exports = mongoose.model("Image", imageSchema);
