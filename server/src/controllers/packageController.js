@@ -1,4 +1,3 @@
-const cloudinary = require("../config/cloudinary");
 const packageService = require("../services/packageService");
 
 // Получение всех пакетов
@@ -24,80 +23,34 @@ exports.getPackageById = async (req, res) => {
     }
 };
 
-// Создание нового пакета
+// Создание нового пакета с загрузкой изображения в Cloudinary
 exports.createPackage = async (req, res) => {
     const { title, description, price, active } = req.body;
-    let imageUrl = "vege.png"; // Значение по умолчанию
+    let image = "vege.png"; // Значение по умолчанию
+
+    if (req.file) {
+        image = req.file.path; // Получаем путь загруженного изображения из multer
+    }
 
     try {
-        // Если файл изображения загружен
-        if (req.file) {
-            const uploadResult = await cloudinary.uploader.upload(req.file.path, {
-                folder: 'packages'
-            });
-
-            imageUrl = uploadResult.secure_url; // Ссылка на загруженное изображение
-
-            // Пример трансформации: автоформат и автокачество
-            const optimizedImage = cloudinary.url(uploadResult.public_id, {
-                fetch_format: 'auto',
-                quality: 'auto'
-            });
-
-            console.log("Optimized Image URL:", optimizedImage);
-
-            // Пример автообрезки
-            const autoCroppedImage = cloudinary.url(uploadResult.public_id, {
-                crop: 'auto',
-                gravity: 'auto',
-                width: 500,
-                height: 500
-            });
-
-            console.log("Auto-cropped Image URL:", autoCroppedImage);
-        }
-
-        const createdPackage = await packageService.createPackage({ title, description, price, image: imageUrl, active });
-        res.status(201).json({ message: "Package created", package: createdPackage });
+        const createdPackage = await packageService.createPackage({ title, description, price, image, active });
+        res.status(201).json({ message: "Пакет создан", package: createdPackage });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 };
 
-// Обновление пакета
+// Обновление пакета с возможной заменой изображения
 exports.updatePackage = async (req, res) => {
     const { id } = req.params;
     const { title, description, price, active } = req.body;
-    let { image } = req.body;
+    let image = req.body.image; // Получаем текущее изображение
+
+    if (req.file) {
+        image = req.file.path; // Обновляем изображение
+    }
 
     try {
-        // Если новое изображение загружается
-        if (req.file) {
-            const uploadResult = await cloudinary.uploader.upload(req.file.path, {
-                folder: 'packages',
-                public_id: `package_${id}`
-            });
-            image = uploadResult.secure_url;
-
-            // Пример трансформации: автоформат и автокачество
-            const optimizedImage = cloudinary.url(uploadResult.public_id, {
-                fetch_format: 'auto',
-                quality: 'auto'
-            });
-
-            console.log("Optimized Image URL:", optimizedImage);
-
-            // Пример автообрезки
-            const autoCroppedImage = cloudinary.url(uploadResult.public_id, {
-                crop: 'auto',
-                gravity: 'auto',
-                width: 500,
-                height: 500
-            });
-
-            console.log("Auto-cropped Image URL:", autoCroppedImage);
-        }
-
         const updatedPackage = await packageService.updatePackage(id, { title, description, price, image, active });
         if (!updatedPackage) {
             return res.status(404).json({ error: 'Набор не найден' });

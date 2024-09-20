@@ -63,8 +63,8 @@ module.exports = {
         }),
         new VueLoaderPlugin(),
         new webpack.DefinePlugin({
-            "BASE_URL": JSON.stringify("https://swiezy-poranek.vercel.app" || "http://localhost:8080"),
-            "VUE_APP_API_URL": JSON.stringify("https://swiezy-api.vercel.app/api" || "http://localhost:8080"),
+            "BASE_URL": JSON.stringify("https://swiezy-poranek.vercel.app" || "http://localhost:8000"),
+            "VUE_APP_API_URL": JSON.stringify("http://localhost:4242/api" || "https://swiezy-api.vercel.app/api"),
             __VUE_OPTIONS_API__: true,
             __VUE_PROD_DEVTOOLS__: false,
             __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false,
