@@ -27,10 +27,10 @@ exports.getPackageById = async (req, res) => {
 // Создание нового пакета с загрузкой изображения в Cloudinary
 exports.createPackage = async (req, res) => {
     const { title, description, price, active } = req.body;
-    let image = "https://res.cloudinary.com/da3vwohmo/image/upload/v1726819829/packages/vege.png";
+    let image = "https://res.cloudinary.com/da3vwohmo/image/upload/v1726819829/packages/standard.png";
 
     if (req.file) {
-        image = req.file.path; 
+        image = req.file.path;
     }
 
     try {
@@ -45,10 +45,16 @@ exports.createPackage = async (req, res) => {
 exports.updatePackage = async (req, res) => {
     const { id } = req.params;
     const { title, description, price, active } = req.body;
-    let image = req.body.image; // Получаем текущее изображение
+    let image = req.body.image;
 
     if (req.file) {
-        image = req.file.path; // Обновляем изображение
+        const deletedFromCloud = await deleteFromCloud(image);
+
+        if (!deletedFromCloud) {
+            return res.status(404).json({ error: "Фото не найден" });
+        }
+
+        image = req.file.path;
     }
 
     try {
@@ -64,13 +70,16 @@ exports.updatePackage = async (req, res) => {
 
 // Удаление пакета
 exports.deletePackage = async (req, res) => {
+    const id = req.params.id
+    const { url } = req.body;
+
     try {
-        const deletedPackage = await packageService.deletePackage(req.params.id);
+        const deletedPackage = await packageService.deletePackage(id);
         if (!deletedPackage) {
             return res.status(404).json({ error: "Набор не найден" });
         }
-        const deletedFromCloud = await deleteFromCloud(req.body.image);
 
+        const deletedFromCloud = await deleteFromCloud(url);
         if (!deletedFromCloud) {
             return res.status(404).json({ error: "Фото не найден" });
         }

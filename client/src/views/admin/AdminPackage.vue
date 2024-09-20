@@ -152,7 +152,7 @@ export default {
         },
         async deleteFoodSet() {
             try {
-                await deletePackage(this.currentRow._id);
+                await deletePackage(this.currentRow._id, this.currentRow.image);
                 await this.loadPackages();
                 this.closeModal();
             } catch (e) {

@@ -6,7 +6,7 @@ export const getPackages = async () => {
     try {
         const response = await axios.get(API_URL);
         return response.data;
-    }catch(e){
+    } catch (e) {
         console.error("Failed to fetch packages:", e);
         throw e;
     }
@@ -37,9 +37,9 @@ export const updatePackage = async (id, formData) => {
     }
 };
 
-export const deletePackage = async (id) => {
+export const deletePackage = async (id, url) => {
     try {
-        await axios.delete(`${API_URL}/${id}`);
+        await axios.delete(`${API_URL}/${id}`, { data: { url } });
     } catch (e) {
         throw new Error(e.response?.data?.message || "Ошибка на сервере");
     }
