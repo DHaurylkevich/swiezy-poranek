@@ -60,6 +60,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: "./public/index.html",
             title: "Świeży Poranek",
+            favicon: "./public/favicon.ico"
         }),
         new VueLoaderPlugin(),
         new webpack.DefinePlugin({

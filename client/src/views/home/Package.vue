@@ -6,7 +6,7 @@
             </div>
             <h2 class="text">Zestawy</h2>
         </header>
-        <div v-if="packages.length > 4" class="carousel-container">
+        <div v-if="packages.length >= 4" class="carousel-container">
             <Carousel :items="packages" type="carousel" />
         </div>
         <div v-else class="cards-container">
@@ -28,19 +28,19 @@ export default {
         Carousel,
     },
     computed: {
-        ...mapGetters(['packages']), // Use packages from Vuex
+        ...mapGetters(['packages']),
     },
-    created() {
-        if (!this.packages.length) { // Load packages if not already loaded
+    mounted() {
+        if (!this.packages.length) {
             this.loadPackages();
+            console.log("Loading packages...");
         }
     },
     methods: {
-        ...mapActions(['loadPackages']), // Load packages from Vuex action
+        ...mapActions(['loadPackages']),
     },
 }
 </script>
-
 
 <style scoped>
 .food-set {
