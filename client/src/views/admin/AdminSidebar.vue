@@ -9,10 +9,13 @@
             <div class="nav-links">
                 <router-link to="/admin/zestawy"
                 :class="{'active': isRouteActive('/admin/zestawy') }"
-                >FoodSet</router-link>
+                >Zestawy</router-link>
+                <router-link to="/admin/menu"
+                :class="{'active': isRouteActive('/admin/menu') }"
+                >Menu</router-link>
                 <router-link to="/admin/orders"
                 :class="{'active': isRouteActive('/admin/orders') }"
-                >Orders</router-link>
+                >Zamówienia</router-link>
                 <router-link to="/admin/contacts"
                 :class="{'active': isRouteActive('/admin/contacts') }"
                 >Contacts</router-link>

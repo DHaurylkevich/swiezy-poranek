@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from "vue-router";
 const HomeLayout = () => import("../layout/DefaultLayout.vue");
 const AdminLayout = () => import("../layout/AdminLayout.vue");
 const AdminPackage = () => import("../views/admin/AdminPackage.vue");
+const AdminMenu = () => import("../views/admin/AdminMenu.vue");
 const AdminOrders = () => import("../views/admin/AdminOrders.vue");
 const AdminContacts = () => import("../views/admin/AdminContacts.vue");
 const AdminGallery = () => import("../views/admin/AdminGallery.vue");
@@ -72,6 +73,11 @@ const routes = [
         path: "zestawy",
         name: "AdminFoodSets",
         component: AdminPackage
+      },
+      {
+        path: "menu",
+        name: "AdminMenu",
+        component: AdminMenu
       },
       {
         path: "orders",

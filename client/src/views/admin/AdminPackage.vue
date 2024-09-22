@@ -5,7 +5,7 @@
             <button @click="openModal('add')" class="btn">Utwórz</button>
             <div class="cards-container">
                 <div v-for="(pkg, index) in packages" :key="index" class="card">
-                    <Card :title="pkg.title" :image="pkg.image" :price="pkg.price" :description="pkg.description"
+                    <Card :title="pkg.title" :image="pkg.url" :price="pkg.price" :description="pkg.description"
                         :buyButton="false" />
                     <div class="buttons">
                         <button @click="openModal('edit', pkg)" class="mini-btn">Edytuj</button>

@@ -4,7 +4,7 @@ const { deleteFromCloud } = require("../middleware/upload");
 // Получение всех пакетов
 exports.getAllPackages = async (req, res) => {
     try {
-        const packages = await packageService.getAllPackage(req);
+        const packages = await packageService.getAllPackages(); // исправляем на правильное имя функции
         res.status(200).json(packages);
     } catch (err) {
         res.status(500).json({ message: err.message });
@@ -14,7 +14,7 @@ exports.getAllPackages = async (req, res) => {
 // Получение пакета по ID
 exports.getPackageById = async (req, res) => {
     try {
-        const package = await packageService.getPackageById(req, req.params.id);
+        const package = await packageService.getPackageById(req.params.id); // убираем req, передаем только ID
         if (!package) {
             return res.status(404).json({ error: 'Набор не найден' });
         }
@@ -51,7 +51,7 @@ exports.updatePackage = async (req, res) => {
         const deletedFromCloud = await deleteFromCloud(image);
 
         if (!deletedFromCloud) {
-            return res.status(404).json({ error: "Фото не найден" });
+            return res.status(404).json({ error: "Фото не найдено" });
         }
 
         image = req.file.path;
@@ -70,7 +70,7 @@ exports.updatePackage = async (req, res) => {
 
 // Удаление пакета
 exports.deletePackage = async (req, res) => {
-    const id = req.params.id
+    const { id } = req.params;
     const { url } = req.body;
 
     try {
@@ -81,7 +81,7 @@ exports.deletePackage = async (req, res) => {
 
         const deletedFromCloud = await deleteFromCloud(url);
         if (!deletedFromCloud) {
-            return res.status(404).json({ error: "Фото не найден" });
+            return res.status(404).json({ error: "Фото не найдено" });
         }
 
         res.status(200).json({ message: "Набор удален" });

@@ -1,27 +1,28 @@
-const mongoose = require("mongoose");
-const fs = require('fs');
-const path = require('path');
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
 const packageSchema = new Schema({
-  title: { type: String, required: true, index: true },
-  image: { type: String },
-  price: { type: Number, required: true },
-  description: { type: String, required: true },
-  active: { type: Boolean, default: false }
-}, {
-  versionKey: false
-});
-
-packageSchema.post("findOneAndDelete", function (doc) {
-  if (doc.image && doc.image !== "" && doc.image.split('/').pop() !== "vege.png") {
-    const imagePath = path.join(__dirname, '../../uploads', doc.image.split('/').pop());
-
-    if (fs.existsSync(imagePath)) {
-      fs.unlinkSync(imagePath);
-      console.log("Delete", imagePath);
-    }
+  title: {
+    type: String,
+    required: true
+  },
+  description: {
+    type: String,
+    required: true
+  },
+  url: {
+    type: String,
+    required: true
+  },
+  price: {
+    type: Number,
+    required: true
+  },
+  type: {
+    type: String,
+    required: true
   }
 });
 
-module.exports = mongoose.model("Package", packageSchema);
+const Package = mongoose.model('Package', packageSchema);
+module.exports = Package;
