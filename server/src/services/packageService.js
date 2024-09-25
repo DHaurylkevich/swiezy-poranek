@@ -7,8 +7,16 @@ exports.createPackage = async (data) => {
 };
 
 // Получение всех пакетов
+exports.getAllPackagesWithoutAllMenu = async () => {
+    const packages = await Package.find().populate({
+        path: "menu",
+        select: "_id position"
+    }).lean();
+    return packages;
+};
+
 exports.getAllPackages = async () => {
-    const packages = await Package.find().lean();
+    const packages = await Package.find().populate("menu").lean();
     return packages;
 };
 

@@ -4,10 +4,11 @@
             <PackageSection class="package" sectionTitle="Pakiety" :packages="packages" :selected="selectedPackage"
                 @addToBasket="selectPackage" />
         </transition>
-        <transition name="fade" @before-enter="beforeEnter" @enter="enter" @leave="leave">
+        <MenuSection :menus="selectedPackage"/>
+        <!-- <transition name="fade" @before-enter="beforeEnter" @enter="enter" @leave="leave">
             <PackageSection v-if="selectedPackage" class="package" sectionTitle="Rodzaj pakietu" :packages="TypePackages"
                 :selected="selectedType" @addToBasket="selectType" />
-        </transition>
+        </transition> -->
         <transition name="fade" @before-enter="beforeEnter" @enter="enter" @leave="leave">
             <PackageSection v-if="selectedType" class="package-period" sectionTitle="Wybierz okres" :packages="periods"
                 :selected="selectedPeriod" @addToBasket="selectPeriod" />
@@ -17,11 +18,13 @@
 
 <script>
 import PackageSection from "@/components/order/PackageSection.vue";
+import MenuSection from "@/components/order/MenuSection.vue";
 import { mapMutations, mapGetters } from "vuex";
 
 export default {
     components: {
-        PackageSection
+        PackageSection,
+        MenuSection
     },
     data() {
         return {
@@ -47,6 +50,7 @@ export default {
         ...mapMutations(["addToBasket"]),
         selectPackage(packageItem) {
             this.selectedPackage = packageItem;
+            // console.log(this.selectedPackage.menu)
             this.totalIndex = null;
             this.selectedType = null;
             this.selectedPeriod = null;

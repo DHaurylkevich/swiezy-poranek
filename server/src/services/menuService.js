@@ -1,30 +1,38 @@
-const Menu = require("../models/menu");
+const Menu = require('../models/menu');
 
-// Создание нового меню
-exports.createMenu = async (data) => {
-    const menu = new Menu(data);
-    return await menu.save();
+// Получение всего меню
+exports.getMenu = async () => {
+    return await Menu.find();
 };
 
-// Получение всех меню
-exports.getAllMenus = async () => {
-    const menus = await Menu.find().populate('package').lean();
-    return menus;
+exports.getAllMenuIds = async () => {
+    try {
+        const menus = await Menu.find({}, {_id: 1});
+
+        return menus
+    } catch (error) {
+        console.error('Error fetching menu IDs:', error);
+        throw new Error('Could not fetch menu IDs');
+    }
 };
 
-// Получение меню по ID
-exports.getMenuById = async (id) => {
-    const menu = await Menu.findById(id).populate('package').lean();
-    return menu;
+
+// Создание меню
+exports.createMenu = async (menuData) => {
+    const { menus } = menuData;
+    const newMenu = new Menu({ menus });
+    return await newMenu.save();
 };
 
-// Обновление меню
-exports.updateMenu = async (id, data) => {
-    const updatedMenu = await Menu.findByIdAndUpdate(id, data, { new: true, runValidators: true });
-    return updatedMenu;
+// Обновление меню на конкретный день
+exports.updateDayMenu = async (id, dayMenuData) => {
+    return await Menu.updateOne(
+        { "menus._id": id },
+        { $set: { "menus.$.mealtime": dayMenuData.mealtime } }
+    );
 };
 
-// Удаление меню
-exports.deleteMenu = async (id) => {
-    return await Menu.findByIdAndDelete(id);
+// Удаление блюда
+exports.deleteDish = async (id) => {
+    return await Menu.findOneAndDelete({ _id: id });
 };

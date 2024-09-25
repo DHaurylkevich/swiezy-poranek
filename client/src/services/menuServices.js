@@ -13,6 +13,16 @@ export const getMenu = async () => {
     }
 }
 
+export const getMenusIds = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/ids`)
+        return response.data;
+    } catch (e) {
+        console.error("Ошибка при получении меню:", e);
+        throw e;
+    }
+}
+
 // Создание нового меню
 export const saveMenu = async (menuData) => {
     try {
@@ -22,6 +32,15 @@ export const saveMenu = async (menuData) => {
         throw new Error(e.response?.data?.message || "Ошибка на сервере");
     }
 };
+
+export const updatedDayMenu = async (id, dayMenuData) => {
+    try {
+        await axios.put(`${API_URL}/${id}`, dayMenuData);
+    } catch (e) {
+        console.error("Ошибка при создании меню:", e);
+        throw new Error(e.response?.data?.message || "Ошибка на сервере");
+    };
+}
 
 
 // Удаление меню

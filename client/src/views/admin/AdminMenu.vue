@@ -4,7 +4,7 @@
         <div class="main-container">
             <button @click="startForm" class="btn">Dodaj menu</button>
         </div>
-        <AdminMenu/>
+        <AdminMenu />
 
         <AdminModal :is-visible="showModal" @close="closeModal">
             <template #header>
@@ -65,7 +65,7 @@ export default {
     },
     computed: {
         currentDayData() {
-            return this.formData[this.currentDayIndex];
+            return this.formData[this.currentDayIndex][0].mealtime;
         },
         isLastDay() {
             return this.currentDayIndex === this.days.length - 1;
@@ -77,18 +77,20 @@ export default {
     methods: {
         getEmptyFormData() {
             return [
-                [{ type: "Test", dishes: [], day: "Poniedziałek" }],
-                [{ type: "test", dishes: [], day: "Wtorek" }],
-                [{ type: "test", dishes: [], day: "Środa" }],
-                [{ type: "test", dishes: [], day: "Czwartek" }],
-                [{ type: "test", dishes: [], day: "Piątek" }]
+                [{ mealtime: [{ type: "Test", dishes: [] }], day: "Poniedziałek" }],
+                [{ mealtime: [{ type: "Test", dishes: [] }], day: "Wtorek" }],
+                [{ mealtime: [{ type: "Test", dishes: [] }], day: "Środa" }],
+                [{ mealtime: [{ type: "Test", dishes: [] }], day: "Czwartek" }],
+                [{ mealtime: [{ type: "Test", dishes: [] }], day: "Piątek" }]
             ];
         },
         addMealtime() {
-            this.currentDayData.push({ type: "", dishes: [], day: this.days[this.currentDayIndex] });
+            this.currentDayData.push({ type: "", dishes: [] });
         },
         removeMealtime() {
-            this.currentDayData.splice(-1);
+            if (this.currentDayData.length > 0) {
+                this.currentDayData.splice(-1);
+            }
         },
         addDish(mealIndex) {
             this.currentDayData[mealIndex].dishes.push({ name: "", calories: null });
@@ -102,7 +104,6 @@ export default {
         },
         nextDay() {
             // if (this.isDayFilled()) {
-
             if (this.isLastDay) {
                 this.transformDataToObjects()
                 this.saveAllData();
@@ -121,13 +122,12 @@ export default {
             return this.currentDayData.length > 0 && this.currentDayData.some(mealtime => mealtime.dishes.length > 0);
         },
         transformDataToObjects() {
-            this.formData.forEach(item => this.menu = this.menu.concat(item));
-            console.log(this.menu)
+            const menu = this.formData.flat()
+            return { menus: menu };
         },
         async saveAllData() {
             try {
-                await saveMenu({ menus: this.menu });
-                alert('Menu zostało zapisane.');
+                await saveMenu(this.transformDataToObjects());
                 this.closeModal();
             } catch (e) {
                 console.error("Błąd przy zapisywaniu menu:", e);

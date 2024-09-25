@@ -13,6 +13,16 @@ export const getPackages = async () => {
     }
 }
 
+export const getPackagesWithMenu = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/packages`);
+        return response.data;
+    } catch (e) {
+        console.error("Failed to fetch packages:", e);
+        throw e;
+    }
+}
+
 // Создание нового пакета
 export const createPackage = async (formData) => {
     try {

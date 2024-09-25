@@ -20,7 +20,12 @@ const packageSchema = new Schema({
   },
   type: {
     type: String,
-    required: true
+    require: true
+  },
+  menu: {
+    type: Schema.Types.ObjectId,
+    ref: "Menu",
+    required: false
   }
 });
 

@@ -10,7 +10,7 @@
             <Carousel :items="packages" type="carousel" />
         </div>
         <div v-else class="cards-container">
-            <Card v-for="(pkg, index) in packages" :key="index" :title="pkg.title" :image="pkg.image" :price="pkg.price"
+            <Card v-for="(pkg, index) in packages" :key="index" :title="pkg.title" :image="pkg.url" :price="pkg.price"
                 :description="pkg.description" />
         </div>
     </section>
@@ -19,7 +19,7 @@
 <script>
 import Card from "@/components/ui/CardComponent.vue";
 import Carousel from "@/components/ui/Carousel.vue";
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions } from "vuex";
 
 export default {
     name: "FoodSetSection",
@@ -28,16 +28,15 @@ export default {
         Carousel,
     },
     computed: {
-        ...mapGetters(['packages']),
+        ...mapGetters(["packages"]),
     },
     mounted() {
         if (!this.packages.length) {
             this.loadPackages();
-            console.log("Loading packages...");
         }
     },
     methods: {
-        ...mapActions(['loadPackages']),
+        ...mapActions(["loadPackages"]),
     },
 }
 </script>

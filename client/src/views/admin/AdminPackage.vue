@@ -24,17 +24,31 @@
                 <form v-if="currentAction !== 'delete'" @submit.prevent="handleSubmit">
                     <div v-for="(field, index) in fields" :key="index" class="form-group">
                         <label :for="field">{{ field.label }}</label>
+
+                        <!-- Поля ввода для текста и чисел -->
                         <input v-if="field.type === 'text' || field.type === 'number'" :id="field.name" :type="field.type"
                             v-model="formData[field.name]" :required="field.required" />
+
+                        <!-- Поле для загрузки файлов -->
                         <input v-else-if="field.type === 'file'" :id="field.name" type="file" @change="onFileChange" />
+
+                        <!-- Текстовое поле -->
                         <textarea v-else-if="field.type === 'textarea'" :id="field.name"
                             v-model="formData[field.name]"></textarea>
-                        <select v-else-if="field.type === 'select'" :id="field.name" v-model="formData.active">
-                            <option :value="true">Aktywny</option>
-                            <option :value="false">Nieaktywny</option>
+
+                        <!-- Выпадающий список (select) для меню -->
+                        <select v-else-if="field.type === 'select'" :id="field.name" v-model="formData.menu">
+                            <!-- Варианты меню -->
+                            <option :value="formData.menu">
+                                {{ menus[formData.menu?.position - 1]?.title || "" }}
+                            </option>
+                            <option v-for="(menu, index) in menus" :key="index" :value="menu._id">
+                                {{ menu.title }}
+                            </option>
                         </select>
                     </div>
                 </form>
+
 
                 <p v-else>
                     Czy na pewno usunąć {{ currentRow.title }}?
@@ -61,6 +75,7 @@ import {
     updatePackage,
     deletePackage,
 } from "@/services/packageServices";
+import { getMenusIds } from "@/services/menuServices"
 
 export default {
     name: "FoodSet",
@@ -74,10 +89,12 @@ export default {
                 { name: "title", label: "Tytuł", type: "text", required: true },
                 { name: "image", label: "Zdjęcie", type: "file", required: false },
                 { name: "price", label: "Cena", type: "number", required: true },
+                { name: "type", label: "Typ", type: "text", required: true },
                 { name: "description", label: "Opis", type: "textarea", required: true },
                 { name: "active", label: "Status na stronie", type: "select", required: true },
             ],
             packages: [],
+            menus: [],
             showModal: false,
             currentAction: "",
             currentRow: null,
@@ -87,6 +104,7 @@ export default {
     },
     async created() {
         await this.loadPackages();
+        await this.loadMenuIds();
     },
     computed: {
         modalTitle() {
@@ -106,13 +124,26 @@ export default {
                 console.error("Failed to load packages:", e);
             }
         },
+        async loadMenuIds() {
+            try {
+                this.menus = await getMenusIds();
+                this.menus = this.menus.menuIds.map((menu, index) => {
+                    return {
+                        ...menu,
+                        title: `Menu ${index + 1}`
+                    };
+                });
+            } catch (e) {
+                console.error("Failed to load menu's ids:", e);
+            }
+        },
         getEmptyFormData() {
             return {
                 title: "",
-                image: "",
+                url: "",
                 price: "",
+                type: "",
                 description: "",
-                active: true,
             };
         },
         onFileChange(event) {

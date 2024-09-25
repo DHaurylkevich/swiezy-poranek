@@ -7,7 +7,9 @@ const uploadPackages = require("../middleware/upload").uploadPackages;
 router.post('/create',  uploadPackages.single("image"), packageController.createPackage);
 
 // Получение всех наборов
-router.get('/', packageController.getAllPackages);
+router.get('/', packageController.getAllPackagesWithoutAllMenu);
+
+router.get('/packages', packageController.getAllPackages);
 
 // Получение набора по ID
 router.get('/:id', packageController.getPackageById);

@@ -6,14 +6,25 @@ const dishSchema = new Schema({
     calories: { type: Number },
 });
 
-const dayMenuSchema = new Schema({
-    day: { type: String, required: true },
+const mealtimeSchema = new Schema({
     type: { type: String, required: true },
     dishes: [dishSchema],
 });
 
+const dayMenuSchema = new Schema({
+    day: { type: String, required: true },
+    mealtime: [mealtimeSchema],
+});
+
 const menuSchema = new Schema({
+    position: { type: Number, unique: true },
     menus: [dayMenuSchema],
+});
+
+menuSchema.pre('save', async function (next) {
+    const count = await Menu.countDocuments();
+    this.position = count + 1;
+    next();
 });
 
 const Menu = mongoose.model("Menu", menuSchema);

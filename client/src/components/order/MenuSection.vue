@@ -1,15 +1,14 @@
 <template>
-    <div class="menu-container">
-        <div v-for="(menu, index) in menuList" :key="index" class="menu-list">
-            <h3 class="one-menu">Menu {{ menu.position }}</h3>
-            <button @click="deleteMenuById(menu._id)" class="mini-btn">Usuń menu</button>
+    <div>
+        <div class="section-header">
+            <h3>Menu na tydzień</h3>
+        </div>
+        <PackageCard :title="dsa"></PackageCard>
+        <div v-for="(menu, index) in menus" :key="index" class="menu-list">
             <div class="menus">
                 <div v-for="(weekMenu, weekIndex) in menu.menus" :key="weekIndex" class="menu">
                     <div class="title">
                         <p class="day">{{ weekMenu.day }}</p>
-                        <button @click="openModal(weekMenu)" class="icon-button">
-                            <img src="@/assets/icons/pen-svgrepo-com.svg" alt="Редактировать">
-                        </button>
                     </div>
                     <div v-if="weekMenu.mealtime.length > 0">
                         <table class="menu-table">
@@ -42,88 +41,33 @@
                 </div>
             </div>
         </div>
-
-        <AdminModal :is-visible="showModal" @close="closeModal">
-            <template #header>
-                <h3>Zmodyfikować {{ this.formData.day }}</h3>
-            </template>
-
-            <template #body>
-                <form @submit.prevent="updateMenu">
-                    <div class="form-group">
-                        <div v-for="(mealtime, mealtimeIndex) in formData.mealtime" :key="mealtimeIndex">
-                            <label>Typ posiłku</label>
-                            <input type="text" v-model="mealtime.type" placeholder="Śniadanie/Obiad" required />
-                            <div v-for="(dish, dishIndex) in mealtime.dishes" :key="dishIndex" class="form-group-dish">
-                                <label>Nazwa dania</label>
-                                <input type="text" v-model="dish.name" placeholder="Nazwa" required />
-                                <label>Kalorie</label>
-                                <input type="number" v-model="dish.calories" placeholder=".. kcal" required />
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </template>
-
-            <template #footer>
-                <button @click="closeModal" class="btn">Zamknij</button>
-                <button @click="updateMenu" class="btn">Zmodyfikowacj</button>
-            </template>
-        </AdminModal>
     </div>
 </template>
 
 <script>
-import AdminModal from "@/components/ui/Modal.vue";
-import { deleteMenu, getMenu, updatedDayMenu } from "@/services/menuServices";
+import PackageCard from '@/components/order/PackageCard.vue';
 
 export default {
-    name: "WeekMenu",
-    components: {
-        AdminModal
+    name: "MenuSection",
+    components:{
+        PackageCard
+    },
+    props: {
+        menus:{
+            type: Array,
+            require: false
+        }
     },
     data() {
         return {
             menuList: [],
-            showModal: false,
             formData: "",
         };
     },
-    async created() {
-        await this.loadMenu();
-    },
     methods: {
-        async loadMenu() {
-            try {
-                const response = await getMenu();
-                console.log(response);
-                this.menuList = this.formatMenu(response);
-                console.log(this.menuList);
-            } catch (error) {
-                console.error("Ошибка загрузки меню:", error);
-            }
-        },
         formatMenu(menu) {
             return Object.keys(menu).map(day => menu[day]);
-        },
-        async updateMenu() {
-            console.log(this.formData.mealtime)
-            await updatedDayMenu(this.formData._id, this.formData)
-            await this.loadMenu();
-            this.showModal = false;
-        },
-        async deleteMenuById(id) {
-            await deleteMenu(id)
-            await this.loadMenu();
-        },
-        openModal(row) {
-            this.formData = { ...row };
-            this.showModal = true;
-        },
-        closeModal() {
-            this.showModal = false;
-            this.formData = "";
-        },
+        }
     },
 };
 </script>

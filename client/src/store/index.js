@@ -1,6 +1,5 @@
-// store.js
 import { createStore } from "vuex";
-import { getPackages } from "@/services/packageServices";
+import { getPackagesWithMenu } from "@/services/packageServices";
 
 export default createStore({
     state() {
@@ -35,7 +34,7 @@ export default createStore({
     actions: {
         async loadPackages({ commit }) {
             try {
-                const packages = await getPackages();
+                const packages = await getPackagesWithMenu();
                 commit("setPackages", packages);
             } catch (error) {
                 console.error("Failed to load packages:", error);
