@@ -5,10 +5,10 @@
                 @addToBasket="selectPackage" />
         </transition>
         <MenuSection :menus="selectedPackage"/>
-        <!-- <transition name="fade" @before-enter="beforeEnter" @enter="enter" @leave="leave">
+        <transition name="fade" @before-enter="beforeEnter" @enter="enter" @leave="leave">
             <PackageSection v-if="selectedPackage" class="package" sectionTitle="Rodzaj pakietu" :packages="TypePackages"
                 :selected="selectedType" @addToBasket="selectType" />
-        </transition> -->
+        </transition>
         <transition name="fade" @before-enter="beforeEnter" @enter="enter" @leave="leave">
             <PackageSection v-if="selectedType" class="package-period" sectionTitle="Wybierz okres" :packages="periods"
                 :selected="selectedPeriod" @addToBasket="selectPeriod" />
