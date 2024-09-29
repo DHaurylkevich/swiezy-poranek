@@ -1,29 +1,31 @@
 <template>
-    <div v-if="menus">
+    <div v-if="menus" class="menu-section">
         <div class="section-header">
-            <h3>Menu na tydzień</h3>
-            <!-- {{ menus.menu }} -->
+            <h2>Menu na tydzień</h2>
         </div>
-        <div v-for="(weekMenu, weekIndex) in menus.menu.menus" :key="weekIndex" class="menu">
-            <p class="day">{{ weekMenu.day }}</p>
-            <div v-if="weekMenu.mealtime.length > 0">
-                <div v-for="(mealtime, mealIndex) in weekMenu.mealtime" :key="mealtime._id" class="mealtime-row">
-                    <p>{{ mealtime.type }}</p>
-                    <div v-if="mealtime.dishes.length > 0">
-                        <div class="dishes-list">
+
+        <div class="menu-list">
+            <div v-for="(weekMenu, weekIndex) in menus.menu.menus" :key="weekIndex" class="menu">
+                <h3 class="day">{{ weekMenu.day }}</h3>
+
+                <div v-if="weekMenu.mealtime.length > 0" class="mealtime-list">
+                    <div v-for="(mealtime, mealIndex) in weekMenu.mealtime" :key="mealtime._id" class="mealtime-container">
+                        <p class="mealtime-type">{{ mealtime.type }}</p>
+
+                        <ul class="dishes-list">
                             <li v-for="(dish, dishIndex) in mealtime.dishes" :key="dishIndex"
                                 :class="{ 'selected-dish': selectedDish === dish }" @click="selectDish(dish)"
-                                class="dish-item" role="button" aria-pressed="false">
-                                <span class="dish-name">{{ dish.name }}</span> —
+                                class="dish-item" role="button">
+                                <span class="dish-name">{{ dish.name }}</span>
                                 <span class="dish-calories">{{ dish.calories }} ккал</span>
                             </li>
-                        </div>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</template>
+</template>  
 
 <script>
 export default {
@@ -52,98 +54,142 @@ export default {
 </script>
 
 <style scoped>
-.section-header {
-    margin-bottom: 8px;
-}
-
 .section-header h2 {
+    margin-bottom: 8px;
     font-size: var(--font-size-medium);
 }
 
-.icon-button {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 5px;
-}
-
-.day {
-    font-size: var(--font-size-large);
-    color: var(--secondary-color);
-    margin-bottom: 20px;
-}
-
-/* .menu-list {
+.menu-list {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 16px;
-} */
+}
 
 .menu {
     display: flex;
-    flex-wrap: wrap;
-    gap: 5vw;
-}
-
-.menus {
-    display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    gap: 8px;
     padding: 16px;
     border: 1px solid #efefef;
     border-radius: 16px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    width: 20vw;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.day {
+    font-weight: bold;
+    text-align: center;
+    /* font-size: var(--font-size-medium); */
+    /* padding-left: 8px; */
+}
+
+.mealtime-list {
+    display: flex;
+    gap: 8px;
+    /* padding: 24px;
+    border: 1px solid #efefef;
+    border-radius: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+}
+
+.mealtime-type {
+    font-size: var(--font-size-base);
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 0.8px;
+    border-bottom: 2px solid #FCB825;
+    /* padding-left: 8px; */
+    /* margin-inline: 4px; */
+    margin-bottom: 8px;
+    color: #FCB825;
+}
+
+.mealtime-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
 
 .dishes-list {
     list-style: none;
-    padding: 0;
+    /* width: 90%; */
 }
 
 .dish-item {
+    height: 6vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* align-items: center; */
+    padding: 12px;
+    margin-bottom: 8px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    transition: border-color 0.3s;
+    cursor: pointer;
+    /* height: 6vw;
+    display: flex;
+    flex-direction: column;
     padding: 10px;
     margin-bottom: 8px;
+    background-color: #fff;
+    border: 1px solid #fff;
     border-radius: 8px;
-    cursor: pointer;
-    background-color: #f9f9f9;
-    transition: background-color 0.3s ease;
+    transition: boarder solid 0.3s;
+    cursor: pointer; */
 }
 
 .dish-item:hover {
-    background-color: #e0f7fa;
+    border: 1px solid #FCB825;
 }
 
-.selected-dish {
-    background-color: #c8e6c9;
+
+.selected-dish,
+.selected-dish:hover {
+    border: 1px solid #FCB825;
     border-left: 5px solid var(--primary-color);
 }
 
 .dish-name {
-    font-weight: bold;
+    font-weight: 500;
     color: var(--highlight-color);
 }
 
 .dish-calories {
-    color: var(--text-secondary);
-}
-
-/* Темы */
-:root {
-    --primary-color: #4caf50;
-    --secondary-color: #2e7d32;
-    --background-color: #f9f9f9;
-    --text-color: #333;
-    --highlight-color: #ff5722;
-    --text-secondary: #757575;
+    /* margin-left: auto; */
+    font-weight: 500;
+    color: #9a9a9a;
 }
 
 @media (max-width: 768px) {
-    .menu {
-        flex: 0 1 calc(100% - 32px);
+    .dish-item {
+        height: auto;
+    }
+
+    .mealtime-list {
+        flex-wrap: wrap;
+    }
+}
+
+
+@media (min-width: 769px) and (max-width: 946px) {
+    .dish-item {
+        height: 10vw;
+    }
+}
+
+@media(min-width: 947px) and (max-width: 1213px) {
+    .dish-item {
+        height: 8vw;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1304px) {
+    .mealtime-list {
+        flex-wrap: wrap;
+    }
+
+    .mealtime-container {
+        width: 49%;
     }
 }
 </style>
