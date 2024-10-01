@@ -20,13 +20,10 @@
         </div>
 
             <form id="payment-form" @submit.prevent="handlePayment">
-                <div id="payment-element"></div>
-                <button id="submit" :disabled="isProcessing">
-                    <div class="spinner hidden" id="spinner"></div>
+                <button id="submit">
                     <span id="button-text">{{ isProcessing ? 'Przetwarzanie...' : 'Pay now' }}</span>
                 </button>
             </form>
-            <div id="payment-message" class="hidden"></div>
     </section>
 </template>
 

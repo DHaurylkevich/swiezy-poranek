@@ -48,15 +48,16 @@ export const updatePackage = async (id, formData) => {
     } catch (e) {
         console.error("Ошибка при обновлении пакета:", e);
         throw new Error(e.response?.data?.message || "Ошибка на сервере");
-    }
+    };
 };
 
 // Удаление пакета
 export const deletePackage = async (id, url) => {
     try {
-        await axios.delete(`${API_URL}/${id}`, { data: { url } });
+        console.log(url);
+        await axios.delete(`${API_URL}/${id}`, { data: { url: url } });
     } catch (e) {
         console.error("Ошибка при удалении пакета:", e);
         throw new Error(e.response?.data?.message || "Ошибка на сервере");
-    }
+    };
 };

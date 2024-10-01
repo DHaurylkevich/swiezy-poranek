@@ -12,7 +12,7 @@ exports.getAllPackagesWithoutAllMenu = async (req, res) => {
 };
 
 exports.getAllPackages = async (req, res) => {
-    try{
+    try {
         const packages = await packageService.getAllPackages();
         res.status(200).json(packages);
     } catch (err) {
@@ -36,14 +36,14 @@ exports.getPackageById = async (req, res) => {
 // Создание нового пакета с загрузкой изображения в Cloudinary
 exports.createPackage = async (req, res) => {
     const { title, description, price, active, type, menu } = req.body;
-    let url = "https://res.cloudinary.com/da3vwohmo/image/upload/v1726819829/packages/standard.png";
+    let url = "https://res.cloudinary.com/da3vwohmo/image/upload/v1727780951/packages/standard.png";
 
     if (req.file) {
         url = req.file.path;
     }
 
     try {
-        const createdPackage = await packageService.createPackage({ title, description, price, url, active, type, menu});
+        const createdPackage = await packageService.createPackage({ title, description, price, url, active, type, menu });
         res.status(201).json({ message: "Пакет создан", package: createdPackage });
     } catch (err) {
         res.status(500).json({ message: err.message });
@@ -55,14 +55,18 @@ exports.updatePackage = async (req, res) => {
     const { id } = req.params;
     const { title, description, price, active, type, menu } = req.body;
     let url = req.body.url;
+    // let url = "https://res.cloudinary.com/da3vwohmo/image/upload/v1727780951/packages/standard.png";
+
 
     if (req.file) {
-        const deletedFromCloud = await deleteFromCloud(url);
+        if (url !== "https://res.cloudinary.com/da3vwohmo/image/upload/v1727780951/packages/standard.png") {
+            const deletedFromCloud = await deleteFromCloud(url);
 
-        if (!deletedFromCloud) {
-            return res.status(404).json({ error: "Фото не найдено" });
+            if (!deletedFromCloud) {
+                return res.status(404).json({ error: "Фото не найдено" });
+            }
         }
-
+        
         url = req.file.path;
     }
 

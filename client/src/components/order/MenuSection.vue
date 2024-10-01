@@ -14,7 +14,7 @@
 
                         <ul class="dishes-list">
                             <li v-for="(dish, dishIndex) in mealtime.dishes" :key="dishIndex"
-                                :class="{ 'selected-dish': selectedDish === dish }" @click="selectDish(dish)"
+                                :class="{ 'selected-dish': isSelected(dish) }" @click="toggleDish(dish)"
                                 class="dish-item" role="button">
                                 <span class="dish-name">{{ dish.name }}</span>
                                 <span class="dish-calories">{{ dish.calories }} ккал</span>
@@ -25,7 +25,7 @@
             </div>
         </div>
     </div>
-</template>  
+</template>
 
 <script>
 export default {
@@ -35,19 +35,27 @@ export default {
             type: Array,
             required: false,
             default: [],
+        },
+        selectedDishes: {
+            type: Array,
+            required: true, // Свойство должно быть передано от родителя
         }
     },
-    data() {
-        return {
-            selectedDish: null,
-        };
-    },
     methods: {
-        selectDish(dish) {
-            this.selectedDish = dish;
+        toggleDish(dish) {
+            // Проверяем, есть ли уже выбранное блюдо в массиве
+            const dishIndex = this.selectedDishes.findIndex(selectedDish => selectedDish.name === dish.name);
+            if (dishIndex === -1) {
+                // Если блюда нет — добавляем его
+                this.$emit('addToBasket', dish);
+            } else {
+                // Если блюдо есть — удаляем его
+                this.$emit('removeFromBasket', dish);
+            }
         },
-        formatMenu(menu) {
-            return Object.keys(menu).map(day => menu[day]);
+        isSelected(dish) {
+            // Проверяем, выбрано ли блюдо
+            return this.selectedDishes.some(selectedDish => selectedDish.name === dish.name);
         }
     }
 };
@@ -78,17 +86,11 @@ export default {
 .day {
     font-weight: bold;
     text-align: center;
-    /* font-size: var(--font-size-medium); */
-    /* padding-left: 8px; */
 }
 
 .mealtime-list {
     display: flex;
     gap: 8px;
-    /* padding: 24px;
-    border: 1px solid #efefef;
-    border-radius: 16px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
 }
 
 .mealtime-type {
@@ -97,8 +99,6 @@ export default {
     text-align: center;
     letter-spacing: 0.8px;
     border-bottom: 2px solid #FCB825;
-    /* padding-left: 8px; */
-    /* margin-inline: 4px; */
     margin-bottom: 8px;
     color: #FCB825;
 }
@@ -111,7 +111,6 @@ export default {
 
 .dishes-list {
     list-style: none;
-    /* width: 90%; */
 }
 
 .dish-item {
@@ -119,29 +118,17 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    /* align-items: center; */
     padding: 12px;
     margin-bottom: 8px;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     transition: border-color 0.3s;
     cursor: pointer;
-    /* height: 6vw;
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-    margin-bottom: 8px;
-    background-color: #fff;
-    border: 1px solid #fff;
-    border-radius: 8px;
-    transition: boarder solid 0.3s;
-    cursor: pointer; */
 }
 
 .dish-item:hover {
     border: 1px solid #FCB825;
 }
-
 
 .selected-dish,
 .selected-dish:hover {
@@ -155,7 +142,6 @@ export default {
 }
 
 .dish-calories {
-    /* margin-left: auto; */
     font-weight: 500;
     color: #9a9a9a;
 }
@@ -170,7 +156,6 @@ export default {
     }
 }
 
-
 @media (min-width: 769px) and (max-width: 946px) {
     .dish-item {
         height: 10vw;
@@ -181,9 +166,7 @@ export default {
     .dish-item {
         height: 8vw;
     }
-}
 
-@media (min-width: 769px) and (max-width: 1304px) {
     .mealtime-list {
         flex-wrap: wrap;
     }

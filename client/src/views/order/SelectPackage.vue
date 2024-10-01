@@ -4,11 +4,12 @@
             <PackageSection class="package" sectionTitle="Pakiety" :packages="packages" :selected="selectedPackage"
                 @addToBasket="selectPackage" />
         </transition>
-        <MenuSection :menus="selectedPackage"/>
         <transition name="fade" @before-enter="beforeEnter" @enter="enter" @leave="leave">
-            <PackageSection v-if="selectedPackage" class="package" sectionTitle="Rodzaj pakietu" :packages="TypePackages"
-                :selected="selectedType" @addToBasket="selectType" />
+            <MenuSection v-if="selectedPackage" @addToBasket="toggleDish" :menus="selectedPackage"
+                :selectedDishes="selectedDishes" />
         </transition>
+        <PackageSection v-if="selectedPackage" class="package" sectionTitle="Rodzaj pakietu" :packages="TypePackages"
+            :selected="selectedType" @addToBasket="selectType" />
         <transition name="fade" @before-enter="beforeEnter" @enter="enter" @leave="leave">
             <PackageSection v-if="selectedType" class="package-period" sectionTitle="Wybierz okres" :packages="periods"
                 :selected="selectedPeriod" @addToBasket="selectPeriod" />
@@ -38,6 +39,8 @@ export default {
                 { title: "1 miesiąc" }
             ],
             selectedPackage: null,
+            selectedDishes: [],
+            selectedMenu: null,
             selectedType: null,
             selectedPeriod: null,
             totalIndex: ""
@@ -47,56 +50,78 @@ export default {
         ...mapGetters(["packages"]),
     },
     methods: {
-        ...mapMutations(["addToBasket"]),
+        ...mapMutations(["addToBasket", "removeFromBasket"]),
+
         selectPackage(packageItem) {
+            console.log(this.packages);
             this.selectedPackage = packageItem;
-            // console.log(this.selectedPackage.menu)
-            this.totalIndex = null;
-            this.selectedType = null;
-            this.selectedPeriod = null;
+            this.resetSelectionExceptPackage();
         },
+
+        toggleDish(dish) {
+            const dishIndex = this.selectedDishes.findIndex(selectedDish => selectedDish.name === dish.name);
+            if (dishIndex === -1) {
+                this.selectedDishes.push(dish);
+            } else {
+                this.selectedDishes.splice(dishIndex, 1);  // Удалить, если уже добавлено
+            }
+        },
+
         selectType(typeItem) {
             this.selectedType = typeItem;
             this.selectedPeriod = null;
         },
+
         selectPeriod(period) {
             this.selectedPeriod = period;
             this.totalIndex = `${this.selectedPackage.index}${this.selectedType.index}${this.selectedPeriod.index}`;
-            console.log(this.totalIndex)
+
             const fullPackage = {
                 index: this.totalIndex,
                 title: this.selectedPackage.title,
                 price: this.selectedPackage.price,
                 type: this.selectedType.title,
                 period: this.selectedPeriod.title,
+                dishes: this.selectedDishes,
                 count: 0
             };
+
             this.addToBasket(fullPackage);
+            console.log(fullPackage)
             this.resetSelection();
         },
+
         resetSelection() {
             this.selectedPackage = null;
+            this.selectedDishes = [];
             this.selectedType = null;
             this.selectedPeriod = null;
             this.totalIndex = "";
         },
+
+        resetSelectionExceptPackage() {
+            this.selectedDishes = [];
+            this.selectedType = null;
+            this.selectedPeriod = null;
+            this.totalIndex = "";
+        },
+
         beforeEnter(el) {
             el.style.opacity = 0;
         },
+
         enter(el, done) {
             el.offsetHeight;
             el.style.transition = "opacity 0.3s ease";
             el.style.opacity = 1;
-
-            el.scrollIntoView({ behavior: "smooth", block: "center" });
-
+            el.scrollIntoView({ behavior: "smooth", block: "start" }); // Скролл к началу элемента
             done();
         },
+
         leave(el, done) {
             el.style.transition = "opacity 0.2s ease";
             el.style.opacity = 0;
             window.scrollTo({ top: 0, behavior: "smooth" });
-
             setTimeout(done, 200);
         }
     }

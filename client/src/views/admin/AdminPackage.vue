@@ -183,7 +183,7 @@ export default {
         },
         async deleteFoodSet() {
             try {
-                await deletePackage(this.currentRow._id, this.currentRow.image);
+                await deletePackage(this.currentRow._id, this.currentRow.url);
                 await this.loadPackages();
                 this.closeModal();
             } catch (e) {
