@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { checkAuth } from "@/services/adminServices";
 
 const HomeLayout = () => import("../layout/DefaultLayout.vue");
 const AdminLayout = () => import("../layout/AdminLayout.vue");
@@ -65,6 +66,7 @@ const routes = [
   {
     path: "/admin",
     component: AdminLayout,
+    redirect: "/admin/zestawy",
     meta: {
       requiresAuth: true
     },
@@ -72,7 +74,10 @@ const routes = [
       {
         path: "zestawy",
         name: "AdminFoodSets",
-        component: AdminPackage
+        component: AdminPackage,
+        meta: {
+          requiresAuth: true
+        },
       },
       {
         path: "menu",
@@ -102,7 +107,6 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
   scrollBehavior(to, from, savedPosition) {
-    // Если есть сохраненная позиция (например, при нажатии "назад")
     if (savedPosition) {
       return savedPosition;
     } else if (to.hash) {
@@ -111,19 +115,26 @@ const router = createRouter({
         behavior: 'smooth'
       }
     } else {
-      // Прокрутка к началу страницы
       return { top: 0 };
     }
   }
 });
 
-router.beforeEach((to, from, next) => {
-  const isAuthenticated = true; // В реальном проекте должна быть логика проверки аутентификации
-
-  if (to.meta.requiresAuth && !isAuthenticated) {
+router.beforeEach(async (to, from, next) => {
+  try {
+    if (to.meta.requiresAuth) {
+      const isAuthenticated = await checkAuth();
+      if (isAuthenticated) {
+        console.log(isAuthenticated)
+        next();
+      }else{
+        next({ name: "LoginPage" });
+      }
+    } else {
+      next();
+    }
+  } catch (err) {
     next({ name: "LoginPage" });
-  } else {
-    next();
   }
 });
 

@@ -1,5 +1,6 @@
 const express = require("express");
 const connectDB = require("./src/config/db");
+const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const dotenv = require("dotenv");
 const cors = require('cors');
@@ -25,6 +26,7 @@ app.use(cors({
 // Логирование запросов
 app.use(morgan("dev"));
 app.use(express.json());
+app.use(cookieParser());
 
 // Маршруты API
 app.use("/api", require("./src/routes"));

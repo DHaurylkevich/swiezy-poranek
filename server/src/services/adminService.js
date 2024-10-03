@@ -11,7 +11,7 @@ const loginAdmin = async (email, password) => {
     const isMatch = await comparePassword(password, adminExist.password);
     if (!isMatch) throw new Error("Invalid credentials");
 
-    return jwt.generateToken(adminExist);
+    return jwt.generateToken(adminExist._id, adminExist.email);
 }
 
 const changePassword = async (oldPassword, newPassword, email) => {
