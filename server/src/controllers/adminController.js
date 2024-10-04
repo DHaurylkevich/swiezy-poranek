@@ -9,7 +9,9 @@ exports.loginAdmin = async (req, res) => {
         const token = await AdminService.loginAdmin(email, password)
         res.cookie("token", token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
+            // process.env.NODE_ENV === 'production'
+            secure: true,
+            sameSite: 'None',
             maxAge: 60 * 60 * 1000
         });
         res.send('Logged in successfully');
