@@ -48,14 +48,15 @@ export default {
     align-items: center;
     border-radius: var(--radius-section);
     background-color: var(--background-color);
-    padding-top: 16px;
-    padding-bottom: 100px;
+    padding-top: 50px;
+    padding-bottom: 50px;
 }
 
 .section-title {
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-bottom: 8px;
 }
 
 .section-title .icon {
@@ -65,6 +66,7 @@ export default {
 
 .icon img {
     max-width: 100%;
+    /* width: 4.5vw; */
     height: auto;
 }
 

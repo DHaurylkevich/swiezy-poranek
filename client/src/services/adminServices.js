@@ -30,6 +30,7 @@ export const checkAuth = async () => {
 export const logoutAdmin = async () => {
     try {
         await axios.post(`${API_URL}/logout`,{}, { withCredentials: true });
+        console.log();
         return true;
     } catch (e) {
         if (e.response && e.response.data) {

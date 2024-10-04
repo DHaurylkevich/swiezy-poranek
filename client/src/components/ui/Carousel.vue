@@ -104,9 +104,9 @@ img {
 
 
 .container-btn {
-    position: absolute;
-    z-index: 2;
+    margin-right: auto;
     display: flex;
+    justify-content: flex-end;
     gap: 8px;
     bottom: -48px;
     right: var(--spacing-inline);
@@ -119,7 +119,6 @@ img {
     height: auto;
     font-size: var(--font-size-medium);
     padding: 8px 20px;
-    z-index: 10;
 }
 
 @media (max-width: 425px) {
