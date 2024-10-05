@@ -44,7 +44,7 @@ export const logoutAdmin = async () => {
 export const refreshTokenAdmin = async () => {
     try {
         await axios.get(`${VUE_APP_API_URL}/auth/refresh`, { withCredentials: true });
-        console.log("REFRESh");
+        console.log("Refresh");
         return true;
     } catch (e) {
         if (e.response && e.response.data) {

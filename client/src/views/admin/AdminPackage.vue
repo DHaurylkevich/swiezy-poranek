@@ -25,30 +25,23 @@
                     <div v-for="(field, index) in fields" :key="index" class="form-group">
                         <label :for="field">{{ field.label }}</label>
 
-                        <!-- Поля ввода для текста и чисел -->
                         <input v-if="field.type === 'text' || field.type === 'number'" :id="field.name" :type="field.type"
                             v-model="formData[field.name]" :required="field.required" />
 
-                        <!-- Поле для загрузки файлов -->
                         <input v-else-if="field.type === 'file'" :id="field.name" type="file" @change="onFileChange" />
 
-                        <!-- Текстовое поле -->
                         <textarea v-else-if="field.type === 'textarea'" :id="field.name"
                             v-model="formData[field.name]"></textarea>
 
-                        <!-- Выпадающий список (select) для меню -->
-                        <select v-else-if="field.type === 'select'" :id="field.name" v-model="formData.menu">
-                            <!-- Варианты меню -->
-                            <option :value="formData.menu">
-                                {{ menus[formData.menu?.position - 1]?.title || "" }}
-                            </option>
-                            <option v-for="(menu, index) in menus" :key="index" :value="menu._id">
+                        <select v-if="field.type === 'select'" :id="field.name" v-model="formData.menu._id">
+                            <option value="{}"></option>
+                            <option v-for="menu in menus" :key="menu._id" :value="menu._id">
                                 {{ menu.title }}
                             </option>
                         </select>
+
                     </div>
                 </form>
-
 
                 <p v-else>
                     Czy na pewno usunąć {{ currentRow.title }}?
@@ -130,7 +123,7 @@ export default {
                 this.menus = this.menus.menuIds.map((menu, index) => {
                     return {
                         ...menu,
-                        title: `Menu ${index + 1}`
+                        title: `Menu ${menu.position}`
                     };
                 });
             } catch (e) {
@@ -144,6 +137,7 @@ export default {
                 price: "",
                 type: "",
                 description: "",
+                menu: {}
             };
         },
         onFileChange(event) {
@@ -156,6 +150,13 @@ export default {
 
             if (action === "edit" && row) {
                 this.formData = { ...row };
+                if (!this.formData.menu) {
+                    this.formData.menu = {};
+                }
+
+                // if (!this.formData.menu._id) {
+                //     this.formData.menu._id = "";
+                // }
             } else {
                 this.formData = this.getEmptyFormData();
             }

@@ -4,12 +4,14 @@
       <h3>{{ sectionTitle }}</h3>
     </div>
     <div class="packages-list">
-      <PackageCard v-for="(pkg, index) in packages" :key="index" :title="pkg.title" :image="pkg.url || ''"
+      <PackageCard v-for="(pkg, index) in filteredPackages" :key="index" :title="pkg.title" :image="filterType === 'dodatki'? '' :pkg.url || ''"
         :price="pkg.price || 0" :description="pkg.description || ''" @click="handleToggleSelect(pkg, index)"
-        :isSelected="selected && pkg.title === selected.title"/>
+        :isSelected="selected && pkg.title === selected.title">
+      </PackageCard>
     </div>
   </div>
 </template>
+
 
 <script>
 import PackageCard from '@/components/order/PackageCard.vue';
@@ -29,39 +31,51 @@ export default {
       required: true,
     },
     selected: {
-        type: Object,
-        default: null
+      type: Object,
+      default: () => null
+    },
+    filterType: {
+      type: String,
+      required: false,
+    }
+  },
+  computed: {
+    filteredPackages() {
+      console.log(this.filterType)
+      if (this.filterType === "zestawy") {
+        return this.packages.filter(pkg => pkg.type === "Zestaw");
+      }else if (this.filterType === "dodatki"){
+        return this.packages.filter(pkg => pkg.type === "Dodatek")
+      }else{
+        return this.packages
       }
+    }
   },
   methods: {
     handleToggleSelect(pkg, index) {
-      console.log(index)
+      console.log(index);
+      const eventPayload = {
+        index,
+        title: pkg.title,
+        menu: pkg.menu
+      };
       if (pkg.price) {
-        this.$emit('addToBasket', {
-          index: index,
-          title: pkg.title,
-          price: pkg.price,
-          menu: pkg.menu
-        });
-      } else {
-        this.$emit('addToBasket', {
-          index: index,
-          title: pkg.title,
-          menu: pkg.menu
-        });
+        eventPayload.price = pkg.price;
       }
+      this.$emit('addToBasket', eventPayload);
     }
   }
 };
 </script>
+
 
 <style scoped>
 .section-header {
   margin-bottom: 8px;
 }
 
-.section-header h2 {
-  font-size: var(--font-size-medium);
+.section-header h3 {
+  font-size: var(--font-size-large);
 }
 
 .packages-list {

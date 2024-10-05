@@ -9,15 +9,24 @@
                 <h3 class="day">{{ weekMenu.day }}</h3>
 
                 <div v-if="weekMenu.mealtime.length > 0" class="mealtime-list">
-                    <div v-for="(mealtime, mealIndex) in weekMenu.mealtime" :key="mealtime._id" class="mealtime-container">
-                        <p class="mealtime-type">{{ mealtime.type }}</p>
-
-                        <ul class="dishes-list">
-                            <li v-for="(dish, dishIndex) in mealtime.dishes" :key="dishIndex"
-                                :class="{ 'selected-dish': isSelected(dish) }" @click="toggleDish(dish)"
-                                class="dish-item" role="button">
-                                <span class="dish-name">{{ dish.name }}</span>
-                                <span class="dish-calories">{{ dish.calories }} ккал</span>
+                    <div v-for="(mealtime, mealIndex) in weekMenu.mealtime" :key="mealIndex" class="mealtime-container">
+                        <div v-if="mealtime.dishes.length">
+                            <p class="mealtime-type">{{ mealtime.type }}</p>
+                            <ul class="dishes-list">
+                                <li v-for="(dish, dishIndex) in mealtime.dishes" :key="dishIndex"
+                                    :class="{ 'selected-dish': isSelected(dish) }" @click="toggleDish(dish, false)"
+                                    class="dish-item" role="button">
+                                    <span class="dish-name">{{ dish.name }}</span>
+                                    <span class="dish-calories">{{ dish.calories }} kcal</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <ul v-else class="dishes-list">
+                            <li :key="mealIndex._id"
+                                :class="{ 'selected-dish': isSelected({ type: mealtime.type, day: weekMenu.day }, true) }"
+                                @click="toggleDish({ type: mealtime.type, day: weekMenu.day }, true)" class="dish-item"
+                                role="button">
+                                <span class="dish-name">{{ mealtime.type }}</span>
                             </li>
                         </ul>
                     </div>
@@ -32,30 +41,30 @@ export default {
     name: "MenuSection",
     props: {
         menus: {
-            type: Array,
+            type: Object,
             required: false,
-            default: [],
+            default: {},
         },
         selectedDishes: {
             type: Array,
-            required: true, // Свойство должно быть передано от родителя
+            required: true,
         }
     },
     methods: {
-        toggleDish(dish) {
-            // Проверяем, есть ли уже выбранное блюдо в массиве
-            const dishIndex = this.selectedDishes.findIndex(selectedDish => selectedDish.name === dish.name);
-            if (dishIndex === -1) {
-                // Если блюда нет — добавляем его
-                this.$emit('addToBasket', dish);
+        toggleDish(menuItem, filterMealtime) {
+            if (!filterMealtime) {
+                this.$emit('addToBasket', menuItem);
             } else {
-                // Если блюдо есть — удаляем его
-                this.$emit('removeFromBasket', dish);
+                this.$emit('addToBasket', menuItem, true);
+                console.log(this.selectedDishes)
             }
         },
-        isSelected(dish) {
-            // Проверяем, выбрано ли блюдо
-            return this.selectedDishes.some(selectedDish => selectedDish.name === dish.name);
+        isSelected(menuItem, filterMealtime) {
+            if (!filterMealtime) {
+                return this.selectedDishes.some(selectedDish => selectedDish === menuItem);
+            } else {
+                return this.selectedDishes.some(selectedDish => selectedDish.type === menuItem.type && selectedDish.day === menuItem.day);
+            }
         }
     }
 };
@@ -63,8 +72,8 @@ export default {
 
 <style scoped>
 .section-header h2 {
-    margin-bottom: 8px;
-    font-size: var(--font-size-medium);
+    margin-bottom: 16px;
+    font-size: var(--font-size-large);
 }
 
 .menu-list {

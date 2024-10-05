@@ -1,13 +1,13 @@
 <template>
     <section class="order-section select-addons">
-        <PackageSection class="package" sectionTitle="Dodatki" :packages="addons"
+        <PackageSection class="package" sectionTitle="Dodatki" :packages="packages" filterType="dodatki"
             @addToBasket="selectAddons" />
     </section>
 </template>
 
 <script>
 import PackageSection from '@/components/order/PackageSection.vue';
-import { mapMutations } from 'vuex';
+import { mapMutations, mapGetters } from "vuex";
 
 export default {
     components: {
@@ -19,6 +19,9 @@ export default {
                 { title: "Sok pomaranczowy", price: 15 },
             ]
         }
+    },
+    computed: {
+        ...mapGetters(["packages"]),
     },
     methods: {
         ...mapMutations(['addToBasket']),

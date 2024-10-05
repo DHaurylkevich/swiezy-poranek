@@ -14,7 +14,7 @@ export const getContactInfo = async () => {
 
 export const updateContact= async (data) => {
     try {
-        await axios.put(API_URL, data); 
+        await axios.put(API_URL, data, { withCredentials: true }); 
         alert("Контактная информация обновлена");
     } catch (error) {
         console.error("Ошибка при обновлении контактов:", error);

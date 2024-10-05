@@ -1,19 +1,19 @@
 <template>
     <section class="order-section select-package">
         <transition name="fade" @before-enter="beforeEnter" @enter="enter" @leave="leave">
-            <PackageSection class="package" sectionTitle="Pakiety" :packages="packages" :selected="selectedPackage"
-                @addToBasket="selectPackage" />
+            <PackageSection class="package" sectionTitle="Zestawy" :packages="packages" :selected="selectedPackage"
+                filterType="zestawy" @addToBasket="selectPackage" />
         </transition>
         <transition name="fade" @before-enter="beforeEnter" @enter="enter" @leave="leave">
-            <MenuSection v-if="selectedPackage" @addToBasket="toggleDish" :menus="selectedPackage"
+            <MenuSection v-if="selectedPackage" @addToBasket="selectedDish" :menus="selectedPackage"
                 :selectedDishes="selectedDishes" />
         </transition>
-        <PackageSection v-if="selectedPackage" class="package" sectionTitle="Rodzaj pakietu" :packages="TypePackages"
+        <PackageSection v-if="selectedPackage" class="package" sectionTitle="Rodzaj zestawów" :packages="TypePackages"
             :selected="selectedType" @addToBasket="selectType" />
-        <transition name="fade" @before-enter="beforeEnter" @enter="enter" @leave="leave">
+        <!-- <transition name="fade" @before-enter="beforeEnter" @enter="enter" @leave="leave">
             <PackageSection v-if="selectedType" class="package-period" sectionTitle="Wybierz okres" :packages="periods"
                 :selected="selectedPeriod" @addToBasket="selectPeriod" />
-        </transition>
+        </transition> -->
     </section>
 </template>
 
@@ -33,16 +33,14 @@ export default {
                 { title: "Standard" },
                 { title: "Vegetarian" }
             ],
-            periods: [
-                { title: "1 tydzień" },
-                { title: "2 tygodnie" },
-                { title: "1 miesiąc" }
-            ],
+            // periods: [
+            //     { title: "1 tydzień / 5 dni" },
+            // ],
             selectedPackage: null,
             selectedDishes: [],
             selectedMenu: null,
             selectedType: null,
-            selectedPeriod: null,
+            // selectedPeriod: null,
             totalIndex: ""
         };
     },
@@ -51,73 +49,91 @@ export default {
     },
     methods: {
         ...mapMutations(["addToBasket", "removeFromBasket"]),
-
         selectPackage(packageItem) {
-            console.log(this.packages);
             this.selectedPackage = packageItem;
             this.resetSelectionExceptPackage();
         },
-
-        toggleDish(dish) {
-            const dishIndex = this.selectedDishes.findIndex(selectedDish => selectedDish.name === dish.name);
-            if (dishIndex === -1) {
-                this.selectedDishes.push(dish);
+        selectedDish(menuItem, mealtime = false) {
+            if (!mealtime) {
+                console.log("s", menuItem)
+                const dishIndex = this.selectedDishes.findIndex(selectedDish => selectedDish === menuItem);
+                if (dishIndex === -1) {
+                    this.selectedDishes.push(menuItem);
+                    console.log("ses", this.selectedDishes)
+                } else {
+                    this.selectedDishes.splice(dishIndex, 1);
+                }
             } else {
-                this.selectedDishes.splice(dishIndex, 1);  // Удалить, если уже добавлено
+                const mealtimeIndex = this.selectedDishes.findIndex(selectedDish => selectedDish.type === menuItem.type && selectedDish.day === menuItem.day);
+                if (mealtimeIndex === -1) {
+                    this.selectedDishes.push(menuItem);
+                } else {
+                    this.selectedDishes.splice(mealtimeIndex, 1);
+                }
             }
         },
-
         selectType(typeItem) {
             this.selectedType = typeItem;
-            this.selectedPeriod = null;
-        },
+            // this.selectedPeriod = null;
+            // ${this.selectedPeriod.index}
 
-        selectPeriod(period) {
-            this.selectedPeriod = period;
-            this.totalIndex = `${this.selectedPackage.index}${this.selectedType.index}${this.selectedPeriod.index}`;
+            this.totalIndex = `${this.selectedPackage.index}${this.selectedType.index}`;
 
             const fullPackage = {
                 index: this.totalIndex,
                 title: this.selectedPackage.title,
                 price: this.selectedPackage.price,
                 type: this.selectedType.title,
-                period: this.selectedPeriod.title,
+                // period: this.selectedPeriod.title,
                 dishes: this.selectedDishes,
                 count: 0
             };
 
             this.addToBasket(fullPackage);
-            console.log(fullPackage)
+            // console.log(fullPackage)
             this.resetSelection();
         },
+        // selectPeriod(period) {
+        //     this.selectedPeriod = period;
+        //     this.totalIndex = `${this.selectedPackage.index}${this.selectedType.index}${this.selectedPeriod.index}`;
 
+        //     const fullPackage = {
+        //         index: this.totalIndex,
+        //         title: this.selectedPackage.title,
+        //         price: this.selectedPackage.price,
+        //         type: this.selectedType.title,
+        //         period: this.selectedPeriod.title,
+        //         dishes: this.selectedDishes,
+        //         count: 0
+        //     };
+
+        //     this.addToBasket(fullPackage);
+        //     console.log(fullPackage)
+        //     this.resetSelection();
+        // },
         resetSelection() {
             this.selectedPackage = null;
             this.selectedDishes = [];
             this.selectedType = null;
-            this.selectedPeriod = null;
+            // this.selectedPeriod = null;
             this.totalIndex = "";
         },
-
         resetSelectionExceptPackage() {
             this.selectedDishes = [];
             this.selectedType = null;
-            this.selectedPeriod = null;
+            // this.selectedPeriod = null;
             this.totalIndex = "";
         },
-
         beforeEnter(el) {
             el.style.opacity = 0;
         },
-
         enter(el, done) {
             el.offsetHeight;
             el.style.transition = "opacity 0.3s ease";
             el.style.opacity = 1;
-            el.scrollIntoView({ behavior: "smooth", block: "start" }); // Скролл к началу элемента
+            el.scrollIntoView({ behavior: "smooth", block: "start" });
             done();
         },
-
         leave(el, done) {
             el.style.transition = "opacity 0.2s ease";
             el.style.opacity = 0;

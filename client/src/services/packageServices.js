@@ -30,6 +30,7 @@ export const createPackage = async (formData) => {
             headers: {
                 "Content-Type": "multipart/form-data",
             },
+            withCredentials: true
         });
     } catch (e) {
         console.error("Ошибка при создании пакета:", e);
@@ -44,6 +45,7 @@ export const updatePackage = async (id, formData) => {
             headers: {
                 "Content-Type": "multipart/form-data",
             },
+            withCredentials: true
         });
     } catch (e) {
         console.error("Ошибка при обновлении пакета:", e);
@@ -55,7 +57,7 @@ export const updatePackage = async (id, formData) => {
 export const deletePackage = async (id, url) => {
     try {
         console.log(url);
-        await axios.delete(`${API_URL}/${id}`, { data: { url: url } });
+        await axios.delete(`${API_URL}/${id}`, { data: { url: url }, withCredentials: true });
     } catch (e) {
         console.error("Ошибка при удалении пакета:", e);
         throw new Error(e.response?.data?.message || "Ошибка на сервере");

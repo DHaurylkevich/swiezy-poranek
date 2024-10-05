@@ -7,7 +7,7 @@ exports.getMenu = async () => {
 
 exports.getAllMenuIds = async () => {
     try {
-        const menus = await Menu.find({}, {_id: 1});
+        const menus = await Menu.find({}, {_id: 1, position: 1});
 
         return menus
     } catch (error) {
