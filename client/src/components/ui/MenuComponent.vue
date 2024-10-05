@@ -27,17 +27,17 @@
                                         <ul class="dishes-list">
                                             <li v-for="(dish, dishIndex) in mealtime.dishes" :key="dishIndex">
                                                 <span class="dish-name">{{ dish.name }}</span> —
-                                                <span class="dish-calories">{{ dish.calories }} ккал</span>
+                                                <span class="dish-calories">{{ dish.calories }} kcal</span>
                                             </li>
                                         </ul>
                                     </td>
-                                    <td v-else colspan="2" class="no-data">Нет данных</td>
+                                    <td v-else colspan="2" class="no-data">Nie ma nic</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                     <div v-else>
-                        <p>Меню на этот день пока не добавлено</p>
+                        <p>Menu na ten dzien jeszcze niema</p>
                     </div>
                 </div>
             </div>
@@ -49,25 +49,38 @@
             </template>
 
             <template #body>
-                <form @submit.prevent="updateMenu">
+                <form @submit.prevent="updateMenu" class="modal-form">
                     <div class="form-group">
-                        <div v-for="(mealtime, mealtimeIndex) in formData.mealtime" :key="mealtimeIndex">
-                            <label>Typ posiłku</label>
-                            <input type="text" v-model="mealtime.type" placeholder="Śniadanie/Obiad" required />
-                            <div v-for="(dish, dishIndex) in mealtime.dishes" :key="dishIndex" class="form-group-dish">
+                        <div v-for="(mealtime, mealtimeIndex) in formData.mealtime" :key="mealtime._id"
+                            class="mealtime-group">
+                            <label class="meal-title">Typ posiłku</label>
+                            <input type="text" v-model="mealtime.type" placeholder="Śniadanie/Obiad" required
+                                class="form-input" />
+                            <button type="button" @click="removeMealtime(mealtimeIndex)" class="btn-danger">Usuń</button>
+
+                            <div v-for="(dish, dishIndex) in mealtime.dishes" :key="dishIndex" class="dish-group">
+                                <!-- <div class="dish-list"> -->
                                 <label>Nazwa dania</label>
-                                <input type="text" v-model="dish.name" placeholder="Nazwa" required />
+                                <input type="text" v-model="dish.name" placeholder="Nazwa" required class="form-input" />
                                 <label>Kalorie</label>
-                                <input type="number" v-model="dish.calories" placeholder=".. kcal" required />
+                                <input type="number" v-model="dish.calories" placeholder=".. kcal" required
+                                    class="form-input" />
+                                <!-- </div> -->
+                                <button type="button" @click="removeDish(mealtimeIndex, dishIndex)"
+                                    class="btn-danger">Usuń</button>
                             </div>
+
+                            <button type="button" @click="addDish(mealtimeIndex)" class="btn-primary">Dodaj danie</button>
                         </div>
                     </div>
+
+                    <button type="button" @click="addMealtime" class="btn-primary">Dodaj posiłek</button>
                 </form>
             </template>
 
             <template #footer>
-                <button @click="closeModal" class="btn">Zamknij</button>
-                <button @click="updateMenu" class="btn">Zmodyfikowacj</button>
+                <button @click="closeModal" class="btn-secondary">Zamknij</button>
+                <button @click="updateMenu" class="btn-primary">Zmodyfikowacj</button>
             </template>
         </AdminModal>
     </div>
@@ -107,10 +120,28 @@ export default {
             return Object.keys(menu).map(day => menu[day]);
         },
         async updateMenu() {
-            console.log(this.formData.mealtime)
-            await updatedDayMenu(this.formData._id, this.formData)
+            console.log(this.formData.mealtime);
+            await updatedDayMenu(this.formData._id, this.formData);
             await this.loadMenu();
             this.showModal = false;
+        },
+        addMealtime() {
+            this.formData.mealtime.push({
+                type: '',
+                dishes: []
+            });
+        },
+        addDish(mealtimeIndex) {
+            this.formData.mealtime[mealtimeIndex].dishes.push({
+                name: '',
+                calories: 0
+            });
+        },
+        removeMealtime(mealtimeIndex) {
+            this.formData.mealtime.splice(mealtimeIndex, 1);
+        },
+        removeDish(mealtimeIndex, dishIndex) {
+            this.formData.mealtime[mealtimeIndex].dishes.splice(dishIndex, 1);
         },
         async deleteMenuById(id) {
             await deleteMenu(id)
@@ -129,17 +160,42 @@ export default {
 </script>
 
 <style scoped>
-.main-title {
-    font-size: var(--font-size-large);
-    font-weight: bold;
-    color: var(--primary-color);
-    margin-bottom: 30px;
+.menu-container {
+    padding: 20px;
+}
+
+.menu-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.menus {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5vw;
+}
+
+.menu {
+    width: 100%;
+    max-width: 20vw;
 }
 
 .title {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 20px;
+}
+
+.day {
+    font-size: 24px;
+    color: var(--secondary-color);
+    font-weight: bold;
+}
+
+.meal-title {
+    font-weight: bold;
 }
 
 .icon-button {
@@ -150,47 +206,14 @@ export default {
 }
 
 .icon-button img {
-    width: 100%;
+    width: 16px;
     height: 16px;
     vertical-align: middle;
 }
 
-.day {
-    font-size: 28px;
-    color: var(--secondary-color);
-}
-
-.mini-btn {
-    background-color: #dc3545;
-    border: 1px solid #dc3545;
-    color: var(--background-color);
-    font-weight: bold;
-}
-
-.mini-btn:hover {
-    border: 1px solid #dc3545;
-    background-color: var(--background-color);
-    color: #dc3545;
-    transition: background-color 0.2s ease;
-}
-
-.menu-list {
+.dish-list {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-}
-
-
-
-.menus {
-    display: flex;
-    flex-wrap: wrap;
-    /* justify-content: space-between; */
-    gap: 5vw;
-}
-
-.menu {
-    width: 20vw;
 }
 
 .menu-table {
@@ -219,11 +242,6 @@ export default {
     color: var(--text-color);
 }
 
-.menu-table thead tr {
-    position: sticky;
-    top: 0;
-}
-
 .mealtime-row:hover {
     background-color: var(--hover-background);
 }
@@ -247,7 +265,112 @@ export default {
     font-style: italic;
 }
 
+.btn-danger,
+.btn-primary,
+.btn-secondary {
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.mini-btn{
+    border: none;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.mini-btn, .btn-danger {
+    background-color: #d9534f;
+    color: #fff;
+}
+
+.mini-btn:hover, .btn-danger:hover {
+    background-color: #c9302c;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-color);
+}
+
+.btn-secondary {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+.btn-secondary:hover {
+    background-color: var(--primary-color);
+}
+
+.modal-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.modal-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.mealtime-group {
+    margin-bottom: 20px;
+}
+
+.meal-title {
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.form-input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.form-input:focus {
+    border-color:  var(--primary-color);
+    outline: none;
+}
+
+.dish-group {
+    margin-bottom: 15px;
+}
+
+.dishes-list {
+    list-style: none;
+    padding: 0;
+}
+
+.dish-name {
+    font-weight: bold;
+}
+
+.dish-calories {
+    color: #666;
+}
+
+.no-data {
+    color: #999;
+    font-style: italic;
+}
+
 @media (max-width: 768px) {
+    .menu {
+        width: 100%;
+        margin-bottom: 20px;
+    }
 
     .menu-table th,
     .menu-table td {
@@ -258,30 +381,5 @@ export default {
     h2 {
         font-size: 24px;
     }
-}
-
-/* Темы */
-:root {
-    --primary-color: #4caf50;
-    --secondary-color: #2e7d32;
-    --background-color: #f9f9f9;
-    --table-background: #fff;
-    --text-color: #333;
-    --hover-background: #f1f1f1;
-    --highlight-color: #ff5722;
-    --text-secondary: #757575;
-    --error-color: #f44336;
-}
-
-.dark-theme {
-    --primary-color: #1a73e8;
-    --secondary-color: #0039cb;
-    --background-color: #121212;
-    --table-background: #1e1e1e;
-    --text-color: #fff;
-    --hover-background: #2a2a2a;
-    --highlight-color: #ff9100;
-    --text-secondary: #c7c7c7;
-    --error-color: #ff6f61;
 }
 </style>

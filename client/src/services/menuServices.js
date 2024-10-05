@@ -26,7 +26,7 @@ export const getMenusIds = async () => {
 // Создание нового меню
 export const saveMenu = async (menuData) => {
     try {
-        await axios.post(`${API_URL}/`, menuData);
+        await axios.post(`${API_URL}/`, menuData, { withCredentials: true });
     } catch (e) {
         console.error("Ошибка при создании меню:", e);
         throw new Error(e.response?.data?.message || "Ошибка на сервере");
@@ -35,7 +35,7 @@ export const saveMenu = async (menuData) => {
 
 export const updatedDayMenu = async (id, dayMenuData) => {
     try {
-        await axios.put(`${API_URL}/${id}`, dayMenuData);
+        await axios.put(`${API_URL}/${id}`, dayMenuData, { withCredentials: true });
     } catch (e) {
         console.error("Ошибка при создании меню:", e);
         throw new Error(e.response?.data?.message || "Ошибка на сервере");
