@@ -10,10 +10,6 @@
         </transition>
         <PackageSection v-if="selectedPackage" class="package" sectionTitle="Rodzaj zestawów" :packages="TypePackages"
             :selected="selectedType" @addToBasket="selectType" />
-        <!-- <transition name="fade" @before-enter="beforeEnter" @enter="enter" @leave="leave">
-            <PackageSection v-if="selectedType" class="package-period" sectionTitle="Wybierz okres" :packages="periods"
-                :selected="selectedPeriod" @addToBasket="selectPeriod" />
-        </transition> -->
     </section>
 </template>
 
@@ -33,14 +29,10 @@ export default {
                 { title: "Standard" },
                 { title: "Vegetarian" }
             ],
-            // periods: [
-            //     { title: "1 tydzień / 5 dni" },
-            // ],
             selectedPackage: null,
-            selectedDishes: [],
+            selectedDishes: [], 
             selectedMenu: null,
             selectedType: null,
-            // selectedPeriod: null,
             totalIndex: ""
         };
     },
@@ -48,80 +40,41 @@ export default {
         ...mapGetters(["packages"]),
     },
     methods: {
-        ...mapMutations(["addToBasket", "removeFromBasket"]),
+        ...mapMutations(["addToBasket"]),
         selectPackage(packageItem) {
+            this.resetSelection();
             this.selectedPackage = packageItem;
-            this.resetSelectionExceptPackage();
         },
-        selectedDish(menuItem, mealtime = false) {
-            if (!mealtime) {
-                console.log("s", menuItem)
-                const dishIndex = this.selectedDishes.findIndex(selectedDish => selectedDish === menuItem);
-                if (dishIndex === -1) {
-                    this.selectedDishes.push(menuItem);
-                    console.log("ses", this.selectedDishes)
-                } else {
-                    this.selectedDishes.splice(dishIndex, 1);
-                }
+        selectedDish(menuItem) {
+            const dishIndex = this.selectedDishes.findIndex(selectedDish => selectedDish.index === menuItem.index);
+            if (dishIndex === -1) {
+                this.selectedDishes.push(menuItem);
             } else {
-                const mealtimeIndex = this.selectedDishes.findIndex(selectedDish => selectedDish.type === menuItem.type && selectedDish.day === menuItem.day);
-                if (mealtimeIndex === -1) {
-                    this.selectedDishes.push(menuItem);
-                } else {
-                    this.selectedDishes.splice(mealtimeIndex, 1);
-                }
+                this.selectedDishes.splice(dishIndex, 1);
             }
         },
         selectType(typeItem) {
             this.selectedType = typeItem;
-            // this.selectedPeriod = null;
-            // ${this.selectedPeriod.index}
+            const dishesIndexes = this.selectedDishes.map(dish => dish.index).join('');
 
-            this.totalIndex = `${this.selectedPackage.index}${this.selectedType.index}`;
+            this.totalIndex = `${this.selectedPackage.index}${this.selectedType.index}${dishesIndexes}`;
 
             const fullPackage = {
                 index: this.totalIndex,
                 title: this.selectedPackage.title,
                 price: this.selectedPackage.price,
                 type: this.selectedType.title,
-                // period: this.selectedPeriod.title,
                 dishes: this.selectedDishes,
                 count: 0
             };
 
             this.addToBasket(fullPackage);
-            // console.log(fullPackage)
             this.resetSelection();
         },
-        // selectPeriod(period) {
-        //     this.selectedPeriod = period;
-        //     this.totalIndex = `${this.selectedPackage.index}${this.selectedType.index}${this.selectedPeriod.index}`;
-
-        //     const fullPackage = {
-        //         index: this.totalIndex,
-        //         title: this.selectedPackage.title,
-        //         price: this.selectedPackage.price,
-        //         type: this.selectedType.title,
-        //         period: this.selectedPeriod.title,
-        //         dishes: this.selectedDishes,
-        //         count: 0
-        //     };
-
-        //     this.addToBasket(fullPackage);
-        //     console.log(fullPackage)
-        //     this.resetSelection();
-        // },
         resetSelection() {
             this.selectedPackage = null;
             this.selectedDishes = [];
             this.selectedType = null;
-            // this.selectedPeriod = null;
-            this.totalIndex = "";
-        },
-        resetSelectionExceptPackage() {
-            this.selectedDishes = [];
-            this.selectedType = null;
-            // this.selectedPeriod = null;
             this.totalIndex = "";
         },
         beforeEnter(el) {

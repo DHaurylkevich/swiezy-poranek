@@ -9,23 +9,23 @@
                 <h3 class="day">{{ weekMenu.day }}</h3>
 
                 <div v-if="weekMenu.mealtime.length > 0" class="mealtime-list">
-                    <div v-for="(mealtime, mealIndex) in weekMenu.mealtime" :key="mealIndex" class="mealtime-container">
+                    <div v-for="(mealtime, mealIndex) in weekMenu.mealtime" :key="mealtime._id" class="mealtime-container">
                         <div v-if="mealtime.dishes.length">
                             <p class="mealtime-type">{{ mealtime.type }}</p>
                             <ul class="dishes-list">
-                                <li v-for="(dish, dishIndex) in mealtime.dishes" :key="dishIndex"
-                                    :class="{ 'selected-dish': isSelected(dish) }" @click="toggleDish(dish, false)"
+                                <li v-for="(dish, dishIndex) in mealtime.dishes" :key="dish._id"
+                                    :class="{ 'selected-dish': isSelected(`${dishIndex}${mealIndex}${weekIndex}`) }"
+                                    @click="toggleDish(false, dish.name, weekMenu.day, `${dishIndex}${mealIndex}${weekIndex}`)"
                                     class="dish-item" role="button">
                                     <span class="dish-name">{{ dish.name }}</span>
                                     <span class="dish-calories">{{ dish.calories }} kcal</span>
                                 </li>
                             </ul>
                         </div>
-                        <ul v-else class="dishes-list">
-                            <li :key="mealIndex._id"
-                                :class="{ 'selected-dish': isSelected({ type: mealtime.type, day: weekMenu.day }, true) }"
-                                @click="toggleDish({ type: mealtime.type, day: weekMenu.day }, true)" class="dish-item"
-                                role="button">
+                        <ul v-else class="dishes-list minimal">
+                            <li :key="mealtime._id" :class="{ 'selected-dish': isSelected(`${weekIndex}${mealIndex}`) }"
+                                @click="toggleDish(true, mealtime.type, weekMenu.day, `${weekIndex}${mealIndex}`)"
+                                class="dish-item-minimal" role="button">
                                 <span class="dish-name">{{ mealtime.type }}</span>
                             </li>
                         </ul>
@@ -51,21 +51,27 @@ export default {
         }
     },
     methods: {
-        toggleDish(menuItem, filterMealtime) {
-            if (!filterMealtime) {
-                this.$emit('addToBasket', menuItem);
+        toggleDish(filterMealtime, menuItem, weekDay, indexes) {
+            let menuItemStruct;
+            if (filterMealtime) {
+                menuItemStruct = {
+                    type: menuItem,
+                    day: weekDay,
+                    index: indexes
+                };
             } else {
-                this.$emit('addToBasket', menuItem, true);
-                console.log(this.selectedDishes)
+                menuItemStruct = {
+                    name: menuItem,
+                    day: weekDay,
+                    index: indexes
+                };
             }
+            this.$emit('addToBasket', menuItemStruct);
         },
-        isSelected(menuItem, filterMealtime) {
-            if (!filterMealtime) {
-                return this.selectedDishes.some(selectedDish => selectedDish === menuItem);
-            } else {
-                return this.selectedDishes.some(selectedDish => selectedDish.type === menuItem.type && selectedDish.day === menuItem.day);
-            }
+        isSelected(index) {
+            return this.selectedDishes.some(selectedDish => selectedDish.index === index);
         }
+
     }
 };
 </script>
@@ -122,8 +128,8 @@ export default {
     list-style: none;
 }
 
+.dish-item-minimal,
 .dish-item {
-    height: 6vw;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -134,6 +140,14 @@ export default {
     transition: border-color 0.3s;
     cursor: pointer;
 }
+
+.dish-item {
+    height: 6vw;
+}
+
+/* .dish-item-minimal{
+    color: #FCB825;
+} */
 
 .dish-item:hover {
     border: 1px solid #FCB825;

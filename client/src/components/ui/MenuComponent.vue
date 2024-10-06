@@ -276,17 +276,19 @@ export default {
     transition: background-color 0.3s, color 0.3s;
 }
 
-.mini-btn{
+.mini-btn {
     border: none;
     transition: background-color 0.3s, color 0.3s;
 }
 
-.mini-btn, .btn-danger {
+.mini-btn,
+.btn-danger {
     background-color: #d9534f;
     color: #fff;
 }
 
-.mini-btn:hover, .btn-danger:hover {
+.mini-btn:hover,
+.btn-danger:hover {
     background-color: #c9302c;
 }
 
@@ -340,7 +342,7 @@ export default {
 }
 
 .form-input:focus {
-    border-color:  var(--primary-color);
+    border-color: var(--primary-color);
     outline: none;
 }
 

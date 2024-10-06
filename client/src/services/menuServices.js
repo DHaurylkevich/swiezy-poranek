@@ -42,7 +42,6 @@ export const updatedDayMenu = async (id, dayMenuData) => {
     };
 }
 
-
 // Удаление меню
 export const deleteMenu = async (id) => {
     try {

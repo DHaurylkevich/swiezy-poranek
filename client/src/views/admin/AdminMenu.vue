@@ -103,7 +103,6 @@ export default {
             this.currentDayIndex = 0;
         },
         nextDay() {
-            // if (this.isDayFilled()) {
             if (this.isLastDay) {
                 this.transformDataToObjects()
                 this.saveAllData();
@@ -111,9 +110,6 @@ export default {
                 this.currentDayIndex++;
                 console.log(this.menu)
             }
-            // } else {
-            //     alert('Dodaj przynajmniej jeden posiłek przed przejściem dalej.');
-            // }
         },
         prevDay() {
             this.currentDayIndex--;

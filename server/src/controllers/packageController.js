@@ -59,14 +59,13 @@ exports.updatePackage = async (req, res) => {
 
 
     if (req.file) {
-        if (url !== "https://res.cloudinary.com/da3vwohmo/image/upload/v1727780951/packages/standard.png") {
-            const deletedFromCloud = await deleteFromCloud(url);
+        const deletedFromCloud = await deleteFromCloud(url);
 
-            if (!deletedFromCloud) {
-                return res.status(404).json({ error: "Фото не найдено" });
-            }
+        if (!deletedFromCloud) {
+            return res.status(404).json({ error: "Фото не найдено" });
         }
-        
+
+
         url = req.file.path;
     }
 

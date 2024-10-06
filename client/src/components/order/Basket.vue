@@ -3,6 +3,7 @@
         <h2>Koszyk</h2>
         <ul class="basket-items">
             <li v-for="(item, index) in basketItems" :key="index" class="basket-item">
+                <!-- {{ item }} -->
                 <div class="item-details">
                     <div class="title-calories">
                         <div class="item-title">{{ item.title }}</div>
@@ -13,7 +14,7 @@
                     </button>
                     <ul v-if="showProducts[index]" class="dish-list">
                         <li v-for="(dish, dishIndex) in item.dishes" :key="dishIndex" class="dish-item">
-                            {{ dish.name }}
+                            {{ 'type' in dish ? dish.day + " " + dish.type : dish.name }}
                         </li>
                     </ul>
                     <div v-if="item.type" class="item-type">Rodzaj: {{ item.type }}</div>
@@ -43,7 +44,7 @@ export default {
     name: "BasketComponent",
     data() {
         return {
-            showProducts: Array(this.basketItems?.length).fill(false)
+            showProducts: Array(this.basketItems?.length).fill(false),
         }
     },
     computed: {
@@ -52,7 +53,7 @@ export default {
         }),
         totalPrice() {
             const price = this.basketItems.reduce((sum, item) => {
-                const dishCount = item.dishes ? item.dishes.length : 1; 
+                const dishCount = item.dishes ? item.dishes.length : 1;
                 return sum + (item.price * dishCount * item.count);
             }, 0);
             return new Intl.NumberFormat('pl-PL', {

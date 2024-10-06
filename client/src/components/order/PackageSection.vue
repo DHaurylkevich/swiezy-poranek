@@ -53,7 +53,7 @@ export default {
   },
   methods: {
     handleToggleSelect(pkg, index) {
-      console.log(index);
+      // console.log(index);
       const eventPayload = {
         index,
         title: pkg.title,

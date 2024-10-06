@@ -29,11 +29,11 @@ const storageImages = new CloudinaryStorage({
 exports.deleteFromCloud = async (url) => {
     try {
         const publicId = extractPublicId(url);
-        if (publicId !== "standard") {
-            const result = await cloudinary.uploader.destroy(publicId);
-            console.log(result)
+        console.log(publicId)
+        if (publicId !== "packages/standard") {
+            return await cloudinary.uploader.destroy(publicId);
         }
-        return publicId;
+        return true;
     } catch (error) {
         console.error("Error deleting image:", error);
         throw error;
