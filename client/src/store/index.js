@@ -7,6 +7,7 @@ export default createStore({
             basketItems: [],
             currentSection: "",
             packages: [],
+            orderData: [],
         };
     },
     mutations: {
@@ -23,6 +24,9 @@ export default createStore({
         },
         setPackages(state, packages) {
             state.packages = packages;
+        },
+        setOrderData(state, orderData) {
+            state.orderData = orderData;
         },
         removeFromBasket(state, index) {
             state.basketItems.splice(index, 1);
@@ -44,6 +48,7 @@ export default createStore({
     getters: {
         items: (state) => state.basketItems,
         currentSection: (state) => state.currentSection,
-        packages: (state) => state.packages
+        packages: (state) => state.packages,
+        orderData: (state) => state.orderData,
     }
 });

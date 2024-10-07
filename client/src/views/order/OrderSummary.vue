@@ -17,43 +17,63 @@
             <div v-else class="text-container">
                 <p class="text">Koszyk jest pusty</p>
             </div>
+
+            <div class="user-details" v-if="orderData">
+                <h3>Dane użytkownika</h3>
+                <ul>
+                    <li>
+                        <strong>Imię i nazwisko:</strong> <span>{{ orderData.fullName }}</span>
+                    </li>
+                    <li>
+                        <strong>Telefon:</strong> <span>{{ orderData.phone }}</span>
+                    </li>
+                    <li v-if="orderData.email">
+                        <strong>Email:</strong> <span>{{ orderData.email }}</span>
+                    </li>
+                    <li>
+                        <strong>Adres:</strong> <span>{{ orderData.address }}</span>
+                    </li>
+                    <li v-if="orderData.comment">
+                        <strong>Komentarz:</strong> <span>{{ orderData.comment }}</span>
+                    </li>
+                </ul>
+            </div>
         </div>
 
-            <form id="payment-form" @submit.prevent="handlePayment">
-                <button id="submit">
-                    <span id="button-text">{{ isProcessing ? 'Przetwarzanie...' : 'Pay now' }}</span>
-                </button>
-            </form>
+        <form id="payment-form" @submit.prevent="handlePayment">
+            <button id="submit">
+                <span id="button-text">{{ isProcessing ? 'Przetwarzanie...' : 'Pay now' }}</span>
+            </button>
+        </form>
     </section>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 
 export default {
     data() {
         return {
-            elements: null,
-            clientSecret: null,
             isProcessing: false,
-            items: [{ id: "xl-tshirt", amount: 1000 }],
         };
     },
     computed: {
         totalAmount() {
             return this.basketItems.reduce((total, item) => total + item.price, 0);
         },
+        ...mapGetters(["orderData"]),
         ...mapState({
             basketItems: (state) => state.basketItems,
         }),
     },
     methods: {
         async handlePayment() {
+            // Логика для обработки платежа
         },
     },
 };
 </script>
-
+  
 <style scoped>
 .order-summary {
     width: 100%;
@@ -97,6 +117,17 @@ export default {
     font-size: 18px;
 }
 
+.user-details ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.user-details li {
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
 button {
     width: 100%;
     padding: 12px;
@@ -108,4 +139,9 @@ button {
     cursor: pointer;
     transition: background-color 0.3s;
 }
+
+button:hover {
+    background-color: darken(var(--primary-color), 10%);
+}
 </style>
+  
