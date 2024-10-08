@@ -2,6 +2,7 @@ const path = require('path');
 const { VueLoaderPlugin } = require('vue-loader');
 const TerserPlugin = require('terser-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const webpack = require('webpack');
 
 module.exports = {
@@ -40,7 +41,7 @@ module.exports = {
                 }
             },
             {
-                test: /\.(png|jpe?g|gif|webp|svg)$/i,
+                test: /\.(png|jpe?g|gif|webp|svg|ico)$/i,
                 type: 'asset/resource',
                 generator: {
                     filename: 'assets/[name].[hash:8][ext]'
@@ -59,14 +60,19 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: "./public/index.html",
             title: "Świeży Poranek",
+            favicon: "./public/favicon.ico"
         }),
         new VueLoaderPlugin(),
         new webpack.DefinePlugin({
-            "BASE_URL": JSON.stringify("Świeży Poranek" || "http://localhost:8080"),
-            "VUE_APP_API_URL": JSON.stringify("https://swiezy-api.vercel.app/api" || "http://localhost:8080"),
+            "BASE_URL": JSON.stringify("https://swiezy-poranek.vercel.app" || "http://localhost:8000"),
+            "VUE_APP_API_URL": JSON.stringify("http://localhost:4242/api"),
             __VUE_OPTIONS_API__: true,
             __VUE_PROD_DEVTOOLS__: false,
             __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false,
+        }),
+        new WebpackManifestPlugin({
+            fileName: 'manifest.json',
+            publicPath: '/',
         }),
     ],
     devServer: {

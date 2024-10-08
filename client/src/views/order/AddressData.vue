@@ -4,36 +4,39 @@
         <form @submit.prevent="submitForm">
             <div class="form-group">
                 <label for="fullName">Imię i nazwisko</label>
-                <input type="text" id="fullName" v-model="deliveryData.fullName" required
-                    placeholder="Imię i nazwisko" />
+                <input type="text" id="fullName" v-model="formData.fullName" required placeholder="Imię i nazwisko" />
             </div>
             <div class="form-group">
                 <label for="phone">Telefon</label>
-                <input type="tel" id="phone" v-model="deliveryData.phone" required placeholder=""
-                    pattern="^\+?\d{0,13}" />
+                <input type="tel" id="phone" v-model="formData.phone" required placeholder="Telefon"
+                    pattern="^\+?[0-9]{9,13}$" />
             </div>
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" v-model="deliveryData.email" required placeholder="Email" />
+                <input type="email" id="email" v-model="formData.email" placeholder="Email (opcjonalnie)" />
             </div>
             <div class="form-group">
                 <label for="address">Adres</label>
-                <input type="text" id="address" v-model="deliveryData.address" required placeholder="Adres" />
+                <input type="text" id="address" v-model="formData.address" required placeholder="Adres" />
             </div>
             <div class="form-group">
                 <label for="comment">Komentarz</label>
-                <textarea id="comment" v-model="deliveryData.comment"
+                <textarea id="comment" v-model="formData.comment"
                     placeholder="Komentarz dotyczący dostawy (opcjonalnie)"></textarea>
             </div>
+
+            <button v-if="showSaveButton" type="submit" class="submit-button">Zapisz</button>
         </form>
     </section>
 </template>
 
 <script>
+import { mapMutations, mapGetters } from "vuex";
+
 export default {
     data() {
         return {
-            deliveryData: {
+            formData: {
                 fullName: '',
                 phone: '',
                 email: '',
@@ -43,10 +46,28 @@ export default {
             }
         };
     },
+    computed: {
+        ...mapGetters(["orderData"]),
+        showSaveButton() {
+            // Проверяем, есть ли orderData и отличается ли хотя бы одно поле в formData
+            return this.orderData ?
+                Object.keys(this.formData).some(key =>
+                    this.formData[key] !== this.orderData[key] || !this.formData[key]
+                ) :
+                true; // Если orderData нет, показываем кнопку
+        }
+    },
+    mounted() {
+        // Если данные заказа уже существуют, заполняем форму
+        if (this.orderData) {
+            this.formData = { ...this.formData, ...this.orderData };
+        }
+    },
     methods: {
+        ...mapMutations(["setOrderData"]),
         submitForm() {
-            console.log('Данные для доставки:', this.deliveryData);
-            // Здесь можно добавить логику отправки данных на сервер или выполнения других действий.
+            console.log("Данные для доставки:", this.formData);
+            this.setOrderData(this.formData);
         }
     }
 };
@@ -104,9 +125,10 @@ export default {
 .submit-button {
     width: 100%;
     padding: 12px;
+    font-weight: bold;
     background-color: var(--primary-color);
-    color: #fff;
-    border: none;
+    color: var(--background-color);
+    border: 1px solid var(--primary-color);
     border-radius: 5px;
     font-size: 18px;
     cursor: pointer;
@@ -114,6 +136,8 @@ export default {
 }
 
 .submit-button:hover {
-    background-color: var(--primary-color-dark);
+    background-color: var(--background-color);
+    color: var(--primary-color);
+
 }
 </style>

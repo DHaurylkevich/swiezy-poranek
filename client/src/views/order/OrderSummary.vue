@@ -3,93 +3,113 @@
         <h2>Podsumowanie zamówienia</h2>
 
         <div class="summary-details">
-            <h3>Twoje zamówienie</h3>
-            <ul v-if="basketItems.length">
-                <li v-for="item in basketItems" :key="item.title">
-                    <span>{{ item.title }}</span>
-                    <span>{{ item.price }} PLN</span>
-                </li>
-                <li class="total">
-                    <span>Łącznie:</span>
-                    <span>{{ totalAmount }} PLN</span>
-                </li>
-            </ul>
-            <div v-else class="text-container">
-                <p class="text">Koszyk jest pusty</p>
+            <div class="basket">
+                <h3>Twoje zamówienie</h3>
+                <!-- {{ basketItems }} -->
+                <div v-if="basketItems.length" class="basket-container">
+                    <div v-for="item in basketItems" :key="item.index" class="basket-item">
+                        <div class="item-header">
+                            <h4 class="item-title">{{ item.title }} (x{{ item.count }})</h4>
+                            <p class="item-price">{{ item.price.toFixed(2) }} PLN</p>
+                        </div>
+                        <div class="item-details">
+                            <p v-if="item.type"><strong>Typ:</strong> {{ item.type }}</p>
+                            <div class="dishes-group">
+                                <h5>Szczegóły:</h5>
+                                <ul class="dishes-list">
+                                    <li v-for="group in groupByDish(item.dishes)" :key="group.type">
+                                        <span class="dish-type">{{ group.type }}:</span>
+                                        <span class="dish-days">{{ formatDays(group.days) }}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="total">
+                        <p><strong>Łącznie:</strong> {{ totalAmount.toFixed(2) }} PLN</p>
+                    </div>
+                </div>
+                <div v-else class="text-container">
+                    <p class="text">Koszyk jest pusty</p>
+                </div>
+            </div>
+
+            <div class="user-details" v-if="orderData">
+                <h3>Dane użytkownika</h3>
+                <ul>
+                    <li>
+                        <strong>Imię i nazwisko:</strong> <span>{{ orderData.fullName }}</span>
+                    </li>
+                    <li>
+                        <strong>Telefon:</strong> <span>{{ orderData.phone }}</span>
+                    </li>
+                    <li v-if="orderData.email">
+                        <strong>Email:</strong> <span>{{ orderData.email }}</span>
+                    </li>
+                    <li>
+                        <strong>Adres:</strong> <span>{{ orderData.address }}</span>
+                    </li>
+                    <li v-if="orderData.comment">
+                        <strong>Komentarz:</strong> <span>{{ orderData.comment }}</span>
+                    </li>
+                </ul>
             </div>
         </div>
 
-            <form id="payment-form" @submit.prevent="handlePayment">
-                <div id="payment-element"></div>
-                <button id="submit" :disabled="isProcessing">
-                    <div class="spinner hidden" id="spinner"></div>
-                    <span id="button-text">{{ isProcessing ? 'Przetwarzanie...' : 'Pay now' }}</span>
-                </button>
-            </form>
-            <div id="payment-message" class="hidden"></div>
+        <form id="payment-form" @submit.prevent="handlePayment">
+            <button id="submit">
+                <span id="button-text">Pay now</span>
+            </button>
+        </form>
     </section>
 </template>
 
 <script>
-import { mapState } from "vuex";
-import { loadStripe } from "@stripe/stripe-js";
-
-const axios = require("axios");
+import { mapState, mapGetters } from "vuex";
 
 export default {
-    data() {
-        return {
-            stripe: null,
-            elements: null,
-            clientSecret: null,
-            isProcessing: false,
-            items: [{ id: "xl-tshirt", amount: 1000 }],
-        };
-    },
     computed: {
         totalAmount() {
             return this.basketItems.reduce((total, item) => total + item.price, 0);
         },
+        ...mapGetters(["orderData"]),
         ...mapState({
             basketItems: (state) => state.basketItems,
         }),
     },
-    async mounted() {
-        // Загружаем Stripe
-        this.stripe = await loadStripe("pk_test_51PyZBU069nJjIh9tvQvPV1s4pnrniFcmmQf4y1zq9d5cSR9YpHCvUj02k15o2xrNJoPAFTUR6Mz27RLBWp8stN7g00roSPYADU");
-
-        // Запрашиваем clientSecret для оплаты
-        const response = await axios.post(`${process.env.VUE_APP_API_URL}/stripe/create-payment-intent`, { items: this.items });
-        this.clientSecret = response.data.clientSecret;
-
-        // Создаем элементы Stripe
-        const appearance = { theme: "stripe" };
-        this.elements = this.stripe.elements({ appearance, clientSecret: this.clientSecret });
-
-        // Создаем элемент оплаты и монтируем его в форму
-        const paymentElement = this.elements.create("payment");
-        paymentElement.mount("#payment-element");
-    },
     methods: {
-        async handlePayment() {
-            this.isProcessing = true;
+        handlePayment() {
+            // Логика для обработки платежа
+        },
+        // Группировка по типам блюд и дням
+        groupByDish(dishes) {
+            const grouped = {};
 
-            // Подтверждение оплаты
-            const { error, paymentIntent } = await this.stripe.confirmPayment({
-                elements: this.elements,
-                confirmParams: {
-                    return_url: "https://your-domain.com/order-confirmation",
-                },
+            dishes.forEach((dish) => {
+                const key = dish.type || dish.name;  // Use dish.type if available, otherwise use dish.name
+                if (!grouped[key]) {
+                    grouped[key] = [];
+                }
+                grouped[key].push(dish.day);
             });
 
-            if (error) {
-                document.querySelector("#payment-message").innerText = error.message;
-                document.querySelector("#payment-message").classList.remove("hidden");
-                this.isProcessing = false;
-            } else if (paymentIntent.status === "succeeded") {
-                alert("Оплата прошла успешно!");
-                this.isProcessing = false;
-            }
+            return Object.keys(grouped).map((key) => ({
+                type: key,
+                days: grouped[key].sort(),
+            }));
+        },
+        // Форматирование дней в компактный список
+        formatDays(days) {
+            const dayNames = {
+                "Poniedziałek": "Pon",
+                "Wtorek": "Wto",
+                "Środa": "Śro",
+                "Czwartek": "Czw",
+                "Piątek": "Pią",
+            };
+
+            const formattedDays = days.map(day => dayNames[day] || day);
+            return formattedDays.join(", ");
         },
     },
 };
@@ -112,12 +132,38 @@ export default {
     color: var(--primary-color);
 }
 
+/* .summary-details h3 {
+    font-size:var(--font-size-base);
+    margin-bottom: 15px;
+} */
+
 .summary-details {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
     margin-bottom: 30px;
 }
 
+.summary-details .basket {
+    display: flex;
+    flex-direction: column;
+}
+
+/* 
+.basket-container {
+    display: grid;
+    gap: 15px;
+} 
+*/
+
+.item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .summary-details h3 {
-    font-size: 20px;
+    font-size: var(--font-size-medium);
     color: var(--primary-color);
     margin-bottom: 15px;
 }
@@ -138,14 +184,17 @@ export default {
     font-size: 18px;
 }
 
-.payment-section {
+.user-details ul {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    padding: 0;
     margin-top: 20px;
 }
 
-.payment-section h3 {
-    font-size: 20px;
-    color: var(--primary-color);
-    margin-bottom: 15px;
+.user-details li {
+    margin-bottom: 10px;
+    font-size: 16px;
 }
 
 button {
@@ -160,15 +209,7 @@ button {
     transition: background-color 0.3s;
 }
 
-button:disabled {
-    background-color: grey;
-}
-
-#payment-message {
-    color: red;
-}
-
-.spinner.hidden {
-    display: none;
+button:hover {
+    background-color: darken(var(--primary-color), 10%);
 }
 </style>

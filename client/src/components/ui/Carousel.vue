@@ -10,7 +10,7 @@
         <div v-else class="carousel-inner">
             <ul class="carousel-items">
                 <li v-for="(item, index) in items" :key="index" class="card" ref="card">
-                    <Card :key="index" :title="item.title" :image="item.image" :price="item.price"
+                    <Card :key="index" :title="item.title" :image="item.url" :price="item.price"
                         :description="item.description"/>
                 </li>
             </ul>
@@ -104,9 +104,9 @@ img {
 
 
 .container-btn {
-    position: absolute;
-    z-index: 2;
+    margin-right: auto;
     display: flex;
+    justify-content: flex-end;
     gap: 8px;
     bottom: -48px;
     right: var(--spacing-inline);
@@ -119,7 +119,6 @@ img {
     height: auto;
     font-size: var(--font-size-medium);
     padding: 8px 20px;
-    z-index: 10;
 }
 
 @media (max-width: 425px) {

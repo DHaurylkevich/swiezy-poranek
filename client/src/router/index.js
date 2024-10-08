@@ -1,41 +1,43 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { checkAuth } from "@/services/adminServices";
 
 const HomeLayout = () => import("../layout/DefaultLayout.vue");
 const AdminLayout = () => import("../layout/AdminLayout.vue");
 const AdminPackage = () => import("../views/admin/AdminPackage.vue");
+const AdminMenu = () => import("../views/admin/AdminMenu.vue");
 const AdminOrders = () => import("../views/admin/AdminOrders.vue");
 const AdminContacts = () => import("../views/admin/AdminContacts.vue");
 const AdminGallery = () => import("../views/admin/AdminGallery.vue");
 const LoginPage = () => import("../views/admin/LoginPage.vue");
 import HomeSection from "../views/home/Home.vue";
-import OrderPage  from "../views/order/Order.vue";
+import OrderPage from "../views/order/Order.vue";
 import SelectPackage from "../views/order/SelectPackage.vue";
 const SelectAddons = () => import("../views/order/SelectAddons.vue");
 const AddressData = () => import("../views/order/AddressData.vue");
 const OrderSummary = () => import("../views/order/OrderSummary.vue");
 
 const routes = [
-  { 
-    path: "/", 
+  {
+    path: "/",
     component: HomeLayout,
     children: [
       {
-        path: "", 
-        name: "Home", 
+        path: "",
+        name: "Home",
         component: HomeSection
       },
       {
         path: "order",
         component: OrderPage,
         children: [
-          { 
-            path: "", 
-            redirect: "order/zestawy" 
+          {
+            path: "",
+            redirect: "order/zestawy"
           },
-          { 
-            path: "zestawy", 
-            name: "SelectPackage", 
-            component: SelectPackage 
+          {
+            path: "zestawy",
+            name: "SelectPackage",
+            component: SelectPackage
           },
           {
             path: "dodatki",
@@ -64,29 +66,38 @@ const routes = [
   {
     path: "/admin",
     component: AdminLayout,
-    meta: { 
-      requiresAuth: true 
+    redirect: "/admin/zestawy",
+    meta: {
+      requiresAuth: true
     },
     children: [
-      { 
-        path: "zestawy", 
+      {
+        path: "zestawy",
         name: "AdminFoodSets",
-        component: AdminPackage 
+        component: AdminPackage,
+        meta: {
+          requiresAuth: true
+        },
       },
-      { 
-        path: "orders", 
+      {
+        path: "menu",
+        name: "AdminMenu",
+        component: AdminMenu
+      },
+      {
+        path: "orders",
         name: "AdminOrders",
-        component: AdminOrders 
+        component: AdminOrders
       },
-      { 
-        path: "contacts", 
+      {
+        path: "contacts",
         name: "AdminContacts",
-        component: AdminContacts 
+        component: AdminContacts
       },
-      { 
-        path: "gallery", 
+      {
+        path: "gallery",
         name: "AdminGallery",
-        component: AdminGallery 
+        component: AdminGallery
       }
     ],
   }
@@ -95,15 +106,35 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    } else if (to.hash) {
+      return {
+        el: to.hash,
+        behavior: 'smooth'
+      }
+    } else {
+      return { top: 0 };
+    }
+  }
 });
 
-router.beforeEach((to, from, next) => {
-  const isAuthenticated = true; // В реальном проекте должна быть логика проверки аутентификации
-
-  if (to.meta.requiresAuth && !isAuthenticated) {
+router.beforeEach(async (to, from, next) => {
+  try {
+    if (to.meta.requiresAuth) {
+      const isAuthenticated = await checkAuth();
+      if (isAuthenticated) {
+        console.log(isAuthenticated)
+        next();
+      }else{
+        next({ name: "LoginPage" });
+      }
+    } else {
+      next();
+    }
+  } catch (err) {
     next({ name: "LoginPage" });
-  } else {
-    next();
   }
 });
 

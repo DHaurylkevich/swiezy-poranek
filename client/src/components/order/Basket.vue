@@ -3,11 +3,23 @@
         <h2>Koszyk</h2>
         <ul class="basket-items">
             <li v-for="(item, index) in basketItems" :key="index" class="basket-item">
+                <!-- {{ item }} -->
                 <div class="item-details">
-                    <div class="item-title">{{ item.title }}</div>
+                    <div class="title-calories">
+                        <div class="item-title">{{ item.title }}</div>
+                        <span v-if="item.calories" class="item-calories">{{ totalCalories(item.dishes) }} kcal</span>
+                    </div>
+                    <button v-if="item.dishes" @click="toggleProducts(index)" class="toggle-button">
+                        {{ showProducts[index] ? 'Скрыть все' : 'Посмотреть все' }}
+                    </button>
+                    <ul v-if="showProducts[index]" class="dish-list">
+                        <li v-for="(dish, dishIndex) in item.dishes" :key="dishIndex" class="dish-item">
+                            {{ 'type' in dish ? dish.day + " " + dish.type : dish.name }}
+                        </li>
+                    </ul>
                     <div v-if="item.type" class="item-type">Rodzaj: {{ item.type }}</div>
                     <div v-if="item.period" class="item-period">Okres: {{ item.period }}</div>
-                    <div v-if="item.count" class="item-period">Ilość: {{ item.count }}</div>
+                    <div v-if="item.count" class="item-count">Ilość: {{ item.count }}</div>
                 </div>
                 <div class="cost">
                     <span class="item-price">{{ item.price }}</span>
@@ -24,32 +36,46 @@
     </div>
 </template>
 
+
 <script>
 import { mapState, mapMutations } from 'vuex';
 
 export default {
     name: "BasketComponent",
+    data() {
+        return {
+            showProducts: Array(this.basketItems?.length).fill(false),
+        }
+    },
     computed: {
+        ...mapState({
+            basketItems: state => state.basketItems
+        }),
         totalPrice() {
-            const price = this.basketItems.reduce((sum, item) => sum + (item.price * item.count), 0);
+            const price = this.basketItems.reduce((sum, item) => {
+                const dishCount = item.dishes ? item.dishes.length : 1;
+                return sum + (item.price * dishCount * item.count);
+            }, 0);
             return new Intl.NumberFormat('pl-PL', {
                 style: 'currency',
                 currency: 'PLN',
             }).format(price);
-        },
-        ...mapState({
-            basketItems: state => state.basketItems
-        })
+        }
     },
     methods: {
         ...mapMutations(['removeFromBasket']),
         removeItem(index) {
             this.removeFromBasket(index);
+        },
+        toggleProducts(index) {
+            this.showProducts[index] = !this.showProducts[index];
+        },
+        totalCalories(dishes) {
+            return dishes.reduce((acc, dish) => acc + dish.calories, 0);
         }
     }
 }
 </script>
-
 
 <style scoped>
 .basket {
@@ -104,18 +130,33 @@ export default {
     gap: 4px;
 }
 
-.item-price,
+.title-calories {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
 .item-title {
     font-size: var(--font-size-base);
     font-weight: bold;
 }
 
 .item-type,
-.item-period {
+.item-period,
+.item-count {
+    font-size: 0.9rem;
+    color: #585757;
     margin-left: 0.5vw;
 }
 
+.item-calories {
+    font-size: 0.9rem;
+    color: #585757;
+}
+
 .item-price {
+    font-weight: bold;
     color: var(--primary-color);
 }
 
@@ -132,6 +173,26 @@ export default {
     display: flex;
     align-items: center;
     gap: 8px;
+}
+
+.toggle-button {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.dish-list {
+    padding-left: 16px;
+}
+
+.dish-item {
+    font-size: 0.9rem;
+    margin-left: 0.5vw;
 }
 
 .basket-total {
@@ -180,12 +241,20 @@ export default {
     .cost {
         gap: 4px;
     }
+
+    .title-calories {
+        gap: 4px;
+    }
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {
     .basket {
         width: 28vw;
         padding: 16px;
+    }
+
+    .title-calories {
+        gap: 4px;
     }
 }
 </style>

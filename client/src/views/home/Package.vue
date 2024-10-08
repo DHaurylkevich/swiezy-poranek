@@ -6,11 +6,11 @@
             </div>
             <h2 class="text">Zestawy</h2>
         </header>
-        <div v-if="packages.length > 4" class="carousel-container">
-            <Carousel :items="packages" :type="'carousel'" />
+        <div v-if="packages.length >= 4" class="carousel-container">
+            <Carousel :items="packages" type="carousel" />
         </div>
         <div v-else class="cards-container">
-            <Card v-for="(pkg, index) in packages" :key="index" :title="pkg.title" :image="pkg.image" :price="pkg.price"
+            <Card v-for="(pkg, index) in packages" :key="index" :title="pkg.title" :image="pkg.url" :price="pkg.price"
                 :description="pkg.description" />
         </div>
     </section>
@@ -19,8 +19,7 @@
 <script>
 import Card from "@/components/ui/CardComponent.vue";
 import Carousel from "@/components/ui/Carousel.vue";
-import { getPackages } from "@/services/packageServices";
-
+import { mapGetters, mapActions } from "vuex";
 
 export default {
     name: "FoodSetSection",
@@ -28,25 +27,17 @@ export default {
         Card,
         Carousel,
     },
-    data() {
-        return {
-            packages: [
-            //     { title: "Classic", image: require("@/assets/img/foodset/vege.png"), price: 45, description: "Symphony of garlic-infused, creating a delightful masterpiece captivates senses." },
-            //     { title: "XL", image: require("@/assets/img/foodset/vege.png"), price: 55, description: "Symphony of garlic-infused, creating a delightful masterpiece captivates senses." },
-            //     { title: "Obiad + Zupka", image: require("@/assets/img/foodset/vege.png"), price: 24, description: "Symphony of garlic-infused, creating a delightful masterpiece captivates senses." },
-            //     { title: "Śniadanie + salatka", image: require("@/assets/img/foodset/vege.png"), price: 20, description: "Symphony of garlic-infused, creating a delightful masterpiece captivates senses." },
-            //     { title: "3 sałatki dziennie", image: require("@/assets/img/foodset/vege.png"), price: 32, description: "Symphony of garlic-infused, creating a delightful masterpiece captivates senses." },
-            ]
+    computed: {
+        ...mapGetters(["packages"]),
+    },
+    mounted() {
+        if (!this.packages.length) {
+            this.loadPackages();
         }
     },
-    async created() {
-        try {
-            this.packages = await getPackages();
-            console.log(this.packages)
-        } catch (error) {
-            console.error('Failed to load packages:', error);
-        }
-    }
+    methods: {
+        ...mapActions(["loadPackages"]),
+    },
 }
 </script>
 
@@ -57,14 +48,15 @@ export default {
     align-items: center;
     border-radius: var(--radius-section);
     background-color: var(--background-color);
-    padding-top: 16px;
-    padding-bottom: 100px;
+    padding-top: 50px;
+    padding-bottom: 50px;
 }
 
 .section-title {
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-bottom: 8px;
 }
 
 .section-title .icon {
@@ -74,6 +66,7 @@ export default {
 
 .icon img {
     max-width: 100%;
+    /* width: 4.5vw; */
     height: auto;
 }
 
@@ -92,6 +85,7 @@ export default {
     .food-set {
         padding-bottom: 80px;
     }
+
     .section-title {
         padding-bottom: 8px;
     }

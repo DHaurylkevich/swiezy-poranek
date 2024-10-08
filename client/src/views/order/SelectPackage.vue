@@ -1,85 +1,80 @@
 <template>
     <section class="order-section select-package">
         <transition name="fade" @before-enter="beforeEnter" @enter="enter" @leave="leave">
-            <PackageSection class="package" sectionTitle="Pakiety" :packages="packages" :selected="selectedPackage"
-                @addToBasket="selectPackage" />
+            <PackageSection class="package" sectionTitle="Zestawy" :packages="packages" :selected="selectedPackage"
+                filterType="zestawy" @addToBasket="selectPackage" />
         </transition>
         <transition name="fade" @before-enter="beforeEnter" @enter="enter" @leave="leave">
-            <PackageSection v-if="selectedPackage" class="package" sectionTitle="Rodzaj pakietu" :packages="TypePackages"
-                :selected="selectedType" @addToBasket="selectType" />
+            <MenuSection v-if="selectedPackage" @addToBasket="selectedDish" :menus="selectedPackage"
+                :selectedDishes="selectedDishes" />
         </transition>
-        <transition name="fade" @before-enter="beforeEnter" @enter="enter" @leave="leave">
-            <PackageSection v-if="selectedType" class="package-period" sectionTitle="Wybierz okres" :packages="periods"
-                :selected="selectedPeriod" @addToBasket="selectPeriod" />
-        </transition>
+        <PackageSection v-if="selectedPackage" class="package" sectionTitle="Rodzaj zestawów" :packages="TypePackages"
+            :selected="selectedType" @addToBasket="selectType" />
     </section>
 </template>
+
 <script>
-import PackageSection from '@/components/order/PackageSection.vue';
-import { getPackages } from "@/services/packageServices";
-import { mapMutations } from "vuex";
+import PackageSection from "@/components/order/PackageSection.vue";
+import MenuSection from "@/components/order/MenuSection.vue";
+import { mapMutations, mapGetters } from "vuex";
 
 export default {
     components: {
-        PackageSection
+        PackageSection,
+        MenuSection
     },
     data() {
         return {
-            packages: [
-            ],
             TypePackages: [
                 { title: "Standard" },
                 { title: "Vegetarian" }
             ],
-            periods: [
-                { title: "1 tydzień" },
-                { title: "2 tygodnie" },
-                { title: "1 miesiąc" }
-            ],
-            selectedPackage:  null,
+            selectedPackage: null,
+            selectedDishes: [], 
+            selectedMenu: null,
             selectedType: null,
-            selectedPeriod: null,
-            totalIndex: "",
-            basketItems: []
+            totalIndex: ""
         };
     },
-    async created() {
-        try {
-            this.packages = await getPackages();
-            console.log(this.packages)
-        } catch (error) {
-            console.error('Failed to load packages:', error);
-        }
+    computed: {
+        ...mapGetters(["packages"]),
     },
     methods: {
-        ...mapMutations(['addToBasket']),
+        ...mapMutations(["addToBasket"]),
         selectPackage(packageItem) {
+            this.resetSelection();
             this.selectedPackage = packageItem;
-            this.totalIndex = null;
-            this.selectedType = null;
-            this.selectedPeriod = null;
+        },
+        selectedDish(menuItem) {
+            const dishIndex = this.selectedDishes.findIndex(selectedDish => selectedDish.index === menuItem.index);
+            if (dishIndex === -1) {
+                this.selectedDishes.push(menuItem);
+            } else {
+                this.selectedDishes.splice(dishIndex, 1);
+            }
         },
         selectType(typeItem) {
             this.selectedType = typeItem;
-            this.selectedPeriod = null;
-        },
-        selectPeriod(period) {
-            this.selectedPeriod = period;
-            this.totalIndex = `${this.selectedPackage.index}${this.selectedType.index}${this.selectedPeriod.index}`;
-            console.log(this.totalIndex)
+            const dishesIndexes = this.selectedDishes.map(dish => dish.index).join('');
+
+            this.totalIndex = `${this.selectedPackage.index}${this.selectedType.index}${dishesIndexes}`;
+
             const fullPackage = {
                 index: this.totalIndex,
                 title: this.selectedPackage.title,
                 price: this.selectedPackage.price,
                 type: this.selectedType.title,
-                period: this.selectedPeriod.title,
+                dishes: this.selectedDishes,
                 count: 0
             };
-            console.log(fullPackage)
+
             this.addToBasket(fullPackage);
+            this.resetSelection();
+        },
+        resetSelection() {
             this.selectedPackage = null;
+            this.selectedDishes = [];
             this.selectedType = null;
-            this.selectedPeriod = null;
             this.totalIndex = "";
         },
         beforeEnter(el) {
@@ -87,14 +82,15 @@ export default {
         },
         enter(el, done) {
             el.offsetHeight;
-            el.style.transition = 'opacity 0.3s ease';
+            el.style.transition = "opacity 0.3s ease";
             el.style.opacity = 1;
+            el.scrollIntoView({ behavior: "smooth", block: "start" });
             done();
         },
         leave(el, done) {
-
-            el.style.transition = 'opacity 0.2s ease';
+            el.style.transition = "opacity 0.2s ease";
             el.style.opacity = 0;
+            window.scrollTo({ top: 0, behavior: "smooth" });
             setTimeout(done, 200);
         }
     }

@@ -24,9 +24,9 @@ export const getImages = async () => {
     }
 }
 
-export const deleteImage = async (id) => {
+export const deleteImage = async (id, url) => {
     try {
-        await axios.delete(`${API_URL}/${id}`);
+        await axios.delete(`${API_URL}/${id}`, { data: { url } }, { withCredentials: true });
     } catch (e) {
         throw new Error(e.response?.data?.message || "Ошибка на сервере");
     }

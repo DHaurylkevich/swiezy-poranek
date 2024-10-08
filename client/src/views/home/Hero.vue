@@ -121,12 +121,12 @@ export default {
 .features-section {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 32px;
     padding-right: 32px;
     padding-left: var(--spacing-inline);
     margin-right: auto;
     margin-top: 56px;
-    box-shadow: 0 19px 40px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
     border-radius: 5px;
 }
 
