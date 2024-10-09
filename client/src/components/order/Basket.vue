@@ -3,20 +3,19 @@
         <h2>Koszyk</h2>
         <ul class="basket-items">
             <li v-for="(item, index) in basketItems" :key="index" class="basket-item">
-                <!-- {{ item }} -->
                 <div class="item-details">
                     <div class="title-calories">
                         <div class="item-title">{{ item.title }}</div>
                         <span v-if="item.calories" class="item-calories">{{ totalCalories(item.dishes) }} kcal</span>
                     </div>
-                    <button v-if="item.dishes" @click="toggleProducts(index)" class="toggle-button">
-                        {{ showProducts[index] ? 'Скрыть все' : 'Посмотреть все' }}
-                    </button>
-                    <ul v-if="showProducts[index]" class="dish-list">
-                        <li v-for="(dish, dishIndex) in item.dishes" :key="dishIndex" class="dish-item">
-                            {{ 'type' in dish ? dish.day + " " + dish.type : dish.name }}
-                        </li>
-                    </ul>
+                    <details v-if="item.dishes" name="faq">
+                        <summary class="toggle-button">Szczegóły</summary>
+                        <ul class="dish-list">
+                            <li v-for="(dish, dishIndex) in item.dishes" :key="dishIndex" class="dish-item">
+                                {{ 'type' in dish ? dish.day + " " + dish.type : dish.name }}
+                            </li>
+                        </ul>
+                    </details>
                     <div v-if="item.type" class="item-type">Rodzaj: {{ item.type }}</div>
                     <div v-if="item.period" class="item-period">Okres: {{ item.period }}</div>
                     <div v-if="item.count" class="item-count">Ilość: {{ item.count }}</div>
@@ -67,12 +66,21 @@ export default {
         removeItem(index) {
             this.removeFromBasket(index);
         },
-        toggleProducts(index) {
-            this.showProducts[index] = !this.showProducts[index];
-        },
         totalCalories(dishes) {
             return dishes.reduce((acc, dish) => acc + dish.calories, 0);
-        }
+        },
+        formatDays(days) {
+            const dayNames = {
+                "Poniedziałek": "Pon",
+                "Wtorek": "Wto",
+                "Środa": "Śro",
+                "Czwartek": "Czw",
+                "Piątek": "Pią",
+            };
+
+            const formattedDays = days.map(day => dayNames[day] || day);
+            return formattedDays.join(", ");
+        },
     }
 }
 </script>
@@ -181,8 +189,6 @@ export default {
     color: var(--primary-color);
     font-weight: bold;
     cursor: pointer;
-    display: flex;
-    align-items: center;
     gap: 4px;
 }
 

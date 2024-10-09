@@ -5,12 +5,24 @@
         <div class="summary-details">
             <div class="basket">
                 <h3>Twoje zamówienie</h3>
+                <details name="faq">
+                        <summary>Доставка</summary>
+                        <p>Информация о доставке...</p>
+                    </details>
+                    <details name="faq">
+                        <summary>Оплата</summary>
+                        <p>Информация об оплате...</p>
+                    </details>
+                    <details name="faq">
+                        <summary>Возврат</summary>
+                        <p>Информация о возврате...</p>
+                    </details>
                 <!-- {{ basketItems }} -->
                 <div v-if="basketItems.length" class="basket-container">
                     <div v-for="item in basketItems" :key="item.index" class="basket-item">
                         <div class="item-header">
                             <h4 class="item-title">{{ item.title }} (x{{ item.count }})</h4>
-                            <p class="item-price">{{ item.price.toFixed(2) }} PLN</p>
+                            <p class="item-price">{{ item.price }} PLN</p>
                         </div>
                         <div class="item-details">
                             <p v-if="item.type"><strong>Typ:</strong> {{ item.type }}</p>
@@ -86,7 +98,7 @@ export default {
             const grouped = {};
 
             dishes.forEach((dish) => {
-                const key = dish.type || dish.name;  // Use dish.type if available, otherwise use dish.name
+                const key = dish.type || dish.name; 
                 if (!grouped[key]) {
                     grouped[key] = [];
                 }
