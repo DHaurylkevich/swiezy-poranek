@@ -25,7 +25,7 @@
                         </div>
                     </details>
                     <div class="total">
-                        <p><strong>Łącznie:</strong> {{ totalAmount.toFixed(2) }} PLN</p>
+                        <p><strong>Łącznie:</strong> {{ totalPrice }} PLN</p>
                     </div>
                 </div>
                 <div v-else class="empty-basket">
@@ -62,6 +62,18 @@ export default {
         ...mapState({
             basketItems: (state) => state.basketItems,
         }),
+        totalPrice() {
+            const price = this.basketItems.reduce((sum, item) => {
+                const uniqueDays = new Set(item.dishes.map(dish => dish.day)); // Получаем уникальные дни
+                const dayCount = uniqueDays.size; // Количество уникальных дней
+
+                return sum + (item.price * dayCount * item.count); // Итоговая цена с учетом количества дней
+            }, 0);
+            return new Intl.NumberFormat('pl-PL', {
+                style: 'currency',
+                currency: 'PLN',
+            }).format(price);
+        },
     },
     methods: {
         groupByDay(dishes) {

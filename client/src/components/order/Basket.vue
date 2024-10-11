@@ -6,7 +6,8 @@
                 <div class="item-details">
                     <div class="title-calories">
                         <div class="item-title">{{ item.title }}</div>
-                        <span v-if="item.dishes[0].calories" class="item-calories">{{ totalCalories(item.dishes) }} kcal</span>
+                        <span v-if="item.dishes[0].calories" class="item-calories">{{ totalCalories(item.dishes) }}
+                            kcal</span>
                     </div>
                     <details v-if="item.dishes" name="faq">
                         <summary class="toggle-button">Szczegóły</summary>
@@ -14,7 +15,7 @@
                             <li v-for="(group, day) in groupDishesByDay(item.dishes)" :key="day">
                                 <p>{{ day }}:</p>
                                 <ul v-for="(dish, dishIndex) in group" :key="dishIndex">
-                                        - {{ 'type' in dish ? dish.type : dish.name }}
+                                    - {{ 'type' in dish ? dish.type : dish.name }}
                                 </ul>
                             </li>
                         </ul>
@@ -47,10 +48,22 @@ export default {
         ...mapState({
             basketItems: state => state.basketItems
         }),
+        // totalPrice() {
+        //     const price = this.basketItems.reduce((sum, item) => {
+        //         const dishCount = item.dishes ? item.dishes.length : 1;
+        //         return sum + (item.price * dishCount * item.count);
+        //     }, 0);
+        //     return new Intl.NumberFormat('pl-PL', {
+        //         style: 'currency',
+        //         currency: 'PLN',
+        //     }).format(price);
+        // }
         totalPrice() {
             const price = this.basketItems.reduce((sum, item) => {
-                const dishCount = item.dishes ? item.dishes.length : 1;
-                return sum + (item.price * dishCount * item.count);
+                const uniqueDays = new Set(item.dishes.map(dish => dish.day)); // Получаем уникальные дни
+                const dayCount = uniqueDays.size; // Количество уникальных дней
+
+                return sum + (item.price * dayCount * item.count); // Итоговая цена с учетом количества дней
             }, 0);
             return new Intl.NumberFormat('pl-PL', {
                 style: 'currency',
@@ -91,7 +104,6 @@ export default {
     }
 }
 </script>
-
 
 <style scoped>
 .basket {
