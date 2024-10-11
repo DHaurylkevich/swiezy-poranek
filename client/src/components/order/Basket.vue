@@ -6,13 +6,16 @@
                 <div class="item-details">
                     <div class="title-calories">
                         <div class="item-title">{{ item.title }}</div>
-                        <span v-if="item.calories" class="item-calories">{{ totalCalories(item.dishes) }} kcal</span>
+                        <span v-if="item.dishes[0].calories" class="item-calories">{{ totalCalories(item.dishes) }} kcal</span>
                     </div>
                     <details v-if="item.dishes" name="faq">
                         <summary class="toggle-button">Szczegóły</summary>
                         <ul class="dish-list">
-                            <li v-for="(dish, dishIndex) in item.dishes" :key="dishIndex" class="dish-item">
-                                {{ 'type' in dish ? dish.day + " " + dish.type : dish.name }}
+                            <li v-for="(group, day) in groupDishesByDay(item.dishes)" :key="day">
+                                <p>{{ day }}:</p>
+                                <ul v-for="(dish, dishIndex) in group" :key="dishIndex">
+                                        - {{ 'type' in dish ? dish.type : dish.name }}
+                                </ul>
                             </li>
                         </ul>
                     </details>
@@ -35,17 +38,11 @@
     </div>
 </template>
 
-
 <script>
 import { mapState, mapMutations } from 'vuex';
 
 export default {
     name: "BasketComponent",
-    data() {
-        return {
-            showProducts: Array(this.basketItems?.length).fill(false),
-        }
-    },
     computed: {
         ...mapState({
             basketItems: state => state.basketItems
@@ -67,6 +64,7 @@ export default {
             this.removeFromBasket(index);
         },
         totalCalories(dishes) {
+            console.log(dishes)
             return dishes.reduce((acc, dish) => acc + dish.calories, 0);
         },
         formatDays(days) {
@@ -81,9 +79,19 @@ export default {
             const formattedDays = days.map(day => dayNames[day] || day);
             return formattedDays.join(", ");
         },
+        groupDishesByDay(dishes) {
+            return dishes.reduce((acc, dish) => {
+                if (!acc[dish.day]) {
+                    acc[dish.day] = [];
+                }
+                acc[dish.day].push(dish);
+                return acc;
+            }, {});
+        }
     }
 }
 </script>
+
 
 <style scoped>
 .basket {
@@ -114,7 +122,6 @@ export default {
     overflow-y: auto;
     list-style: none;
     margin: 16px 0;
-    padding: 0;
 }
 
 .basket-item {
@@ -173,7 +180,7 @@ export default {
     border: none;
     cursor: pointer;
     color: red;
-    font-size: 1.2em;
+    font-size: var(--font-size-base);
     font-weight: bold;
 }
 
@@ -184,8 +191,6 @@ export default {
 }
 
 .toggle-button {
-    background: none;
-    border: none;
     color: var(--primary-color);
     font-weight: bold;
     cursor: pointer;
@@ -214,6 +219,7 @@ export default {
 
 .total-price {
     font-weight: bold;
+    font-size: var(--font-size-base);
     color: var(--primary-color);
 }
 

@@ -1,78 +1,52 @@
 <template>
     <section class="order-summary">
         <h2>Podsumowanie zamówienia</h2>
-
         <div class="summary-details">
             <div class="basket">
                 <h3>Twoje zamówienie</h3>
-                <details name="faq">
-                        <summary>Доставка</summary>
-                        <p>Информация о доставке...</p>
-                    </details>
-                    <details name="faq">
-                        <summary>Оплата</summary>
-                        <p>Информация об оплате...</p>
-                    </details>
-                    <details name="faq">
-                        <summary>Возврат</summary>
-                        <p>Информация о возврате...</p>
-                    </details>
-                <!-- {{ basketItems }} -->
                 <div v-if="basketItems.length" class="basket-container">
-                    <div v-for="item in basketItems" :key="item.index" class="basket-item">
-                        <div class="item-header">
+                    <details v-for="item in basketItems" :key="item.index" class="basket-item">
+                        <summary class="item-header">
                             <h4 class="item-title">{{ item.title }} (x{{ item.count }})</h4>
                             <p class="item-price">{{ item.price }} PLN</p>
-                        </div>
+                        </summary>
                         <div class="item-details">
                             <p v-if="item.type"><strong>Typ:</strong> {{ item.type }}</p>
                             <div class="dishes-group">
-                                <h5>Szczegóły:</h5>
                                 <ul class="dishes-list">
-                                    <li v-for="group in groupByDish(item.dishes)" :key="group.type">
-                                        <span class="dish-type">{{ group.type }}:</span>
-                                        <span class="dish-days">{{ formatDays(group.days) }}</span>
+                                    <li v-for="(dishes, day) in groupByDay(item.dishes)" :key="day">
+                                        <span class="dish-day">{{ formatDay(day) }}:</span>
+                                        <ul>
+                                            <li v-for="dish in dishes" :key="dish">{{ dish }}</li>
+                                        </ul>
                                     </li>
                                 </ul>
                             </div>
                         </div>
-                    </div>
+                    </details>
                     <div class="total">
                         <p><strong>Łącznie:</strong> {{ totalAmount.toFixed(2) }} PLN</p>
                     </div>
                 </div>
-                <div v-else class="text-container">
+                <div v-else class="empty-basket">
                     <p class="text">Koszyk jest pusty</p>
                 </div>
             </div>
 
             <div class="user-details" v-if="orderData">
-                <h3>Dane użytkownika</h3>
-                <ul>
-                    <li>
-                        <strong>Imię i nazwisko:</strong> <span>{{ orderData.fullName }}</span>
-                    </li>
-                    <li>
-                        <strong>Telefon:</strong> <span>{{ orderData.phone }}</span>
-                    </li>
-                    <li v-if="orderData.email">
-                        <strong>Email:</strong> <span>{{ orderData.email }}</span>
-                    </li>
-                    <li>
-                        <strong>Adres:</strong> <span>{{ orderData.address }}</span>
-                    </li>
-                    <li v-if="orderData.comment">
-                        <strong>Komentarz:</strong> <span>{{ orderData.comment }}</span>
-                    </li>
+                <h3 class="user-title">Dane użytkownika</h3>
+                <ul class="user-list">
+                    <li><strong>Imię i nazwisko:</strong> <span>{{ orderData.fullName }}</span></li>
+                    <li><strong>Telefon:</strong> <span>{{ orderData.phone }}</span></li>
+                    <li v-if="orderData.email"><strong>Email:</strong> <span>{{ orderData.email }}</span></li>
+                    <li><strong>Adres:</strong> <span>{{ orderData.address }}</span></li>
+                    <li v-if="orderData.comment"><strong>Komentarz:</strong> <span>{{ orderData.comment }}</span></li>
                 </ul>
+                <button class="payment-button " id="submit">
+                    <span id="button-text">Pay now</span>
+                </button>
             </div>
         </div>
-
-        <form id="payment-form" @submit.prevent="handlePayment">
-            <button id="submit">
-                <span id="button-text">Pay now</span>
-            </button>
-        </form>
     </section>
 </template>
 
@@ -90,138 +64,141 @@ export default {
         }),
     },
     methods: {
-        handlePayment() {
-            // Логика для обработки платежа
-        },
-        // Группировка по типам блюд и дням
-        groupByDish(dishes) {
-            const grouped = {};
+        groupByDay(dishes) {
+            const groupedByDay = {};
 
-            dishes.forEach((dish) => {
-                const key = dish.type || dish.name; 
-                if (!grouped[key]) {
-                    grouped[key] = [];
+            dishes.forEach(dish => {
+                const day = dish.day;
+                if (!groupedByDay[day]) {
+                    groupedByDay[day] = [];
                 }
-                grouped[key].push(dish.day);
+                groupedByDay[day].push(dish.name || dish.type);
             });
 
-            return Object.keys(grouped).map((key) => ({
-                type: key,
-                days: grouped[key].sort(),
-            }));
+            return groupedByDay;
         },
-        // Форматирование дней в компактный список
-        formatDays(days) {
+        formatDay(day) {
             const dayNames = {
                 "Poniedziałek": "Pon",
                 "Wtorek": "Wto",
                 "Środa": "Śro",
                 "Czwartek": "Czw",
-                "Piątek": "Pią",
+                "Piątek": "Pią"
             };
-
-            const formattedDays = days.map(day => dayNames[day] || day);
-            return formattedDays.join(", ");
-        },
-    },
+            return dayNames[day] || day;
+        }
+    }
 };
 </script>
 
+
 <style scoped>
 .order-summary {
-    width: 100%;
     margin: 0 auto;
     padding: 20px;
-    background-color: #fff;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
+    max-width: 900px;
 }
 
 .order-summary h2 {
     text-align: center;
     margin-bottom: 20px;
-    font-size: 24px;
-    color: var(--primary-color);
+    font-size: var(--font-size-large);
 }
 
-/* .summary-details h3 {
-    font-size:var(--font-size-base);
-    margin-bottom: 15px;
-} */
+.order-summary h3 {
+    margin-bottom: 16px;
+    font-size: var(--font-size-medium);
+    color: var(--primary-color);
+}
 
 .summary-details {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
-    margin-bottom: 30px;
+    justify-content: space-between;
+    gap: 48px;
 }
 
-.summary-details .basket {
-    display: flex;
-    flex-direction: column;
+.basket, .user-details {
+    flex: 1;
+    min-width: 300px;
 }
 
-/* 
 .basket-container {
-    display: grid;
-    gap: 15px;
-} 
-*/
+    padding-left: 16px;
+    background-color: #f8f8f8;
+    border-radius: 10px;
+    padding: 15px;
+}
 
 .item-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
 }
 
-.summary-details h3 {
-    font-size: var(--font-size-medium);
-    color: var(--primary-color);
-    margin-bottom: 15px;
-}
-
-.summary-details ul {
-    list-style: none;
-    padding: 0;
-}
-
-.summary-details li {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-}
-
-.summary-details li.total {
-    font-weight: bold;
+.item-title {
     font-size: 18px;
+    color: #333;
 }
 
-.user-details ul {
-    display: flex;
-    flex-direction: column;
-    list-style: none;
-    padding: 0;
+.item-price {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.dishes-list {
+    margin-top: 10px;
+    padding-left: 16px;
+}
+
+.dishes-list ul {
+    /* display: flex;
+    justify-content: space-between;*/
+    padding-left: 8px; 
+}
+
+.total {
     margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: right;
 }
 
-.user-details li {
-    margin-bottom: 10px;
+.empty-basket {
+    text-align: center;
+    padding: 20px;
     font-size: 16px;
 }
 
-button {
+.user-list {
+    list-style: none;
+    padding-left: 8px;
+    font-size: 16px;
+}
+
+.user-list li {
+    margin-bottom: 8px;
+}
+
+.payment-button {
     width: 100%;
     padding: 12px;
     background-color: var(--primary-color);
     color: white;
-    border: none;
-    border-radius: 5px;
+    border: 1px solid var(--primary-color);
+    border-radius: 8px;
     font-size: 18px;
+    font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
-button:hover {
-    background-color: darken(var(--primary-color), 10%);
+.payment-button:hover {
+    background-color: var(--background-color);
+    color: var(--primary-color);
 }
 </style>
