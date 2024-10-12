@@ -60,10 +60,10 @@ export default {
         // }
         totalPrice() {
             const price = this.basketItems.reduce((sum, item) => {
-                const uniqueDays = new Set(item.dishes.map(dish => dish.day)); // Получаем уникальные дни
-                const dayCount = uniqueDays.size; // Количество уникальных дней
+                const uniqueDays = new Set(item.dishes.map(dish => dish.day));
+                const dayCount = uniqueDays.size;
 
-                return sum + (item.price * dayCount * item.count); // Итоговая цена с учетом количества дней
+                return sum + (item.price * dayCount * item.count);
             }, 0);
             return new Intl.NumberFormat('pl-PL', {
                 style: 'currency',

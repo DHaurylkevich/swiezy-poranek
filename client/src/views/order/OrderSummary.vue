@@ -42,7 +42,7 @@
                     <li><strong>Adres:</strong> <span>{{ orderData.address }}</span></li>
                     <li v-if="orderData.comment"><strong>Komentarz:</strong> <span>{{ orderData.comment }}</span></li>
                 </ul>
-                <button class="payment-button " id="submit">
+                <button @click="sendInfo" class="payment-button " id="submit">
                     <span id="button-text">Pay now</span>
                 </button>
             </div>
@@ -51,6 +51,7 @@
 </template>
 
 <script>
+import { createOrder } from "@/services/orderServices";
 import { mapState, mapGetters } from "vuex";
 
 export default {
@@ -64,10 +65,10 @@ export default {
         }),
         totalPrice() {
             const price = this.basketItems.reduce((sum, item) => {
-                const uniqueDays = new Set(item.dishes.map(dish => dish.day)); // Получаем уникальные дни
-                const dayCount = uniqueDays.size; // Количество уникальных дней
+                const uniqueDays = new Set(item.dishes.map(dish => dish.day));
+                const dayCount = uniqueDays.size;
 
-                return sum + (item.price * dayCount * item.count); // Итоговая цена с учетом количества дней
+                return sum + (item.price * dayCount * item.count);
             }, 0);
             return new Intl.NumberFormat('pl-PL', {
                 style: 'currency',
@@ -98,6 +99,19 @@ export default {
                 "Piątek": "Pią"
             };
             return dayNames[day] || day;
+        },
+        async sendInfo() {
+            try {
+                this.orderData.fullPrice = this.totalPrice
+                const sendData = {
+                    orderData: this.orderData,
+                    basketItems: this.basketItems,
+                };
+                const response = await createOrder(sendData);
+                console.log("Order response:", response); 
+            } catch (error) {
+                console.error("Error while sending order:", error.message);
+            }
         }
     }
 };
@@ -132,7 +146,8 @@ export default {
     gap: 48px;
 }
 
-.basket, .user-details {
+.basket,
+.user-details {
     flex: 1;
     min-width: 300px;
 }
@@ -170,7 +185,7 @@ export default {
 .dishes-list ul {
     /* display: flex;
     justify-content: space-between;*/
-    padding-left: 8px; 
+    padding-left: 8px;
 }
 
 .total {
