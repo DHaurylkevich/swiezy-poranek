@@ -2,7 +2,6 @@ import axios from "axios";
 
 const API_URL = VUE_APP_API_URL + "/order";
 
-// Создание нового заказа
 export const createOrder = async (orderData) => {
     try {
         console.log(orderData);
@@ -14,7 +13,6 @@ export const createOrder = async (orderData) => {
     }
 }
 
-// Удаление заказа
 export const deleteOrder = async (id) => {
     try {
         const response = await axios.delete(`${API_URL}/${id}`);
@@ -25,7 +23,6 @@ export const deleteOrder = async (id) => {
     }
 }
 
-// Обновление существующего заказа
 export const updateOrderStatus = async (id, orderData) => {
     try {
         const response = await axios.put(`${API_URL}/${id}`, orderData);
@@ -36,7 +33,6 @@ export const updateOrderStatus = async (id, orderData) => {
     }
 }
 
-// Получение всех заказов
 export const getOrders = async () => {
     try {
         const response = await axios.get(API_URL);
@@ -47,7 +43,6 @@ export const getOrders = async () => {
     }
 }
 
-// Получение заказа по ID
 export const getOrderById = async (id) => {
     try {
         const response = await axios.get(`${API_URL}/${id}`);

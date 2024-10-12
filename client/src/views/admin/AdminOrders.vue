@@ -1,6 +1,6 @@
 <template>
     <div class="admin-orders">
-        <h1 class="header">Управление заказами</h1>
+        <h1 class="header">Zamówienia</h1>
 
         <section class="orders">
             <div class="order-card" v-for="(order, index) in rows" :key="order.id" @click="openModal(order)">

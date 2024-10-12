@@ -5,11 +5,16 @@
                 filterType="zestawy" @addToBasket="selectPackage" />
         </transition>
         <transition name="fade" @before-enter="beforeEnter" @enter="enter" @leave="leave">
-            <MenuSection v-if="selectedPackage" @addToBasket="selectedDish" :menus="selectedPackage"
+            <PackageSection v-if="selectedPackage" class="package" sectionTitle="Rodzaj zestawów" :packages="TypePackages"
+                :selected="selectedType" @addToBasket="selectType" />
+        </transition>
+        <transition name="fade" @before-enter="beforeEnter" @enter="enter" @leave="leave">
+            <MenuSection v-if="selectedType" @addToBasket="selectedDish" :menus="selectedPackage"
                 :selectedDishes="selectedDishes" />
         </transition>
-        <PackageSection v-if="selectedPackage" class="package" sectionTitle="Rodzaj zestawów" :packages="TypePackages"
-            :selected="selectedType" @addToBasket="selectType" />
+        <div v-if="selectedDishes.length"   >
+            <button class="btn" @click="acceptMenu">Do koszyka</button>
+        </div>
     </section>
 </template>
 
@@ -30,7 +35,7 @@ export default {
                 { title: "Vegetarian" }
             ],
             selectedPackage: null,
-            selectedDishes: [], 
+            selectedDishes: [],
             selectedMenu: null,
             selectedType: null,
             totalIndex: ""
@@ -55,6 +60,14 @@ export default {
         },
         selectType(typeItem) {
             this.selectedType = typeItem;
+            const dishesIndexes = this.selectedDishes.map(dish => dish.index).join('');
+            if (dishesIndexes === -1) {
+                this.selectedDishes.push(menuItem);
+            } else {
+                this.selectedDishes.splice(dishesIndexes, 1);
+            }
+        },
+        acceptMenu() {
             const dishesIndexes = this.selectedDishes.map(dish => dish.index).join('');
 
             this.totalIndex = `${this.selectedPackage.index}${this.selectedType.index}${dishesIndexes}`;
@@ -102,5 +115,18 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 24px;
+}
+.btn{
+    background-color: var(--primary-color);
+    border-radius: 24px;
+    border: none;
+    color: var(--background-color);
+    font-weight: bold;
+}
+
+.btn:hover {
+    background-color: var(--background-color);
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
 }
 </style>

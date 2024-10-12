@@ -143,7 +143,7 @@ export default {
 }
 
 .dish-item {
-    height: 6vw;
+    height: 6.5vw;
 }
 
 /* .dish-item-minimal{
@@ -185,10 +185,24 @@ export default {
         height: 10vw;
     }
 }
-
+/* 1334 */
 @media(min-width: 947px) and (max-width: 1213px) {
     .dish-item {
         height: 8vw;
+    }
+
+    .mealtime-list {
+        flex-wrap: wrap;
+    }
+
+    .mealtime-container {
+        width: 49%;
+    }
+}
+
+@media(min-width: 1214px) and (max-width: 1383px) {
+    .dish-item {
+        height: 7vw;
     }
 
     .mealtime-list {
