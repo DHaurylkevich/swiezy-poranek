@@ -3,20 +3,23 @@
         <h2>Koszyk</h2>
         <ul class="basket-items">
             <li v-for="(item, index) in basketItems" :key="index" class="basket-item">
-                <!-- {{ item }} -->
                 <div class="item-details">
                     <div class="title-calories">
                         <div class="item-title">{{ item.title }}</div>
-                        <span v-if="item.calories" class="item-calories">{{ totalCalories(item.dishes) }} kcal</span>
+                        <span v-if="item.dishes[0].calories" class="item-calories">{{ totalCalories(item.dishes) }}
+                            kcal</span>
                     </div>
-                    <button v-if="item.dishes" @click="toggleProducts(index)" class="toggle-button">
-                        {{ showProducts[index] ? 'Скрыть все' : 'Посмотреть все' }}
-                    </button>
-                    <ul v-if="showProducts[index]" class="dish-list">
-                        <li v-for="(dish, dishIndex) in item.dishes" :key="dishIndex" class="dish-item">
-                            {{ 'type' in dish ? dish.day + " " + dish.type : dish.name }}
-                        </li>
-                    </ul>
+                    <details v-if="item.dishes" name="faq">
+                        <summary class="toggle-button">Szczegóły</summary>
+                        <ul class="dish-list">
+                            <li v-for="(group, day) in groupDishesByDay(item.dishes)" :key="day">
+                                <p>{{ day }}:</p>
+                                <ul v-for="(dish, dishIndex) in group" :key="dishIndex">
+                                    - {{ 'type' in dish ? dish.type : dish.name }}
+                                </ul>
+                            </li>
+                        </ul>
+                    </details>
                     <div v-if="item.type" class="item-type">Rodzaj: {{ item.type }}</div>
                     <div v-if="item.period" class="item-period">Okres: {{ item.period }}</div>
                     <div v-if="item.count" class="item-count">Ilość: {{ item.count }}</div>
@@ -36,25 +39,31 @@
     </div>
 </template>
 
-
 <script>
 import { mapState, mapMutations } from 'vuex';
 
 export default {
     name: "BasketComponent",
-    data() {
-        return {
-            showProducts: Array(this.basketItems?.length).fill(false),
-        }
-    },
     computed: {
         ...mapState({
             basketItems: state => state.basketItems
         }),
+        // totalPrice() {
+        //     const price = this.basketItems.reduce((sum, item) => {
+        //         const dishCount = item.dishes ? item.dishes.length : 1;
+        //         return sum + (item.price * dishCount * item.count);
+        //     }, 0);
+        //     return new Intl.NumberFormat('pl-PL', {
+        //         style: 'currency',
+        //         currency: 'PLN',
+        //     }).format(price);
+        // }
         totalPrice() {
             const price = this.basketItems.reduce((sum, item) => {
-                const dishCount = item.dishes ? item.dishes.length : 1;
-                return sum + (item.price * dishCount * item.count);
+                const uniqueDays = new Set(item.dishes.map(dish => dish.day));
+                const dayCount = uniqueDays.size;
+
+                return sum + (item.price * dayCount * item.count);
             }, 0);
             return new Intl.NumberFormat('pl-PL', {
                 style: 'currency',
@@ -67,11 +76,30 @@ export default {
         removeItem(index) {
             this.removeFromBasket(index);
         },
-        toggleProducts(index) {
-            this.showProducts[index] = !this.showProducts[index];
-        },
         totalCalories(dishes) {
+            console.log(dishes)
             return dishes.reduce((acc, dish) => acc + dish.calories, 0);
+        },
+        formatDays(days) {
+            const dayNames = {
+                "Poniedziałek": "Pon",
+                "Wtorek": "Wto",
+                "Środa": "Śro",
+                "Czwartek": "Czw",
+                "Piątek": "Pią",
+            };
+
+            const formattedDays = days.map(day => dayNames[day] || day);
+            return formattedDays.join(", ");
+        },
+        groupDishesByDay(dishes) {
+            return dishes.reduce((acc, dish) => {
+                if (!acc[dish.day]) {
+                    acc[dish.day] = [];
+                }
+                acc[dish.day].push(dish);
+                return acc;
+            }, {});
         }
     }
 }
@@ -106,7 +134,6 @@ export default {
     overflow-y: auto;
     list-style: none;
     margin: 16px 0;
-    padding: 0;
 }
 
 .basket-item {
@@ -165,7 +192,7 @@ export default {
     border: none;
     cursor: pointer;
     color: red;
-    font-size: 1.2em;
+    font-size: var(--font-size-base);
     font-weight: bold;
 }
 
@@ -176,13 +203,9 @@ export default {
 }
 
 .toggle-button {
-    background: none;
-    border: none;
     color: var(--primary-color);
     font-weight: bold;
     cursor: pointer;
-    display: flex;
-    align-items: center;
     gap: 4px;
 }
 
@@ -208,6 +231,7 @@ export default {
 
 .total-price {
     font-weight: bold;
+    font-size: var(--font-size-base);
     color: var(--primary-color);
 }
 

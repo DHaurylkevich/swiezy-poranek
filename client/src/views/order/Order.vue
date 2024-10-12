@@ -68,7 +68,6 @@ export default {
             return this.steps[this.steps.indexOf(this.currentPath) - 1];
         },
         goToNextStep() {
-            console.log(this.orderData.fullName)
             if (this.isFormPage) {
                 if (this.orderData.fullName) {
                     this.$router.push(this.nextStep);

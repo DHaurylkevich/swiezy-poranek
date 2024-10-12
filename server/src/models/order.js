@@ -1,11 +1,25 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const OrderSchema = new mongoose.Schema({
-    clientName: {
-        type: String,
-        required: true
-    },
-    email: {
+const dishItemSchema = new Schema({
+    name: String,
+    type: String,
+    day: String,
+    index: String,
+    calories: Number
+});
+
+const itemOrderSchema = new Schema({
+    index: String,
+    title: String,
+    price: Number,
+    type: String,
+    dishes: [dishItemSchema],
+    count: { type: Number, default: 1 }
+})
+
+const orderSchema = new Schema({
+    fullName: {
         type: String,
         required: true
     },
@@ -17,22 +31,26 @@ const OrderSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    items: [
-        {
-            name:{ type: String, required: true },
-            quantity: { type: Number, required: true },
-            price: { type: Number, required: true }
-        }
-    ],
-    totalPrice: {
-        type: Number,
-        required: true,
-        min: [0, 'Общая стоимость не может быть отрицательной']
+    description: {
+        type: String,
+        require: false
     },
-    orderDate: {
-        type: Date,
-        default: Date.now
+    email: {
+        type: String,
+        required: true
+    },
+    items: [itemOrderSchema],
+    fullPrice: {
+        type: String,
+        require: true
+    },
+    status: {
+        type: String,
+        require: true,
+        default: "Nowe zamówienie"
     }
-});
+}, { timestamps: true });
 
-module.exports = mongoose.model("Order", OrderSchema);
+const Order = mongoose.model('Order', orderSchema);
+
+module.exports = Order;

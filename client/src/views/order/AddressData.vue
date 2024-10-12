@@ -49,24 +49,22 @@ export default {
     computed: {
         ...mapGetters(["orderData"]),
         showSaveButton() {
-            // Проверяем, есть ли orderData и отличается ли хотя бы одно поле в formData
+            console.log(this.orderData);
             return this.orderData ?
                 Object.keys(this.formData).some(key =>
-                    this.formData[key] !== this.orderData[key] || !this.formData[key]
+                    this.formData[key] !== this.orderData[key]
                 ) :
-                true; // Если orderData нет, показываем кнопку
+                false;
         }
     },
     mounted() {
-        // Если данные заказа уже существуют, заполняем форму
         if (this.orderData) {
-            this.formData = { ...this.formData, ...this.orderData };
-        }
+            this.formData = { ...this.orderData };
+        };
     },
     methods: {
         ...mapMutations(["setOrderData"]),
         submitForm() {
-            console.log("Данные для доставки:", this.formData);
             this.setOrderData(this.formData);
         }
     }
@@ -86,8 +84,9 @@ export default {
 .delivery-form h2 {
     text-align: center;
     margin-bottom: 20px;
-    font-size: 24px;
-    color: var(--primary-color);
+    font-size: var(--font-size-large);
+    /* font-size: 24px; */
+    /* color: var(--primary-color); */
 }
 
 .form-group {
@@ -97,6 +96,7 @@ export default {
 .form-group label {
     display: block;
     margin-bottom: 5px;
+    font-size: var(--font-size-medium);
     font-weight: bold;
     color: var(--primary-color);
 }

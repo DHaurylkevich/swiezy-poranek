@@ -7,7 +7,7 @@ export default createStore({
             basketItems: [],
             currentSection: "",
             packages: [],
-            orderData: [],
+            orderData: {},
         };
     },
     mutations: {

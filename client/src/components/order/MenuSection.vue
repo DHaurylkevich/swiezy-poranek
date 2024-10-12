@@ -15,7 +15,7 @@
                             <ul class="dishes-list">
                                 <li v-for="(dish, dishIndex) in mealtime.dishes" :key="dish._id"
                                     :class="{ 'selected-dish': isSelected(`${dishIndex}${mealIndex}${weekIndex}`) }"
-                                    @click="toggleDish(false, dish.name, weekMenu.day, `${dishIndex}${mealIndex}${weekIndex}`)"
+                                    @click="toggleDish(false, dish.name, weekMenu.day, dish.calories,`${dishIndex}${mealIndex}${weekIndex}`)"
                                     class="dish-item" role="button">
                                     <span class="dish-name">{{ dish.name }}</span>
                                     <span class="dish-calories">{{ dish.calories }} kcal</span>
@@ -24,12 +24,12 @@
                         </div>
                         <ul v-else class="dishes-list minimal">
                             <li :key="mealtime._id" :class="{ 'selected-dish': isSelected(`${weekIndex}${mealIndex}`) }"
-                                @click="toggleDish(true, mealtime.type, weekMenu.day, `${weekIndex}${mealIndex}`)"
+                                @click="toggleDish(true, mealtime.type, weekMenu.day, dish?.calories, `${weekIndex}${mealIndex}`)"
                                 class="dish-item-minimal" role="button">
                                 <span class="dish-name">{{ mealtime.type }}</span>
                             </li>
                         </ul>
-                    </div>
+                    </div> 
                 </div>
             </div>
         </div>
@@ -51,7 +51,7 @@ export default {
         }
     },
     methods: {
-        toggleDish(filterMealtime, menuItem, weekDay, indexes) {
+        toggleDish(filterMealtime, menuItem, weekDay, calories, indexes) {
             let menuItemStruct;
             if (filterMealtime) {
                 menuItemStruct = {
@@ -63,7 +63,8 @@ export default {
                 menuItemStruct = {
                     name: menuItem,
                     day: weekDay,
-                    index: indexes
+                    index: indexes,
+                    calories: calories
                 };
             }
             this.$emit('addToBasket', menuItemStruct);

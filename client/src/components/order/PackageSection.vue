@@ -41,8 +41,8 @@ export default {
   },
   computed: {
     filteredPackages() {
-      console.log(this.filterType)
       if (this.filterType === "zestawy") {
+        console.log(this.packages);
         return this.packages.filter(pkg => pkg.type === "Zestaw");
       }else if (this.filterType === "dodatki"){
         return this.packages.filter(pkg => pkg.type === "Dodatek")
@@ -53,11 +53,10 @@ export default {
   },
   methods: {
     handleToggleSelect(pkg, index) {
-      // console.log(index);
       const eventPayload = {
         index,
         title: pkg.title,
-        menu: pkg.menu
+        menu: pkg.menu,
       };
       if (pkg.price) {
         eventPayload.price = pkg.price;
