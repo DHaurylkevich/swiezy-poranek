@@ -28,7 +28,7 @@ const routes = [
         meta: {
           title: 'Świeży Poranek - Catering w Poznaniu',
           description: 'Zapraszamy do Świeżego Poranka! Oferujemy pyszne dania cateringowe, które zaspokoją każde podniebienie. Sprawdź nasze menu i dowiedz się więcej o naszych usługach cateringowych.',
-          keywords: 'catering Poznań, jedzenie na wynos, usługi cateringowe, menu, dania, catering na imprezy',
+          keywords: 'swiezy poranek catering Poznań, jedzenie na wynos, usługi cateringowe, menu, dania, catering na imprezy',
           robots: 'index, follow'
         }
       },
@@ -47,7 +47,7 @@ const routes = [
             meta: {
               title: 'Wybierz Pakiet - Świeży Poranek',
               description: 'Wybierz idealny pakiet cateringowy, który najlepiej odpowiada Twoim potrzebom. Oferujemy różnorodne opcje dla każdego!',
-              keywords: 'pakiet cateringowy, catering na wynos, zestawy, jedzenie na imprezy',
+              keywords: 'swiezy poranek pakiet cateringowy, catering na wynos, zestawy, jedzenie na imprezy',
               robots: 'index, follow'
             }
           },
@@ -58,7 +58,7 @@ const routes = [
             meta: {
               title: 'Wybierz Dodatki - Świeży Poranek',
               description: 'Dodaj coś ekstra do swojego zamówienia! Sprawdź nasze pyszne dodatki do dań.',
-              keywords: 'dodatki do jedzenia, pyszne dodatki, catering, jedzenie na wynos',
+              keywords: 'swiezy poranek dodatki do jedzenia, pyszne dodatki, catering, jedzenie na wynos',
               robots: 'index, follow'
             }
           },
@@ -69,7 +69,7 @@ const routes = [
             meta: {
               title: 'Dane Dostawy - Świeży Poranek',
               description: 'Wprowadź dane dostawy, abyśmy mogli zrealizować Twoje zamówienie. Upewnij się, że informacje są poprawne.',
-              keywords: 'dane dostawy, zamówienie, catering Poznań',
+              keywords: ' swiezy poranek dane dostawy, zamówienie, catering Poznań',
               robots: 'index, follow'
             }
           },
@@ -80,7 +80,7 @@ const routes = [
             meta: {
               title: 'Podsumowanie Zamówienia - Świeży Poranek',
               description: 'Sprawdź podsumowanie swojego zamówienia przed złożeniem. Upewnij się, że wszystko się zgadza!',
-              keywords: 'podsumowanie zamówienia, catering Poznań, zamówienia online',
+              keywords: 'swiezy poranek podsumowanie zamówienia, catering Poznań, zamówienia online',
               robots: 'index, follow'
             }
           }
