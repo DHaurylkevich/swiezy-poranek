@@ -3,6 +3,7 @@ const { VueLoaderPlugin } = require('vue-loader');
 const TerserPlugin = require('terser-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const webpack = require('webpack');
 
 module.exports = {
@@ -70,6 +71,12 @@ module.exports = {
             __VUE_OPTIONS_API__: true,
             __VUE_PROD_DEVTOOLS__: false,
             __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false,
+        }),
+        new CopyWebpackPlugin({
+            patterns: [
+                { from: 'public/robots.txt', to: '.' },
+                { from: 'public/sitemap.xml', to: '.' }
+            ],
         }),
         new WebpackManifestPlugin({
             fileName: 'manifest.json',
