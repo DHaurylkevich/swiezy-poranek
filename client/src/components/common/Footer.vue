@@ -53,7 +53,6 @@ export default {
         async loadContactForm() {
             try {
                 this.contact = await getContactInfo();
-                console.log("Contact", this.contact);
             } catch (e) {
                 console.error("Failed to load packages:", e);
             }

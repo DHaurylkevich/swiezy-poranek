@@ -42,7 +42,6 @@ export default {
   computed: {
     filteredPackages() {
       if (this.filterType === "zestawy") {
-        console.log(this.packages);
         return this.packages.filter(pkg => pkg.type === "Zestaw");
       }else if (this.filterType === "dodatki"){
         return this.packages.filter(pkg => pkg.type === "Dodatek")

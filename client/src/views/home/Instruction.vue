@@ -77,7 +77,7 @@ export default {
 }
 
 .card .text {
-    font-size: var(--font-size-large);
+    font-size: var(--font-size-medium);
     font-weight: 600;
     text-align: center;
     padding-inline: 40px;

@@ -30,9 +30,9 @@
                 <img rel="preload" src="@/assets/img/home/eat.webp" alt="Food Image" />
             </div>
         </div>
-        <div class="info">
+        <!-- <div class="info">
             <p>Jak działa?</p>
-        </div>
+        </div> -->
     </section>
 </template>
 <script>
@@ -49,6 +49,7 @@ export default {
     background-color: var(--background-color);
     border-radius: var(--radius-section);
     box-shadow: 0 4px 50px rgba(0, 0, 0, 0.2);
+    padding-bottom: var(--spacing-inline);
 }
 
 .container {
@@ -126,7 +127,7 @@ export default {
     padding-left: var(--spacing-inline);
     margin-right: auto;
     margin-top: 56px;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 5px 40px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
 }
 

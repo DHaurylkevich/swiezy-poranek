@@ -4,12 +4,12 @@
             <PackageSection class="package" sectionTitle="Zestawy" :packages="packages" :selected="selectedPackage"
                 filterType="zestawy" @addToBasket="selectPackage" />
         </transition>
-        <transition name="fade" @before-enter="beforeEnter" @enter="enter" @leave="leave">
+        <!-- <transition name="fade" @before-enter="beforeEnter" @enter="enter" @leave="leave">
             <PackageSection v-if="selectedPackage" class="package" sectionTitle="Rodzaj zestawów" :packages="TypePackages"
                 :selected="selectedType" @addToBasket="selectType" />
-        </transition>
+        </transition> -->
         <transition name="fade" @before-enter="beforeEnter" @enter="enter" @leave="leave">
-            <MenuSection v-if="selectedType" @addToBasket="selectedDish" :menus="selectedPackage"
+            <MenuSection v-if="selectedPackage" @addToBasket="selectedDish" :menus="selectedPackage"
                 :selectedDishes="selectedDishes" />
         </transition>
         <div v-if="selectedDishes.length"   >
@@ -30,10 +30,6 @@ export default {
     },
     data() {
         return {
-            TypePackages: [
-                { title: "Standard" },
-                { title: "Vegetarian" }
-            ],
             selectedPackage: null,
             selectedDishes: [],
             selectedMenu: null,
@@ -58,25 +54,24 @@ export default {
                 this.selectedDishes.splice(dishIndex, 1);
             }
         },
-        selectType(typeItem) {
-            this.selectedType = typeItem;
-            const dishesIndexes = this.selectedDishes.map(dish => dish.index).join('');
-            if (dishesIndexes === -1) {
-                this.selectedDishes.push(menuItem);
-            } else {
-                this.selectedDishes.splice(dishesIndexes, 1);
-            }
-        },
+        // selectType(typeItem) {
+        //     this.selectedType = typeItem;
+        //     const dishesIndexes = this.selectedDishes.map(dish => dish.index).join('');
+        //     if (dishesIndexes === -1) {
+        //         this.selectedDishes.push(menuItem);
+        //     } else {
+        //         this.selectedDishes.splice(dishesIndexes, 1);
+        //     }
+        // },
         acceptMenu() {
             const dishesIndexes = this.selectedDishes.map(dish => dish.index).join('');
 
-            this.totalIndex = `${this.selectedPackage.index}${this.selectedType.index}${dishesIndexes}`;
+            this.totalIndex = `${this.selectedPackage.index}${dishesIndexes}`;
 
             const fullPackage = {
                 index: this.totalIndex,
                 title: this.selectedPackage.title,
                 price: this.selectedPackage.price,
-                type: this.selectedType.title,
                 dishes: this.selectedDishes,
                 count: 0
             };
@@ -87,7 +82,7 @@ export default {
         resetSelection() {
             this.selectedPackage = null;
             this.selectedDishes = [];
-            this.selectedType = null;
+            // this.selectedType = null;
             this.totalIndex = "";
         },
         beforeEnter(el) {
