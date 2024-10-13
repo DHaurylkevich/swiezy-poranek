@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /src/views/admin
+
+Sitemap: https://swiezy-poranek.vercel.app/sitemap.xml
