@@ -153,6 +153,7 @@ export default {
 
 .visual-content img {
     max-width: 100%;
+    width: 696px;
     height: auto;
     object-fit: cover;
 }

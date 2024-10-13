@@ -9,7 +9,6 @@
                 </div>
                 <div class="icons">
                     <a :href="contact.facebook"><img src="@/assets/icons/facebook.svg" alt="Facebook" /></a>
-                    <a :href="contact.instagram"><img src="@/assets/icons/instagram.svg" alt="Instagram" /></a>
                 </div>
             </div>
         </div>
@@ -23,7 +22,8 @@
         <div class="container legal">
             <div class="logo">
                 <img src="@/assets/logo.svg" alt="Logo" />
-            </div>
+            </div> 
+            <p class="info"> Catering Poznań</p>
             <p class="info">©2024 Swiezy Poranek</p>
         </div>
     </footer>
