@@ -182,6 +182,8 @@ export default {
 
     .logo .food-img {
         display: flex;
+        max-width: 100%;
+        width: 734px;
         align-items: center;
     }
 
@@ -231,11 +233,9 @@ export default {
 
     .logo .food-img {
         display: flex;
+        max-width: 100%;
+        width: 734px;
         align-items: center;
-    }
-
-    .food-img img {
-        width: 80%;
     }
 
     .text {
@@ -283,6 +283,8 @@ export default {
 
     .logo .food-img {
         display: flex;
+        max-width: 100%;
+        width: 734px;
         align-items: center;
     }
 
