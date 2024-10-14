@@ -7,7 +7,8 @@ export const saveImage = async (formData) => {
         const response = await axios.post(`${API_URL}`, formData, {
             headers: {
                 "Content-Type": "multipart/form-data"
-            }
+            },
+            withCredentials: true
         });
         return response.data;
     } catch (e) {
@@ -26,7 +27,7 @@ export const getImages = async () => {
 
 export const deleteImage = async (id, url) => {
     try {
-        await axios.delete(`${API_URL}/${id}`, { data: { url } }, { withCredentials: true });
+        await axios.delete(`${API_URL}/${id}`, { data: { url }, withCredentials: true });
     } catch (e) {
         throw new Error(e.response?.data?.message || "Ошибка на сервере");
     }

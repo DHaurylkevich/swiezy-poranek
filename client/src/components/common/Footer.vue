@@ -25,6 +25,7 @@
             </div> 
             <p class="info"> Catering Poznań</p>
             <p class="info">©2024 Swiezy Poranek</p>
+            <small class="icon-license">Icons made by <a href="https://www.flaticon.com/ru/free-icons/" title="салат иконки">Eucalyp - Flaticon</a></small>
         </div>
     </footer>
 </template>
@@ -113,6 +114,10 @@ export default {
     width: 24px;
     height: 24px;
     object-fit: contain;
+}
+
+.icon-license{
+    font-size: 10px;
 }
 
 @media (max-width: 576px) {
