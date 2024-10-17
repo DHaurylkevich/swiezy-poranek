@@ -125,6 +125,7 @@ export default {
             try {
                 await saveMenu(this.transformDataToObjects());
                 this.closeModal();
+                alert("Gotowe!");
             } catch (e) {
                 console.error("Błąd przy zapisywaniu menu:", e);
             }

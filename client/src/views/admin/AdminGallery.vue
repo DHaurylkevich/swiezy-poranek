@@ -58,7 +58,7 @@ export default {
             try {
                 const response = await getImages();
                 this.images = response;
-                console.log(this.images)
+                alert("Gotowe!");
             } catch (error) {
                 console.error("loadImages:", error);
             }
@@ -68,14 +68,16 @@ export default {
                 console.log(this.formData);
                 await saveImage(this.formData);
                 await this.loadImages();
+                alert("Gotowe!");
             } catch (e) {
                 console.error("uploadImage:", e);
             }
         },
         async handleDeleteImage(id, url) {
             try {
-                await deleteImage(id,url);
+                await deleteImage(id, url);
                 await this.loadImages();
+                alert("Gotowe!");
             } catch (e) {
                 console.error("handleDeleteImage:", e);
             }

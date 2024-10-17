@@ -22,7 +22,7 @@ export const updateContact = async (data) => {
             }
         });
 
-        alert("Gotowe!");
+        return
     } catch (error) {
         console.error("Ошибка при обновлении контактов:", error);
     }

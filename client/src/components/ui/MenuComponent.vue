@@ -124,6 +124,7 @@ export default {
             await updatedDayMenu(this.formData._id, this.formData);
             await this.loadMenu();
             this.showModal = false;
+            alert("Gotowe!");
         },
         addMealtime() {
             this.formData.mealtime.push({
@@ -146,6 +147,7 @@ export default {
         async deleteMenuById(id) {
             await deleteMenu(id)
             await this.loadMenu();
+            alert("Gotowe!");
         },
         openModal(row) {
             this.formData = { ...row };
