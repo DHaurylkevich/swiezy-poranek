@@ -2,7 +2,7 @@ import axios from "axios";
 
 const API_URL = VUE_APP_API_URL + "/order";
 
-const getAuthToken = () => localStorage.getItem('authToken');
+const getAuthToken = () => localStorage.getItem('token');
 
 export const createOrder = async (orderData) => {
     try {

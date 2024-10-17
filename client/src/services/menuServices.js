@@ -3,7 +3,7 @@ import axios from "axios";
 const API_URL = VUE_APP_API_URL + "/menu";
 
 const getAuthToken = () => {
-    return localStorage.getItem('authToken');
+    return localStorage.getItem('token');
 };
 
 export const getMenu = async () => {

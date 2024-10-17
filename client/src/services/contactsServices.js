@@ -14,7 +14,7 @@ export const getContactInfo = async () => {
 
 export const updateContact = async (data) => {
     try {
-        const token = localStorage.getItem('authToken');
+        const token = localStorage.getItem('token');
 
         await axios.put(API_URL, data, {
             headers: {
