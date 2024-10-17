@@ -1,10 +1,16 @@
+// adminServices.js
+
 const axios = require("axios");
 
 const API_URL = VUE_APP_API_URL + "/admin";
 
+// Вход в систему
 export const loginAdmin = async (email, password) => {
     try {
-        await axios.post(`${API_URL}/login`, { email, password }, { withCredentials: true });
+        const response = await axios.post(`${API_URL}/login`, { email, password });
+
+        // Сохраняем токен в localStorage
+        localStorage.setItem('token', response.data.token);
     } catch (e) {
         if (e.response && e.response.data) {
             throw new Error(e.response.data.message || 'Login failed');
@@ -14,43 +20,43 @@ export const loginAdmin = async (email, password) => {
     }
 }
 
+// Проверка аутентификации
 export const checkAuth = async () => {
     try {
-        const response = await axios.get(`${VUE_APP_API_URL}/auth/check`, { withCredentials: true });
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`${VUE_APP_API_URL}/auth/check`, {
+            headers: {
+                'Authorization': `Bearer ${token}` // Передаем токен в заголовке
+            }
+        });
+
         return response.data.isAuthenticated;
     } catch (e) {
-        if (e.response && e.response.data) {
-            return false;
-        } else {
-            throw new Error('Network error');
-        }
-    }
-};
-
-export const logoutAdmin = async () => {
-    try {
-        await axios.post(`${API_URL}/logout`,{}, { withCredentials: true });
-        console.log();
-        return true;
-    } catch (e) {
-        if (e.response && e.response.data) {
-            return false;
-        } else {
-            throw new Error('Network error');
-        }
+        return false;
     }
 }
 
+// Выход из системы
+export const logoutAdmin = () => {
+    localStorage.removeItem('token');
+    return true;
+}
+
+// Обновление токена
 export const refreshTokenAdmin = async () => {
     try {
-        await axios.get(`${VUE_APP_API_URL}/auth/refresh`, { withCredentials: true });
-        console.log("Refresh");
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`${VUE_APP_API_URL}/auth/refresh`, {
+            headers: {
+                'Authorization': `Bearer ${token}` // Передаем старый токен
+            }
+        });
+
+        // Сохраняем новый токен в localStorage
+        localStorage.setItem('token', response.data.token);
+
         return true;
     } catch (e) {
-        if (e.response && e.response.data) {
-            return false;
-        } else {
-            throw new Error('Network error');
-        }
+        return false;
     }
 }

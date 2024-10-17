@@ -6,18 +6,14 @@ require("dotenv").config();
 exports.loginAdmin = async (req, res) => {
     try {
         const { email, password } = req.body;
-        const token = await AdminService.loginAdmin(email, password)
-        res.cookie("token", token, {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'None',
-            maxAge: 60 * 60 * 1000
-        });
-        res.send('Logged in successfully');
+        const token = await AdminService.loginAdmin(email, password);
+
+        // Возвращаем токен в теле ответа
+        res.status(200).json({ token });
     } catch (err) {
         res.status(400).json({ message: err.message });
     }
-}
+};
 
 //Выход из системы
 exports.logoutAdmin = (req, res) => {
