@@ -4,7 +4,7 @@ const API_URL = VUE_APP_API_URL + "/image";
 
 export const saveImage = async (formData) => {
     try {
-        const token = localStorage.getItem('authToken');
+        const token = localStorage.getItem('token');
 
         const response = await axios.post(`${API_URL}`, formData, {
             headers: {
@@ -21,7 +21,7 @@ export const saveImage = async (formData) => {
 
 export const getImages = async () => {
     try {
-        const token = localStorage.getItem('authToken');
+        const token = localStorage.getItem('token');
 
         const response = await axios.get(API_URL, {
             headers: {
@@ -37,7 +37,7 @@ export const getImages = async () => {
 
 export const deleteImage = async (id, url) => {
     try {
-        const token = localStorage.getItem('authToken');
+        const token = localStorage.getItem('token');
 
         await axios.delete(`${API_URL}/${id}`, {
             headers: {

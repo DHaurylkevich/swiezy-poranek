@@ -2,8 +2,7 @@ import axios from "axios";
 
 const API_URL = VUE_APP_API_URL + "/package";
 
-// Функция для получения токена из localStorage
-const getAuthToken = () => localStorage.getItem('authToken');
+const getAuthToken = () => localStorage.getItem('token');
 
 // Получение всех пакетов
 export const getPackages = async () => {
