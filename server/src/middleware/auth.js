@@ -1,6 +1,6 @@
 const jwtUtility = require("../utility/jwt");
 
-const authenticateJWT = (req, res, next) => {
+exports.authenticateJWT = (req, res, next) => {
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
