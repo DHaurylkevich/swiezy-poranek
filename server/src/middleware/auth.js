@@ -50,7 +50,8 @@ const refreshTokenAdmin = (req, res) => {
 
     res.cookie('token', newToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
+        secure: true,
+        sameSite: 'None',
         maxAge: 60 * 60 * 1000
     });
 
