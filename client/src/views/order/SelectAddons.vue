@@ -6,11 +6,9 @@
             <MenuSection v-if="selectedAddons" @addToBasket="selectedDish" :menus="selectedAddons"
                 :selectedDishes="selectedDishes" />
         </transition>
-        <transition name="fade" @before-enter="beforeEnter" @enter="enter" @leave="leave">
-            <div v-if="selectedDishes.length">
-                <button class="btn" @click="acceptMenu">Do koszyka</button>
-            </div>
-        </transition>
+        <div v-if="selectedDishes.length">
+            <button class="btn" @click="acceptMenu">Do koszyka</button>
+        </div>
     </section>
 </template>
 
@@ -75,14 +73,13 @@ export default {
             el.offsetHeight;
             el.style.transition = "opacity 0.3s ease";
             el.style.opacity = 1;
-            el.scrollIntoView({ behavior: "smooth", block: "start" });
             done();
         },
         leave(el, done) {
             el.style.transition = "opacity 0.2s ease";
             el.style.opacity = 0;
             window.scrollTo({ top: 0, behavior: "smooth" });
-            setTimeout(done, 200);
+            setTimeout(done, 600);
         }
     }
 }
@@ -95,7 +92,7 @@ export default {
     gap: 24px;
 }
 
-.btn{
+.btn {
     background-color: var(--primary-color);
     border-radius: 24px;
     border: none;

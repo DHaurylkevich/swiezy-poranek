@@ -43,7 +43,7 @@
                     <li v-if="orderData.comment"><strong>Komentarz:</strong> <span>{{ orderData.comment }}</span></li>
                 </ul>
                 <button @click="sendInfo" class="payment-button " id="submit">
-                    <span id="button-text">Pay now</span>
+                    <span id="button-text">Zamów</span>
                 </button>
             </div>
         </div>
@@ -109,9 +109,10 @@ export default {
                 };
                 if (sendData.basketItems.length !== 0) {
                     const response = await createOrder(sendData);
-                    console.log("Order response:", sendData.basketItems);
+                    console.log("Order response:", response);
                     if (response) {
-                        this.$router.push('/order/confirm');
+                        console.log("Navigating to confirm page");
+                        this.$router.push('/confirm');
                     } else {
                         alert('Error!');
                     }

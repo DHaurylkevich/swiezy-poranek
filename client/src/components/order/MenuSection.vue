@@ -14,8 +14,8 @@
                             <p class="mealtime-type">{{ mealtime.type }}</p>
                             <ul class="dishes-list">
                                 <li v-for="(dish, dishIndex) in mealtime.dishes" :key="dish._id"
-                                    :class="{ 'selected-dish': isSelected(`${dishIndex}${mealIndex}${weekIndex}`) }"
-                                    @click="toggleDish(false, dish.name, weekMenu.day, dish.calories,`${dishIndex}${mealIndex}${weekIndex}`)"
+                                    :class="{ 'selected-dish': isSelected(`${weekIndex}${mealIndex}${dishIndex}`) }"
+                                    @click="toggleDish(false, dish.name, weekMenu.day, dish.calories, `${weekIndex}${mealIndex}${dishIndex}`)"
                                     class="dish-item" role="button">
                                     <span class="dish-name">{{ dish.name }}</span>
                                     <span class="dish-calories">{{ dish.calories }} kcal</span>
@@ -29,7 +29,7 @@
                                 <span class="dish-name">{{ mealtime.type }}</span>
                             </li>
                         </ul>
-                    </div> 
+                    </div>
                 </div>
             </div>
         </div>
@@ -182,9 +182,10 @@ export default {
 
 @media (min-width: 769px) and (max-width: 946px) {
     .dish-item {
-        height: 10vw;
+        height: 14vw;
     }
 }
+
 /* 1334 */
 @media(min-width: 947px) and (max-width: 1213px) {
     .dish-item {

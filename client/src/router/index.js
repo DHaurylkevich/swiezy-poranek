@@ -31,7 +31,10 @@ const routes = [
           description: 'Zapraszamy do Świeżego Poranka! Oferujemy pyszne dania cateringowe, które zaspokoją każde podniebienie. Sprawdź nasze menu i dowiedz się więcej o naszych usługach cateringowych.',
           keywords: 'swiezy poranek catering Poznań, jedzenie na wynos, usługi cateringowe, menu, dania, catering na imprezy',
           robots: 'index, follow'
-        }
+        },
+        children: [
+          
+        ]
       },
       {
         path: "order",
@@ -85,12 +88,12 @@ const routes = [
               robots: 'index, follow'
             }
           },
-          {
-            path: "confirm",
-            name: "LastPage",
-            component: LastPage,
-          }
         ]
+      },
+      {
+        path: "confirm",
+        name: "LastPage",
+        component: LastPage,
       }
     ]
   },

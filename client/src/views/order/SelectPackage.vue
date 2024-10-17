@@ -12,7 +12,7 @@
             <MenuSection v-if="selectedPackage" @addToBasket="selectedDish" :menus="selectedPackage"
                 :selectedDishes="selectedDishes" />
         </transition>
-        <div v-if="selectedDishes.length"   >
+        <div v-if="selectedDishes.length">
             <button class="btn" @click="acceptMenu">Do koszyka</button>
         </div>
     </section>
@@ -47,11 +47,17 @@ export default {
             this.selectedPackage = packageItem;
         },
         selectedDish(menuItem) {
-            const dishIndex = this.selectedDishes.findIndex(selectedDish => selectedDish.index === menuItem.index);
+            let dishIndex = this.selectedDishes.findIndex(selectedDish => selectedDish.index.slice(0, -1) === menuItem.index.slice(0, -1));
             if (dishIndex === -1) {
                 this.selectedDishes.push(menuItem);
             } else {
-                this.selectedDishes.splice(dishIndex, 1);
+                dishIndex = this.selectedDishes.findIndex(selectedDish => selectedDish.index === menuItem.index);
+                if (dishIndex === -1) {
+                    this.selectedDishes.splice(dishIndex, 1);
+                    this.selectedDishes.push(menuItem);
+                } else {
+                    this.selectedDishes.splice(dishIndex, 1);
+                }
             }
         },
         // selectType(typeItem) {
@@ -99,7 +105,7 @@ export default {
             el.style.transition = "opacity 0.2s ease";
             el.style.opacity = 0;
             window.scrollTo({ top: 0, behavior: "smooth" });
-            setTimeout(done, 200);
+            setTimeout(done, 600);
         }
     }
 };
@@ -111,7 +117,8 @@ export default {
     flex-direction: column;
     gap: 24px;
 }
-.btn{
+
+.btn {
     background-color: var(--primary-color);
     border-radius: 24px;
     border: none;

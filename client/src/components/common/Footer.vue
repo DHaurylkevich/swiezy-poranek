@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { getContactInfo } from "@/services/contactsServices"
+import { getContactInfo } from "@/services/contactsServices";
 
 export default {
     name: "FooterComponent",
