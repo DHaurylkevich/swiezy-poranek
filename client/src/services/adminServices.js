@@ -1,15 +1,11 @@
-// adminServices.js
-
 const axios = require("axios");
 
 const API_URL = VUE_APP_API_URL + "/admin";
 
-// Вход в систему
 export const loginAdmin = async (email, password) => {
     try {
         const response = await axios.post(`${API_URL}/login`, { email, password });
 
-        // Сохраняем токен в localStorage
         localStorage.setItem('token', response.data.token);
     } catch (e) {
         if (e.response && e.response.data) {
@@ -20,13 +16,12 @@ export const loginAdmin = async (email, password) => {
     }
 }
 
-// Проверка аутентификации
 export const checkAuth = async () => {
     try {
         const token = localStorage.getItem('token');
         const response = await axios.get(`${VUE_APP_API_URL}/auth/check`, {
             headers: {
-                'Authorization': `Bearer ${token}` // Передаем токен в заголовке
+                'Authorization': `Bearer ${token}`
             }
         });
 
@@ -36,23 +31,20 @@ export const checkAuth = async () => {
     }
 }
 
-// Выход из системы
 export const logoutAdmin = () => {
     localStorage.removeItem('token');
     return true;
 }
 
-// Обновление токена
 export const refreshTokenAdmin = async () => {
     try {
         const token = localStorage.getItem('token');
         const response = await axios.get(`${VUE_APP_API_URL}/auth/refresh`, {
             headers: {
-                'Authorization': `Bearer ${token}` // Передаем старый токен
+                'Authorization': `Bearer ${token}`
             }
         });
 
-        // Сохраняем новый токен в localStorage
         localStorage.setItem('token', response.data.token);
 
         return true;

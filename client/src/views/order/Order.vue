@@ -73,7 +73,7 @@ export default {
                 if (this.orderData.fullName) {
                     this.$router.push(this.nextStep);
                 } else {
-                    alert('Пожалуйста, заполните все обязательные поля!');
+                    alert('Wypełnij wszystkie pola obowiązkowe!');
                 }
             } else {
                 this.$router.push(this.nextStep);

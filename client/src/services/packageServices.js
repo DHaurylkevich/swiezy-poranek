@@ -2,10 +2,18 @@ import axios from "axios";
 
 const API_URL = VUE_APP_API_URL + "/package";
 
+// Функция для получения токена из localStorage
+const getAuthToken = () => localStorage.getItem('authToken');
+
 // Получение всех пакетов
 export const getPackages = async () => {
     try {
-        const response = await axios.get(API_URL);
+        const token = getAuthToken();
+        const response = await axios.get(API_URL, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
         return response.data;
     } catch (e) {
         console.error("Failed to fetch packages:", e);
@@ -13,9 +21,15 @@ export const getPackages = async () => {
     }
 }
 
+// Получение пакетов с меню
 export const getPackagesWithMenu = async () => {
     try {
-        const response = await axios.get(`${API_URL}/packages`);
+        const token = getAuthToken();
+        const response = await axios.get(`${API_URL}/packages`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
         return response.data;
     } catch (e) {
         console.error("Failed to fetch packages:", e);
@@ -26,11 +40,12 @@ export const getPackagesWithMenu = async () => {
 // Создание нового пакета
 export const createPackage = async (formData) => {
     try {
+        const token = getAuthToken();
         await axios.post(`${API_URL}/create`, formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
-            },
-            withCredentials: true
+                'Authorization': `Bearer ${token}`
+            }
         });
     } catch (e) {
         console.error("Ошибка при создании пакета:", e);
@@ -41,11 +56,12 @@ export const createPackage = async (formData) => {
 // Обновление пакета
 export const updatePackage = async (id, formData) => {
     try {
+        const token = getAuthToken();
         await axios.put(`${API_URL}/${id}`, formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
-            },
-            withCredentials: true
+                'Authorization': `Bearer ${token}`
+            }
         });
     } catch (e) {
         console.error("Ошибка при обновлении пакета:", e);
@@ -56,8 +72,13 @@ export const updatePackage = async (id, formData) => {
 // Удаление пакета
 export const deletePackage = async (id, url) => {
     try {
-        console.log(url);
-        await axios.delete(`${API_URL}/${id}`, { data: { url: url }, withCredentials: true });
+        const token = getAuthToken();
+        await axios.delete(`${API_URL}/${id}`, {
+            data: { url: url },
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
     } catch (e) {
         console.error("Ошибка при удалении пакета:", e);
         throw new Error(e.response?.data?.message || "Ошибка на сервере");

@@ -109,13 +109,13 @@ export default {
                 };
                 if (sendData.basketItems.length !== 0) {
                     const response = await createOrder(sendData);
-                    console.log("Order response:", response);
                     if (response) {
-                        console.log("Navigating to confirm page");
                         this.$router.push('/confirm');
                     } else {
-                        alert('Error!');
+                        console.log(response);
                     }
+                }else{
+                    alert('Koszyk jest pusty!');
                 }
             } catch (error) {
                 console.error("Error while sending order:", error.message);
