@@ -3,22 +3,38 @@
         <h1 class="header">Zamówienia</h1>
 
         <section class="orders">
-            <div class="order-card" v-for="(order, index) in rows" :key="order.id" @click="openModal(order)">
+            <div class="order-card" v-for="(order, index) in rows" :key="order.id" @click="openOrderModal(order)">
                 <div class="main-info">
                     <h4>{{ order.fullName }}</h4>
                     <p class="order-status" :class="order.status.toLowerCase()">{{ order.status }}</p>
                 </div>
                 <div class="order-details">
-                    <p><strong>Email:</strong> {{ order.email }}</p>
+                    <p v-if="order.email"><strong>Email:</strong> {{ order.email }}</p>
                     <p><strong>Telefone:</strong> {{ order.phone }}</p>
                     <p><strong>Address:</strong> {{ order.address }}</p>
                     <p><strong>Cena:</strong> {{ order.fullPrice }}</p>
                     <p><strong>Data zamówienia:</strong> {{ order.createdAt }}</p>
                 </div>
+                <button @click.stop="openDeleteModal(order._id)" class="mini-btn">Usuń</button>
             </div>
         </section>
 
-        <AdminModal :is-visible="showModal" @close="closeModal">
+        <AdminModal :is-visible="showModalDelete" @close="closeDeleteModal">
+            <template #header>
+                <h3 class="modal-header">Usuniencie zamówienia</h3>
+            </template>
+
+            <template #body>
+                <p>Czy napewno usunąć?</p>
+            </template>
+
+            <template #footer>
+                <button class="mini-btn" @click="confirmDeleteOrder">Usuń</button>
+            </template>
+        </AdminModal>
+
+        <!-- Модальное окно для информации о заказе -->
+        <AdminModal :is-visible="showModal" @close="closeOrderModal">
             <template #header>
                 <h3 class="modal-header">Informacja o zamówieniu</h3>
             </template>
@@ -31,32 +47,18 @@
                         <p><strong>Telefon:</strong> {{ currentRow.phone }}</p>
                         <p><strong>Address:</strong> {{ currentRow.address }}</p>
                         <p><strong>Cena:</strong> {{ currentRow.fullPrice }}</p>
-                        <p><strong>Data zamówienia</strong> {{ currentRow.createdAt }}</p>
+                        <p><strong>Data zamówienia:</strong> {{ currentRow.createdAt }}</p>
                         <select v-model="selectedItem">
                             <option :value="selectedItem" disabled>{{ selectedItem }}</option>
                             <option v-for="status in listStatus" :key="status.id" :value="status">{{ status }}</option>
                         </select>
                         <button @click="sendData(currentRow._id)">Zmienić status</button>
                     </div>
-                    <h4>Zestawy:</h4>
-                    <ul class="items-list">
-                        <li v-for="item in currentRow.items" :key="item.id" class="inf-package">
-                            <p><strong>{{ item.title }} ({{ item.type }})</strong> - {{ item.price }}</p>
-                            <ul class="dishes-list">
-                                <li v-for="(group, day) in groupDishesByDay(item.dishes)" :key="day">
-                                    <strong>{{ day }}:</strong>
-                                    <ul>
-                                        <li v-for="dish in group" :key="dish.index">{{ dish.name || dish.type }}</li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
                 </div>
             </template>
 
             <template #footer>
-                <button class="mini-btn" @click="closeModal">Zamknij</button>
+                <button class="mini-btn" @click="closeOrderModal">Zamknij</button>
             </template>
         </AdminModal>
     </div>
@@ -64,7 +66,7 @@
 
 <script>
 import AdminModal from '@/components/ui/Modal.vue';
-import { getOrders, updateOrderStatus } from "@/services/orderServices";
+import { getOrders, updateOrderStatus, deleteOrder } from "@/services/orderServices";
 
 
 export default {
@@ -74,13 +76,11 @@ export default {
     },
     data() {
         return {
-            columns: ["id", "Имя клиента", "Email", "Телефон", "Адрес", "Товары", "Общая стоимость", "Дата заказа", "Действия"],
             rows: [],
             showModal: false,
+            showModalDelete: false,
             currentRow: null,
-            totalOrders: null,
-            totalUsers: null,
-            totalRevenue: null,
+            orderToDelete: null,
             selectedItem: "",
             listStatus: ["Nowe zamówienie", "W trakte", "Nie aktualne"]
         }
@@ -89,57 +89,50 @@ export default {
         this.loadAllOrder();
     },
     methods: {
-        openModal(row = null) {
+        openOrderModal(row = null) {
             this.showModal = true;
             this.currentRow = row;
             this.selectedItem = row.status ? row.status : "Wybierz status";
         },
-        closeModal() {
+        closeOrderModal() {
             this.currentRow = null;
             this.showModal = false;
             this.selectedItem = "";
+        },
+        openDeleteModal(orderId) {
+            this.orderToDelete = orderId;
+            this.showModalDelete = true;
+        },
+        closeDeleteModal() {
+            this.orderToDelete = null;
+            this.showModalDelete = false;
         },
         async loadAllOrder() {
             try {
                 this.rows = await getOrders();
             } catch (e) {
-                console.error("Failed to load menu's ids:", e);
+                console.error("Failed to load orders:", e);
             }
         },
         async sendData(id) {
-            console.log(this.selectedItem);
-            await updateOrderStatus(id, {status: this.selectedItem});
+            await updateOrderStatus(id, { status: this.selectedItem });
             await this.loadAllOrder();
         },
-        deleteFoodSet(id) {
-            console.log("Del", id);
-            this.rows = this.rows.filter(item => item.id !== id);
-            this.closeModal()
-        },
-        formatDays(days) {
-            const dayNames = {
-                "Poniedziałek": "Pon",
-                "Wtorek": "Wto",
-                "Środa": "Śro",
-                "Czwartek": "Czw",
-                "Piątek": "Pią",
-            };
-
-            const formattedDays = days.map(day => dayNames[day] || day);
-            return formattedDays.join(", ");
-        },
-        groupDishesByDay(dishes) {
-            return dishes.reduce((acc, dish) => {
-                if (!acc[dish.day]) {
-                    acc[dish.day] = [];
+        async confirmDeleteOrder() {
+            if (this.orderToDelete) {
+                try {
+                    await deleteOrder(this.orderToDelete);
+                    await this.loadAllOrder();
+                } catch (e) {
+                    console.error("Ошибка при удалении заказа:", e);
                 }
-                acc[dish.day].push(dish);
-                return acc;
-            }, {});
+                this.closeDeleteModal();
+            }
         }
     }
 }
 </script>
+
 
 <style scoped>
 .admin-orders {
@@ -217,8 +210,8 @@ export default {
 }
 
 .mini-btn {
-    background-color: var(--primary-color);
-    border: 1px solid var(--primary-color);
+    background-color: #d9534f;
+    border: 1px solid #d9534f;
     font-weight: bold;
     color: var(--background-color);
     padding: 10px 15px;
@@ -227,7 +220,6 @@ export default {
 
 .mini-btn:hover {
     background-color: var(--background-color);
-    border: 1px solid var(--primary-color);
-    color: var(--primary-color);
+    color: #d9534f;
 }
 </style>
