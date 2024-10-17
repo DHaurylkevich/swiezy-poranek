@@ -47,17 +47,21 @@ export default {
             this.selectedPackage = packageItem;
         },
         selectedDish(menuItem) {
-            let dishIndex = this.selectedDishes.findIndex(selectedDish => selectedDish.index.slice(0, -1) === menuItem.index.slice(0, -1));
+            let dishIndex = this.selectedDishes.findIndex(selectedDish => selectedDish.index === menuItem.index);
+            console.log(dishIndex)
+
             if (dishIndex === -1) {
-                this.selectedDishes.push(menuItem);
-            } else {
-                dishIndex = this.selectedDishes.findIndex(selectedDish => selectedDish.index === menuItem.index);
+                dishIndex = this.selectedDishes.findIndex(selectedDish => selectedDish.index.slice(0, -1) === menuItem.index.slice(0, -1));
                 if (dishIndex === -1) {
-                    this.selectedDishes.splice(dishIndex, 1);
+                    console.log(menuItem.index.slice(0, -1))
                     this.selectedDishes.push(menuItem);
                 } else {
+                    console.log("slice")
                     this.selectedDishes.splice(dishIndex, 1);
+                    this.selectedDishes.push(menuItem);
                 }
+            } else {
+                this.selectedDishes.splice(dishIndex, 1);
             }
         },
         // selectType(typeItem) {

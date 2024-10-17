@@ -68,6 +68,7 @@ export default {
                 };
             }
             this.$emit('addToBasket', menuItemStruct);
+            console.log(indexes)
         },
         isSelected(index) {
             return this.selectedDishes.some(selectedDish => selectedDish.index === index);
