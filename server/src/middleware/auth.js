@@ -48,7 +48,7 @@ const refreshTokenAdmin = (req, res) => {
 
     const newToken = jwtUtility.generateToken(decoded.id, decoded.email);
 
-    res.cookie('token', newToken, {
+    res.cookie("token", newToken, {
         httpOnly: true,
         secure: true,
         sameSite: 'None',
