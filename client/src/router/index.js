@@ -15,6 +15,7 @@ import SelectPackage from "../views/order/SelectPackage.vue";
 const SelectAddons = () => import("../views/order/SelectAddons.vue");
 const AddressData = () => import("../views/order/AddressData.vue");
 const OrderSummary = () => import("../views/order/OrderSummary.vue");
+const LastPage = () => import("../views/order/LastPage.vue");
 
 const routes = [
   {
@@ -83,6 +84,11 @@ const routes = [
               keywords: 'swiezy poranek podsumowanie zamówienia, catering Poznań, zamówienia online',
               robots: 'index, follow'
             }
+          },
+          {
+            path: "confirm",
+            name: "LastPage",
+            component: LastPage,
           }
         ]
       }

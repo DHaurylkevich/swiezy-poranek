@@ -7,8 +7,8 @@
                 <div v-if="basketItems.length" class="basket-container">
                     <details v-for="item in basketItems" :key="item.index" class="basket-item">
                         <summary class="item-header">
-                                {{ item.title }} (x{{ item.count }})
-                                {{ item.price }} PLN
+                            {{ item.title }} (x{{ item.count }})
+                            {{ item.price }} PLN
                         </summary>
                         <div class="item-details">
                             <p v-if="item.type"><strong>Typ:</strong> {{ item.type }}</p>
@@ -107,8 +107,15 @@ export default {
                     orderData: this.orderData,
                     basketItems: this.basketItems,
                 };
-                const response = await createOrder(sendData);
-                console.log("Order response:", response); 
+                if (sendData.basketItems.length !== 0) {
+                    const response = await createOrder(sendData);
+                    console.log("Order response:", sendData.basketItems);
+                    if (response) {
+                        this.$router.push('/order/confirm');
+                    } else {
+                        alert('Error!');
+                    }
+                }
             } catch (error) {
                 console.error("Error while sending order:", error.message);
             }

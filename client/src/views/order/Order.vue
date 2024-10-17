@@ -39,7 +39,8 @@ export default {
                 '/order/zestawy',
                 '/order/dodatki',
                 '/order/dane-dostawy',
-                '/order/podsumowanie'
+                '/order/podsumowanie',
+                '/order/confirm'
             ];
         },
         isSummaryPage() {
