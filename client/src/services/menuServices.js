@@ -2,7 +2,10 @@ import axios from "axios";
 
 const API_URL = VUE_APP_API_URL + "/menu";
 
-// Получение всех меню
+const getAuthToken = () => {
+    return localStorage.getItem('token');
+};
+
 export const getMenu = async () => {
     try {
         const response = await axios.get(API_URL);
@@ -15,7 +18,7 @@ export const getMenu = async () => {
 
 export const getMenusIds = async () => {
     try {
-        const response = await axios.get(`${API_URL}/ids`)
+        const response = await axios.get(`${API_URL}/ids`);
         return response.data;
     } catch (e) {
         console.error("Ошибка при получении меню:", e);
@@ -23,10 +26,14 @@ export const getMenusIds = async () => {
     }
 }
 
-// Создание нового меню
 export const saveMenu = async (menuData) => {
     try {
-        await axios.post(`${API_URL}/`, menuData, { withCredentials: true });
+        const token = getAuthToken();
+        await axios.post(`${API_URL}/`, menuData, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
     } catch (e) {
         console.error("Ошибка при создании меню:", e);
         throw new Error(e.response?.data?.message || "Ошибка на сервере");
@@ -35,17 +42,26 @@ export const saveMenu = async (menuData) => {
 
 export const updatedDayMenu = async (id, dayMenuData) => {
     try {
-        await axios.put(`${API_URL}/${id}`, dayMenuData, { withCredentials: true });
+        const token = getAuthToken();
+        await axios.put(`${API_URL}/${id}`, dayMenuData, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
     } catch (e) {
-        console.error("Ошибка при создании меню:", e);
+        console.error("Ошибка при обновлении меню дня:", e);
         throw new Error(e.response?.data?.message || "Ошибка на сервере");
-    };
-}
+    }
+};
 
-// Удаление меню
 export const deleteMenu = async (id) => {
     try {
-        await axios.delete(`${API_URL}/${id}`);
+        const token = getAuthToken();
+        await axios.delete(`${API_URL}/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
     } catch (e) {
         console.error("Ошибка при удалении меню:", e);
         throw new Error(e.response?.data?.message || "Ошибка на сервере");

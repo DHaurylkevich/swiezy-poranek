@@ -21,8 +21,6 @@ exports.getAllOrders = async () => {
 
 exports.updateOrderStatus = async (id, status) => {
     try {
-        console.log(status);
-        console.log(status.status);
         return await Order.findByIdAndUpdate(id, { status: status.status });
     } catch (error) {
         throw new Error("Failed to retrieve orders: " + error.message);

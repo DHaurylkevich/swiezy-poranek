@@ -22,7 +22,7 @@ const changePassword = async (oldPassword, newPassword, email) => {
     const isMatch = await comparePassword(oldPassword, adminExist.password);
     if (!isMatch) throw new Error("Invalid credentials");
 
-    if( oldPassword === newPassword ) throw new Error("New password cannot be the same as the old password");
+    if (oldPassword === newPassword) throw new Error("New password cannot be the same as the old password");
 
     adminExist.password = newPassword;
     return await adminExist.save();

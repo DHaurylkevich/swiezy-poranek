@@ -39,7 +39,8 @@ export default {
                 '/order/zestawy',
                 '/order/dodatki',
                 '/order/dane-dostawy',
-                '/order/podsumowanie'
+                '/order/podsumowanie',
+                '/order/confirm'
             ];
         },
         isSummaryPage() {
@@ -72,7 +73,7 @@ export default {
                 if (this.orderData.fullName) {
                     this.$router.push(this.nextStep);
                 } else {
-                    alert('Пожалуйста, заполните все обязательные поля!');
+                    alert('Wypełnij wszystkie pola obowiązkowe!');
                 }
             } else {
                 this.$router.push(this.nextStep);

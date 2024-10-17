@@ -10,11 +10,12 @@ const AdminContacts = () => import("../views/admin/AdminContacts.vue");
 const AdminGallery = () => import("../views/admin/AdminGallery.vue");
 const LoginPage = () => import("../views/admin/LoginPage.vue");
 import HomeSection from "../views/home/Home.vue";
-import OrderPage from "../views/order/Order.vue";
+const OrderPage = () => import("../views/order/Order.vue");
 import SelectPackage from "../views/order/SelectPackage.vue";
 const SelectAddons = () => import("../views/order/SelectAddons.vue");
 const AddressData = () => import("../views/order/AddressData.vue");
 const OrderSummary = () => import("../views/order/OrderSummary.vue");
+const LastPage = () => import("../views/order/LastPage.vue");
 
 const routes = [
   {
@@ -24,7 +25,16 @@ const routes = [
       {
         path: "",
         name: "Home",
-        component: HomeSection
+        component: HomeSection,
+        meta: {
+          title: 'Świeży Poranek - Catering w Poznaniu',
+          description: 'Zapraszamy do Świeżego Poranka! Oferujemy pyszne dania cateringowe, które zaspokoją każde podniebienie. Sprawdź nasze menu i dowiedz się więcej o naszych usługach cateringowych.',
+          keywords: 'swiezy poranek catering Poznań, jedzenie na wynos, usługi cateringowe, menu, dania, catering na imprezy',
+          robots: 'index, follow'
+        },
+        children: [
+          
+        ]
       },
       {
         path: "order",
@@ -37,24 +47,53 @@ const routes = [
           {
             path: "zestawy",
             name: "SelectPackage",
-            component: SelectPackage
+            component: SelectPackage,
+            meta: {
+              title: 'Wybierz Pakiet - Świeży Poranek',
+              description: 'Wybierz idealny pakiet cateringowy, który najlepiej odpowiada Twoim potrzebom. Oferujemy różnorodne opcje dla każdego!',
+              keywords: 'swiezy poranek pakiet cateringowy, catering na wynos, zestawy, jedzenie na imprezy',
+              robots: 'index, follow'
+            }
           },
           {
             path: "dodatki",
             name: "SelectAddons",
-            component: SelectAddons
+            component: SelectAddons,
+            meta: {
+              title: 'Wybierz Dodatki - Świeży Poranek',
+              description: 'Dodaj coś ekstra do swojego zamówienia! Sprawdź nasze pyszne dodatki do dań.',
+              keywords: 'swiezy poranek dodatki do jedzenia, pyszne dodatki, catering, jedzenie na wynos',
+              robots: 'index, follow'
+            }
           },
           {
             path: "dane-dostawy",
             name: "AddressData",
-            component: AddressData
+            component: AddressData,
+            meta: {
+              title: 'Dane Dostawy - Świeży Poranek',
+              description: 'Wprowadź dane dostawy, abyśmy mogli zrealizować Twoje zamówienie. Upewnij się, że informacje są poprawne.',
+              keywords: ' swiezy poranek dane dostawy, zamówienie, catering Poznań',
+              robots: 'index, follow'
+            }
           },
           {
             path: "podsumowanie",
             name: "OrderSummary",
-            component: OrderSummary
-          }
+            component: OrderSummary,
+            meta: {
+              title: 'Podsumowanie Zamówienia - Świeży Poranek',
+              description: 'Sprawdź podsumowanie swojego zamówienia przed złożeniem. Upewnij się, że wszystko się zgadza!',
+              keywords: 'swiezy poranek podsumowanie zamówienia, catering Poznań, zamówienia online',
+              robots: 'index, follow'
+            }
+          },
         ]
+      },
+      {
+        path: "confirm",
+        name: "LastPage",
+        component: LastPage,
       }
     ]
   },
@@ -127,7 +166,7 @@ router.beforeEach(async (to, from, next) => {
       if (isAuthenticated) {
         console.log(isAuthenticated)
         next();
-      }else{
+      } else {
         next({ name: "LoginPage" });
       }
     } else {

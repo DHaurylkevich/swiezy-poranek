@@ -68,8 +68,9 @@ export default {
         },
         async handleSubmit() {
             try {
-                await updateContact(this.contact),
+                await updateContact(this.contact);
                 await this.loadContactForm();
+                alert("Gotowe!");
             } catch (e) {
                 console.error("Ошибка при сохранении пакета:", e);
             }

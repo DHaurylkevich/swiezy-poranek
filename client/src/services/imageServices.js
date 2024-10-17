@@ -4,11 +4,15 @@ const API_URL = VUE_APP_API_URL + "/image";
 
 export const saveImage = async (formData) => {
     try {
+        const token = localStorage.getItem('token');
+
         const response = await axios.post(`${API_URL}`, formData, {
             headers: {
-                "Content-Type": "multipart/form-data"
+                "Content-Type": "multipart/form-data",
+                "Authorization": `Bearer ${token}`
             }
         });
+
         return response.data;
     } catch (e) {
         throw new Error(e.response?.data?.message || "Ошибка на сервере");
@@ -17,7 +21,14 @@ export const saveImage = async (formData) => {
 
 export const getImages = async () => {
     try {
-        const response = await axios.get(API_URL);
+        const token = localStorage.getItem('token');
+
+        const response = await axios.get(API_URL, {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
         return response.data;
     } catch (e) {
         throw new Error(e.response?.data?.message || "Ошибка на сервере");
@@ -26,7 +37,14 @@ export const getImages = async () => {
 
 export const deleteImage = async (id, url) => {
     try {
-        await axios.delete(`${API_URL}/${id}`, { data: { url } }, { withCredentials: true });
+        const token = localStorage.getItem('token');
+
+        await axios.delete(`${API_URL}/${id}`, {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            },
+            data: { url }
+        });
     } catch (e) {
         throw new Error(e.response?.data?.message || "Ошибка на сервере");
     }

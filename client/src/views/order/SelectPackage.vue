@@ -4,12 +4,17 @@
             <PackageSection class="package" sectionTitle="Zestawy" :packages="packages" :selected="selectedPackage"
                 filterType="zestawy" @addToBasket="selectPackage" />
         </transition>
+        <!-- <transition name="fade" @before-enter="beforeEnter" @enter="enter" @leave="leave">
+            <PackageSection v-if="selectedPackage" class="package" sectionTitle="Rodzaj zestawów" :packages="TypePackages"
+                :selected="selectedType" @addToBasket="selectType" />
+        </transition> -->
         <transition name="fade" @before-enter="beforeEnter" @enter="enter" @leave="leave">
             <MenuSection v-if="selectedPackage" @addToBasket="selectedDish" :menus="selectedPackage"
                 :selectedDishes="selectedDishes" />
         </transition>
-        <PackageSection v-if="selectedPackage" class="package" sectionTitle="Rodzaj zestawów" :packages="TypePackages"
-            :selected="selectedType" @addToBasket="selectType" />
+        <div v-if="selectedDishes.length">
+            <button class="btn" @click="acceptMenu">Do koszyka</button>
+        </div>
     </section>
 </template>
 
@@ -25,12 +30,8 @@ export default {
     },
     data() {
         return {
-            TypePackages: [
-                { title: "Standard" },
-                { title: "Vegetarian" }
-            ],
             selectedPackage: null,
-            selectedDishes: [], 
+            selectedDishes: [],
             selectedMenu: null,
             selectedType: null,
             totalIndex: ""
@@ -46,24 +47,41 @@ export default {
             this.selectedPackage = packageItem;
         },
         selectedDish(menuItem) {
-            const dishIndex = this.selectedDishes.findIndex(selectedDish => selectedDish.index === menuItem.index);
+            let dishIndex = this.selectedDishes.findIndex(selectedDish => selectedDish.index === menuItem.index);
+            console.log(dishIndex)
+
             if (dishIndex === -1) {
-                this.selectedDishes.push(menuItem);
+                dishIndex = this.selectedDishes.findIndex(selectedDish => selectedDish.index.slice(0, -1) === menuItem.index.slice(0, -1));
+                if (dishIndex === -1) {
+                    console.log(menuItem.index.slice(0, -1))
+                    this.selectedDishes.push(menuItem);
+                } else {
+                    console.log("slice")
+                    this.selectedDishes.splice(dishIndex, 1);
+                    this.selectedDishes.push(menuItem);
+                }
             } else {
                 this.selectedDishes.splice(dishIndex, 1);
             }
         },
-        selectType(typeItem) {
-            this.selectedType = typeItem;
+        // selectType(typeItem) {
+        //     this.selectedType = typeItem;
+        //     const dishesIndexes = this.selectedDishes.map(dish => dish.index).join('');
+        //     if (dishesIndexes === -1) {
+        //         this.selectedDishes.push(menuItem);
+        //     } else {
+        //         this.selectedDishes.splice(dishesIndexes, 1);
+        //     }
+        // },
+        acceptMenu() {
             const dishesIndexes = this.selectedDishes.map(dish => dish.index).join('');
 
-            this.totalIndex = `${this.selectedPackage.index}${this.selectedType.index}${dishesIndexes}`;
+            this.totalIndex = `${this.selectedPackage.index}${dishesIndexes}`;
 
             const fullPackage = {
                 index: this.totalIndex,
                 title: this.selectedPackage.title,
                 price: this.selectedPackage.price,
-                type: this.selectedType.title,
                 dishes: this.selectedDishes,
                 count: 0
             };
@@ -74,7 +92,7 @@ export default {
         resetSelection() {
             this.selectedPackage = null;
             this.selectedDishes = [];
-            this.selectedType = null;
+            // this.selectedType = null;
             this.totalIndex = "";
         },
         beforeEnter(el) {
@@ -91,7 +109,7 @@ export default {
             el.style.transition = "opacity 0.2s ease";
             el.style.opacity = 0;
             window.scrollTo({ top: 0, behavior: "smooth" });
-            setTimeout(done, 200);
+            setTimeout(done, 600);
         }
     }
 };
@@ -102,5 +120,19 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 24px;
+}
+
+.btn {
+    background-color: var(--primary-color);
+    border-radius: 24px;
+    border: none;
+    color: var(--background-color);
+    font-weight: bold;
+}
+
+.btn:hover {
+    background-color: var(--background-color);
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
 }
 </style>

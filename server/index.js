@@ -13,9 +13,9 @@ connectDB();
 
 // Настройка CORS
 const allowedOrigins = [
+    "https://swiezy-poranek.vercel.app",
     "http://localhost:8000",
     "http://192.168.0.186:8000",
-    "https://swiezy-poranek.vercel.app"
 ];
 
 app.use(cors({
@@ -45,7 +45,6 @@ app.use((err, req, res, next) => {
     res.status(500).send('Internal Server Error');
 });
 
-// Запуск сервера
 const port = process.env.PORT || 5000;
 
 app.listen(port, () => {

@@ -6,11 +6,9 @@
             <MenuSection v-if="selectedAddons" @addToBasket="selectedDish" :menus="selectedAddons"
                 :selectedDishes="selectedDishes" />
         </transition>
-        <transition name="fade" @before-enter="beforeEnter" @enter="enter" @leave="leave">
-            <div v-if="selectedDishes.length" class="btn">
-                <button class="btn" @click="acceptMenu">Do koszyka</button>
-            </div>
-        </transition>
+        <div v-if="selectedDishes.length">
+            <button class="btn" @click="acceptMenu">Do koszyka</button>
+        </div>
     </section>
 </template>
 
@@ -75,28 +73,36 @@ export default {
             el.offsetHeight;
             el.style.transition = "opacity 0.3s ease";
             el.style.opacity = 1;
-            el.scrollIntoView({ behavior: "smooth", block: "start" });
             done();
         },
         leave(el, done) {
             el.style.transition = "opacity 0.2s ease";
             el.style.opacity = 0;
             window.scrollTo({ top: 0, behavior: "smooth" });
-            setTimeout(done, 200);
+            setTimeout(done, 600);
         }
     }
 }
 </script>
 
 <style scoped>
-/* @media(min-width: 578px) and (max-width: 768px){
-    .select-addons {
-        width: 60%;
-    }
+.select-addons {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
 }
-@media(min-width: 769px){
-    .select-addons {
-        width: 70%;
-    }
-} */
+
+.btn {
+    background-color: var(--primary-color);
+    border-radius: 24px;
+    border: none;
+    color: var(--background-color);
+    font-weight: bold;
+}
+
+.btn:hover {
+    background-color: var(--background-color);
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+}
 </style>

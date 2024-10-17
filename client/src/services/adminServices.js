@@ -4,7 +4,9 @@ const API_URL = VUE_APP_API_URL + "/admin";
 
 export const loginAdmin = async (email, password) => {
     try {
-        await axios.post(`${API_URL}/login`, { email, password }, { withCredentials: true });
+        const response = await axios.post(`${API_URL}/login`, { email, password });
+
+        localStorage.setItem('token', response.data.token);
     } catch (e) {
         if (e.response && e.response.data) {
             throw new Error(e.response.data.message || 'Login failed');
@@ -16,41 +18,37 @@ export const loginAdmin = async (email, password) => {
 
 export const checkAuth = async () => {
     try {
-        const response = await axios.get(`${VUE_APP_API_URL}/auth/check`, { withCredentials: true });
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`${VUE_APP_API_URL}/auth/check`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
         return response.data.isAuthenticated;
     } catch (e) {
-        if (e.response && e.response.data) {
-            return false;
-        } else {
-            throw new Error('Network error');
-        }
+        return false;
     }
-};
+}
 
-export const logoutAdmin = async () => {
-    try {
-        await axios.post(`${API_URL}/logout`,{}, { withCredentials: true });
-        console.log();
-        return true;
-    } catch (e) {
-        if (e.response && e.response.data) {
-            return false;
-        } else {
-            throw new Error('Network error');
-        }
-    }
+export const logoutAdmin = () => {
+    localStorage.removeItem('token');
+    return true;
 }
 
 export const refreshTokenAdmin = async () => {
     try {
-        await axios.get(`${VUE_APP_API_URL}/auth/refresh`, { withCredentials: true });
-        console.log("Refresh");
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`${VUE_APP_API_URL}/auth/refresh`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        localStorage.setItem('token', response.data.token);
+
         return true;
     } catch (e) {
-        if (e.response && e.response.data) {
-            return false;
-        } else {
-            throw new Error('Network error');
-        }
+        return false;
     }
 }

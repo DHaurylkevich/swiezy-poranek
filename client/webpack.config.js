@@ -3,6 +3,9 @@ const { VueLoaderPlugin } = require('vue-loader');
 const TerserPlugin = require('terser-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const webpack = require('webpack');
 
 module.exports = {
@@ -28,7 +31,7 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                use: ["vue-style-loader", "css-loader"],
+                use: [MiniCssExtractPlugin.loader, "css-loader"],
             },
             {
                 test: /\.(js)$/,
@@ -51,7 +54,11 @@ module.exports = {
     },
     optimization: {
         minimize: true,
-        minimizer: [new TerserPlugin()],
+        minimizer: [
+            new TerserPlugin(),
+            '...',
+            new CssMinimizerPlugin(),
+        ],
         splitChunks: {
             chunks: 'all',
         },
@@ -63,13 +70,21 @@ module.exports = {
             favicon: "./public/favicon.ico"
         }),
         new VueLoaderPlugin(),
+        new MiniCssExtractPlugin({
+            filename: '[name].[contenthash].css',
+        }),
         new webpack.DefinePlugin({
-            "BASE_URL": JSON.stringify("https://swiezy-poranek.vercel.app" || "http://localhost:8000"),
-            // "VUE_APP_API_URL": JSON.stringify("https://swiezy-api.vercel.app/api" || "http://localhost:4242/api"),
-            "VUE_APP_API_URL": JSON.stringify("http://localhost:4242/api"),
+            "BASE_URL": JSON.stringify("https://swiezy-poranek.vercel.app"),
+            "VUE_APP_API_URL": JSON.stringify("https://swiezy-api.vercel.app/api"),
             __VUE_OPTIONS_API__: true,
             __VUE_PROD_DEVTOOLS__: false,
             __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false,
+        }),
+        new CopyWebpackPlugin({
+            patterns: [
+                { from: 'public/robots.txt', to: '.' },
+                { from: 'public/sitemap.xml', to: '.' }
+            ],
         }),
         new WebpackManifestPlugin({
             fileName: 'manifest.json',

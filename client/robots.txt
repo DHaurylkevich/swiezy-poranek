@@ -1,6 +1,0 @@
-# Разрешаем все поисковые системы сканировать весь сайт
-User-agent: *
-Disallow: /src/views/admin
-
-# Указываем местоположение карты сайта
-Sitemap: https://www.example.com/sitemap.xml

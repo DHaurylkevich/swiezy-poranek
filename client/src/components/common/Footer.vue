@@ -3,20 +3,19 @@
         <div class="container contacts">
             <p class="title">Kontakty</p>
             <div class="text">
-                <div class="icons">
+                <div class="contact">
                     <p>{{ contact.phone }}</p>
                     <p>{{ contact.email }}</p>
                 </div>
                 <div class="icons">
                     <a :href="contact.facebook"><img src="@/assets/icons/facebook.svg" alt="Facebook" /></a>
-                    <a :href="contact.instagram"><img src="@/assets/icons/instagram.svg" alt="Instagram" /></a>
                 </div>
             </div>
         </div>
-        <div class="container info">
+        <div class="container">
             <p class="title">Otwarto</p>
             <div>
-                <p class="adres">{{contact.address}}</p>
+                <p class="address">{{ contact.address }}</p>
                 <p class="time">{{ contact.openingHours }}</p>
             </div>
         </div>
@@ -25,12 +24,14 @@
                 <img src="@/assets/logo.svg" alt="Logo" />
             </div>
             <p class="info">©2024 Swiezy Poranek</p>
+            <small>Icons made by <a href="https://www.flaticon.com/ru/free-icons/"
+                    title="салат иконки">Eucalyp- Flaticon</a></small>
         </div>
     </footer>
 </template>
 
 <script>
-import { getContactInfo } from "@/services/contactsServices"
+import { getContactInfo } from "@/services/contactsServices";
 
 export default {
     name: "FooterComponent",
@@ -53,7 +54,6 @@ export default {
         async loadContactForm() {
             try {
                 this.contact = await getContactInfo();
-                console.log("Contact", this.contact);
             } catch (e) {
                 console.error("Failed to load packages:", e);
             }
@@ -73,7 +73,7 @@ export default {
 .container {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: space-between;
 }
 
 .title {
@@ -116,27 +116,46 @@ export default {
     object-fit: contain;
 }
 
+.icon-license {
+    font-size: 10px;
+}
+
 @media (max-width: 576px) {
     .footer {
-        flex-wrap: wrap;
         padding: 32px var(--spacing-inline);
+        gap: 8px;
     }
 
     .container {
-        justify-content: space-between;
+        gap: 0px;
+        justify-content: unset;
+    }
+
+    .title {
+        font-size: var(--font-size-base);
+        margin-bottom: 7px;
+    }
+
+    .contacts .text {
+        gap: 8px;
+    }
+
+    .address,
+    .time,
+    .contact,
+    .legal .info {
+        font-size: 10px;
     }
 
     .legal .logo {
         display: none;
     }
 
+    .icons img {
+        width: 16px;
+        height: 16px;
+        object-fit: contain;
+    }
+
 }
-
-/* Стиль для планшетов */
-@media (min-width: 577px) and (max-width: 768px) {}
-
-/* Стиль для десктопов */
-@media (min-width: 769px) and (max-width: 1024px) {}
-
-@media (min-width: 1025px) {}
 </style>

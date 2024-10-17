@@ -36,8 +36,7 @@ const orderSchema = new Schema({
         require: false
     },
     email: {
-        type: String,
-        required: true
+        type: String
     },
     items: [itemOrderSchema],
     fullPrice: {

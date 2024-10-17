@@ -7,8 +7,8 @@
                 <div v-if="basketItems.length" class="basket-container">
                     <details v-for="item in basketItems" :key="item.index" class="basket-item">
                         <summary class="item-header">
-                            <h4 class="item-title">{{ item.title }} (x{{ item.count }})</h4>
-                            <p class="item-price">{{ item.price }} PLN</p>
+                            {{ item.title }} (x{{ item.count }})
+                            {{ item.price }} PLN
                         </summary>
                         <div class="item-details">
                             <p v-if="item.type"><strong>Typ:</strong> {{ item.type }}</p>
@@ -25,7 +25,7 @@
                         </div>
                     </details>
                     <div class="total">
-                        <p><strong>Łącznie:</strong> {{ totalPrice }} PLN</p>
+                        <p><strong>Łącznie:</strong> {{ totalPrice }}</p>
                     </div>
                 </div>
                 <div v-else class="empty-basket">
@@ -43,7 +43,7 @@
                     <li v-if="orderData.comment"><strong>Komentarz:</strong> <span>{{ orderData.comment }}</span></li>
                 </ul>
                 <button @click="sendInfo" class="payment-button " id="submit">
-                    <span id="button-text">Pay now</span>
+                    <span id="button-text">Zamów</span>
                 </button>
             </div>
         </div>
@@ -73,7 +73,7 @@ export default {
             return new Intl.NumberFormat('pl-PL', {
                 style: 'currency',
                 currency: 'PLN',
-            }).format(price);
+            }).format(price) + "/day";
         },
     },
     methods: {
@@ -107,8 +107,16 @@ export default {
                     orderData: this.orderData,
                     basketItems: this.basketItems,
                 };
-                const response = await createOrder(sendData);
-                console.log("Order response:", response); 
+                if (sendData.basketItems.length !== 0) {
+                    const response = await createOrder(sendData);
+                    if (response) {
+                        this.$router.push('/confirm');
+                    } else {
+                        console.log(response);
+                    }
+                }else{
+                    alert('Koszyk jest pusty!');
+                }
             } catch (error) {
                 console.error("Error while sending order:", error.message);
             }
@@ -160,21 +168,12 @@ export default {
 }
 
 .item-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    cursor: pointer;
     padding: 10px 0;
     border-bottom: 1px solid #ddd;
-}
-
-.item-title {
     font-size: 18px;
-    color: #333;
-}
-
-.item-price {
-    font-size: 16px;
     font-weight: bold;
+    color: #333;
 }
 
 .dishes-list {
@@ -183,8 +182,6 @@ export default {
 }
 
 .dishes-list ul {
-    /* display: flex;
-    justify-content: space-between;*/
     padding-left: 8px;
 }
 

@@ -178,6 +178,7 @@ export default {
                 }
                 await this.loadPackages();
                 this.closeModal();
+                alert("Gotowe!");
             } catch (e) {
                 console.error("Ошибка при сохранении пакета:", e);
             }
@@ -187,6 +188,7 @@ export default {
                 await deletePackage(this.currentRow._id, this.currentRow.url);
                 await this.loadPackages();
                 this.closeModal();
+                alert("Gotowe!");
             } catch (e) {
                 console.error("Ошибка при удалении пакета:", e);
             }

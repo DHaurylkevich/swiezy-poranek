@@ -113,8 +113,8 @@ img {
 }
 
 .mini-btn {
-    background-color: var(--primary-color);
-    border: none;
+    background: none;
+    border: 2px solid;
     width: auto;
     height: auto;
     font-size: var(--font-size-medium);

@@ -49,7 +49,6 @@ export default {
     computed: {
         ...mapGetters(["orderData"]),
         showSaveButton() {
-            console.log(this.orderData);
             return this.orderData ?
                 Object.keys(this.formData).some(key =>
                     this.formData[key] !== this.orderData[key]
