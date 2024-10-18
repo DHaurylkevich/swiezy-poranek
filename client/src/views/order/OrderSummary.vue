@@ -47,6 +47,10 @@
                 </button>
             </div>
         </div>
+        <div class="s-info">
+            <small>Dalej twoje zamówienie zostanie przesłane do realizacji. Skontaktujemy się z
+                tobą w celu uzgodnienia szczegółów płatności.</small>
+        </div>
     </section>
 </template>
 
@@ -114,7 +118,7 @@ export default {
                     } else {
                         console.log(response);
                     }
-                }else{
+                } else {
                     alert('Koszyk jest pusty!');
                 }
             } catch (error) {
@@ -224,5 +228,11 @@ export default {
 .payment-button:hover {
     background-color: var(--background-color);
     color: var(--primary-color);
+}
+.s-info{
+    display: flex;
+    justify-content: end;
+    padding: 8px 0;
+    font-size: 0.7rem;
 }
 </style>
