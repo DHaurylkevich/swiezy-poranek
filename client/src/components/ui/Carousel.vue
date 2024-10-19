@@ -102,14 +102,12 @@ img {
     height: auto;
 }
 
-
 .container-btn {
+    padding-top: 16px;
     margin-right: auto;
     display: flex;
     justify-content: flex-end;
     gap: 8px;
-    bottom: -48px;
-    right: var(--spacing-inline);
 }
 
 .mini-btn {

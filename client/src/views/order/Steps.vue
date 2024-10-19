@@ -152,19 +152,39 @@ export default {
 }
 
 
-@media (min-width: 578px) and (max-width: 1024px) {
+@media (min-width: 578px) and (max-width: 769px) {
     .create-order {
-        padding-top: 88px;
+        padding-top: 74px;
     }
-
+    
     .steps-container {
         gap: 1vw;
     }
-
+    
     .steps {
         gap: 1vw;
     }
+    
+    .step-active,
+    .step {
+        width: 20vw;
+        font-size: var(--font-size-base);
+    }
+}
 
+@media (min-width: 769px) and (max-width: 1024px) {
+    .create-order {
+        padding-top: 90px;
+    }
+    
+    .steps-container {
+        gap: 1vw;
+    }
+    
+    .steps {
+        gap: 1vw;
+    }
+    
     .step-active,
     .step {
         width: 20vw;
@@ -173,7 +193,7 @@ export default {
 }
 
 @media (max-width: 1024px) {
-
+    
     .ordinal .little-arrow {
         display: contents;
     }

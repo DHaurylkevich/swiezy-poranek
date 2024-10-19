@@ -73,7 +73,7 @@
                             <button type="button" @click="addDish(mealtimeIndex)" class="btn-primary">Dodaj danie</button>
                         </div>
                     </div>
-
+                    
                     <button type="button" @click="addMealtime" class="btn-primary">Dodaj posiłek</button>
                 </form>
             </template>

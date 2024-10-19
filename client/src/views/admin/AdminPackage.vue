@@ -9,7 +9,7 @@
                         :buyButton="false" />
                     <div class="buttons">
                         <button @click="openModal('edit', pkg)" class="mini-btn">Edytuj</button>
-                        <button @click="openModal('delete', pkg)" class="mini-btn">Usuń</button>
+                        <button @click="openModal('delete', pkg)" class="mini-btn delete">Usuń</button>
                     </div>
                 </div>
             </div>
@@ -49,11 +49,13 @@
             </template>
 
             <template #footer>
-                <button v-if="currentAction !== 'delete'" @click="handleSubmit">
-                    {{ currentAction === 'edit' ? 'Zapisz' : 'Utwórz' }}
-                </button>
-                <button v-else @click="deleteFoodSet">Usuń</button>
-                <button @click="closeModal">Anuluj</button>
+                <div class="btn-container">
+                    <button class="mini-btn" v-if="currentAction !== 'delete'" @click="handleSubmit">
+                        {{ currentAction === 'edit' ? 'Zapisz' : 'Utwórz' }}
+                    </button>
+                    <button class="mini-btn delete" v-else @click="deleteFoodSet">Usuń</button>
+                    <button class="mini-btn" @click="closeModal">Anuluj</button>
+                </div>
             </template>
         </AdminModal>
     </div>
@@ -153,10 +155,6 @@ export default {
                 if (!this.formData.menu) {
                     this.formData.menu = {};
                 }
-
-                // if (!this.formData.menu._id) {
-                //     this.formData.menu._id = "";
-                // }
             } else {
                 this.formData = this.getEmptyFormData();
             }
@@ -225,12 +223,22 @@ export default {
     align-items: center;
 }
 
+.btn-container {
+    display: flex;
+    gap: 8px;
+}
+
 .btn,
 .mini-btn {
     background-color: var(--primary-color);
     border: 1px solid var(--primary-color);
     color: var(--background-color);
     font-weight: bold;
+}
+
+.delete {
+    background-color: #d9534f;
+    border: 1px solid #d9534f;
 }
 
 .btn:hover,
@@ -240,8 +248,9 @@ export default {
     transition: background-color 0.2s ease;
 }
 
-a {
-    color: blue;
+.delete:hover {
+    background-color: var(--background-color);
+    color: #d9534f;
 }
 
 label {

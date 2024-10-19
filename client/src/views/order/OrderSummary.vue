@@ -67,6 +67,7 @@ export default {
         ...mapState({
             basketItems: (state) => state.basketItems,
         }),
+        ...mapGetters(["clearBasket"]),
         totalPrice() {
             const price = this.basketItems.reduce((sum, item) => {
                 const uniqueDays = new Set(item.dishes.map(dish => dish.day));
@@ -77,7 +78,7 @@ export default {
             return new Intl.NumberFormat('pl-PL', {
                 style: 'currency',
                 currency: 'PLN',
-            }).format(price) + "/day";
+            }).format(price);
         },
     },
     methods: {
@@ -114,6 +115,7 @@ export default {
                 if (sendData.basketItems.length !== 0) {
                     const response = await createOrder(sendData);
                     if (response) {
+                        this.clearBasket();
                         this.$router.push('/confirm');
                     } else {
                         console.log(response);

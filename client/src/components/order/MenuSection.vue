@@ -9,20 +9,22 @@
                 <h3 class="day">{{ weekMenu.day }}</h3>
 
                 <div v-if="weekMenu.mealtime.length > 0" class="mealtime-list">
-                    <div v-for="(mealtime, mealIndex) in weekMenu.mealtime" :key="mealtime._id" class="mealtime-container">
-                        <div v-if="mealtime.dishes.length">
-                            <p class="mealtime-type">{{ mealtime.type }}</p>
-                            <ul class="dishes-list">
-                                <li v-for="(dish, dishIndex) in mealtime.dishes" :key="dish._id"
-                                    :class="{ 'selected-dish': isSelected(`${weekIndex}${mealIndex}${dishIndex}`) }"
-                                    @click="toggleDish(false, dish.name, weekMenu.day, dish.calories, `${weekIndex}${mealIndex}${dishIndex}`)"
-                                    class="dish-item" role="button">
-                                    <span class="dish-name">{{ dish.name }}</span>
-                                    <span class="dish-calories">{{ dish.calories }} kcal</span>
-                                </li>
-                            </ul>
-                        </div>
-                        <ul v-else class="dishes-list minimal">
+                    <div v-if="weekMenu.mealtime[0].dishes.length" v-for="(mealtime, mealIndex) in weekMenu.mealtime"
+                        :key="mealtime._id" class="mealtime-container">
+                        <p class="mealtime-type">{{ mealtime.type }}</p>
+                        <ul class="dishes-list">
+                            <li v-for="(dish, dishIndex) in mealtime.dishes" :key="dish._id"
+                                :class="{ 'selected-dish': isSelected(`${weekIndex}${mealIndex}${dishIndex}`) }"
+                                @click="toggleDish(false, dish.name, weekMenu.day, dish.calories, `${weekIndex}${mealIndex}${dishIndex}`)"
+                                class="dish-item" role="button">
+                                <span class="dish-name">{{ dish.name }}</span>
+                                <span class="dish-calories">{{ dish.calories }} kcal</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div v-else v-for="(mealtime, mealIndex) in weekMenu.mealtime" :key="mealIndex"
+                        class="mealtime-container-minimal">
+                        <ul class="dishes-list">
                             <li :key="mealtime._id" :class="{ 'selected-dish': isSelected(`${weekIndex}${mealIndex}`) }"
                                 @click="toggleDish(true, mealtime.type, weekMenu.day, dish?.calories, `${weekIndex}${mealIndex}`)"
                                 class="dish-item-minimal" role="button">
@@ -107,7 +109,9 @@ export default {
 
 .mealtime-list {
     display: flex;
-    gap: 8px;
+    flex-wrap: wrap;
+    /* justify-content: space-between; */
+    gap: 2%;
 }
 
 .mealtime-type {
@@ -120,15 +124,24 @@ export default {
     color: #FCB825;
 }
 
-.mealtime-container {
+.mealtime-container,
+.mealtime-container-minimal {
     display: flex;
     flex-direction: column;
+}
+
+.mealtime-container {
+    width: 32%;
+}
+
+.mealtime-container-minimal {
     width: 100%;
 }
 
 .dishes-list {
     list-style: none;
 }
+
 
 .dish-item-minimal,
 .dish-item {
@@ -144,13 +157,14 @@ export default {
 }
 
 .dish-item {
-    height: 6.5vw;
+    height: 7.5vw;
 }
 
 /* .dish-item-minimal{
     color: #FCB825;
 } */
 
+.dish-item-minimal:hover,
 .dish-item:hover {
     border: 1px solid #FCB825;
 }
@@ -172,47 +186,47 @@ export default {
 }
 
 @media (max-width: 768px) {
-    .dish-item {
-        height: auto;
+    .mealtime-container {
+        width: 100%;
     }
 
-    .mealtime-list {
-        flex-wrap: wrap;
+    .dish-item {
+        height: auto;
     }
 }
 
 @media (min-width: 769px) and (max-width: 946px) {
+    .mealtime-container {
+        width: 49%;
+    }
+
     .dish-item {
-        height: 14vw;
+        height: 13vw;
+    }
+
+    .mealtime-list {
+        gap: 2%;
     }
 }
 
-/* 1334 */
 @media(min-width: 947px) and (max-width: 1213px) {
+
+    .mealtime-container {
+        width: 49%;
+    }
+
+    .dish-item {
+        height: 10vw;
+    }
+}
+
+@media(min-width: 1214px) and (max-width: 1383px) {
     .dish-item {
         height: 8vw;
     }
 
     .mealtime-list {
         flex-wrap: wrap;
-    }
-
-    .mealtime-container {
-        width: 49%;
-    }
-}
-
-@media(min-width: 1214px) and (max-width: 1383px) {
-    .dish-item {
-        height: 7vw;
-    }
-
-    .mealtime-list {
-        flex-wrap: wrap;
-    }
-
-    .mealtime-container {
-        width: 49%;
     }
 }
 </style>
