@@ -59,7 +59,7 @@ export default {
     mounted() {
         if (this.orderData) {
             this.formData = { ...this.orderData };
-        };
+        }
     },
     methods: {
         ...mapMutations(["setOrderData"]),

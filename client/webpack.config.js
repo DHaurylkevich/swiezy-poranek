@@ -79,15 +79,30 @@ module.exports = {
     optimization: {
         minimize: true,
         minimizer: [
-            new TerserPlugin(),
-            '...',
+            new TerserPlugin({
+                terserOptions: {
+                    compress: {
+                        drop_console: true,
+                    },
+                },
+            }),
             new CssMinimizerPlugin(),
         ],
         splitChunks: {
             chunks: 'all',
+            maxSize: 244000,
+            cacheGroups: {
+                vendors: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendors',
+                    chunks: 'all',
+                    enforce: true,
+                },
+            },
         },
     },
     plugins: [
+        // new BundleAnalyzerPlugin(),
         new HtmlWebpackPlugin({
             template: "./public/index.html",
             title: "Świeży Poranek - Catering w Poznaniu",
@@ -114,7 +129,7 @@ module.exports = {
         new webpack.DefinePlugin({
             "BASE_URL": JSON.stringify("https://swiezy-poranek.vercel.app"),
             "VUE_APP_API_URL": JSON.stringify("https://swiezy-api.vercel.app/api"),
-            __VUE_OPTIONS_API__: true,
+            __VUE_OPTIONS_API__: false,
             __VUE_PROD_DEVTOOLS__: false,
             __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false,
         }),
@@ -136,5 +151,4 @@ module.exports = {
         historyApiFallback: true,
         hot: true,
     },
-    devtool: 'source-map',
 };

@@ -20,7 +20,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="(mealtime, mealIndex) in weekMenu.mealtime" :key="mealtime._id"
+                                <tr v-for="mealtime in weekMenu.mealtime" :key="mealtime._id"
                                     class="mealtime-row">
                                     <td>{{ mealtime.type }}</td>
                                     <td v-if="mealtime.dishes.length > 0">
@@ -73,7 +73,7 @@
                             <button type="button" @click="addDish(mealtimeIndex)" class="btn-primary">Dodaj danie</button>
                         </div>
                     </div>
-                    
+
                     <button type="button" @click="addMealtime" class="btn-primary">Dodaj posiłek</button>
                 </form>
             </template>
@@ -87,13 +87,12 @@
 </template>
 
 <script>
-import AdminModal from "@/components/ui/Modal.vue";
 import { deleteMenu, getMenu, updatedDayMenu } from "@/services/menuServices";
 
 export default {
     name: "WeekMenu",
     components: {
-        AdminModal
+        AdminModal: () => import('@/components/ui/Modal.vue')
     },
     data() {
         return {

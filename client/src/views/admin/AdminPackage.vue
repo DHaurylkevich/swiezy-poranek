@@ -122,7 +122,7 @@ export default {
         async loadMenuIds() {
             try {
                 this.menus = await getMenusIds();
-                this.menus = this.menus.menuIds.map((menu, index) => {
+                this.menus = this.menus.menuIds.map(menu => {
                     return {
                         ...menu,
                         title: `Menu ${menu.position}`

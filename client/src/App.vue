@@ -6,7 +6,16 @@
 export default {
   name: "app",
   created() {
-    this.$store.dispatch('loadPackages'); 
+    this.loadPackages();
+  },
+  methods: {
+    async loadPackages() {
+      try {
+        await this.$store.dispatch('loadPackages');
+      } catch (error) {
+        console.error('Failed to load packages', error);
+      }
+    }
   }
 };
 </script>

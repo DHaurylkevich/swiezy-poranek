@@ -3,7 +3,7 @@
         <h1 class="header">Zamówienia</h1>
 
         <section class="orders">
-            <div class="order-card" v-for="(order, index) in rows" :key="order.id" @click="openOrderModal(order)">
+            <div class="order-card" v-for="order in rows" :key="order.id" @click="openOrderModal(order)">
                 <div class="main-info">
                     <h4>{{ order.fullName }}</h4>
                     <p class="order-status" :class="order.status.toLowerCase()">{{ order.status }}</p>
@@ -53,7 +53,7 @@
                             <option v-for="status in listStatus" :key="status.id" :value="status">{{ status }}</option>
                         </select>
                         <button @click="sendData(currentRow._id)">Zmienić status</button>
-                        <ul v-for="item in currentRow.items">
+                        <ul v-for="(item, index) in currentRow.items" :key="index">
                             <li>
                                 <p>Zestaw: {{ item.title }}</p>
                                 <p>Cena: {{ item.price }}</p>
