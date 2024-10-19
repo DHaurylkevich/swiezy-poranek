@@ -151,7 +151,6 @@ export default {
     }
 }
 
-
 @media (min-width: 578px) and (max-width: 769px) {
     .create-order {
         padding-top: 74px;
