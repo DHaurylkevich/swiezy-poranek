@@ -3,7 +3,7 @@
         <div v-if="type === 'gallery'" class="carousel-inner">
             <ul class="carousel-items">
                 <li v-for="(item, index) in items" :key="index" class="image" ref="card">
-                    <img :src="item.url" :alt="item.title" loading="lazy"/>
+                    <img :src="item.url" alt="Zdjęcie Catering Świeży Poranek" loading="lazy"/>
                 </li>
             </ul>
         </div>

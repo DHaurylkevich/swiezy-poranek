@@ -2,7 +2,7 @@
     <header>
         <nav class="container">
             <div class="logo">
-                <router-link to="/"><img src="@/assets/logo.svg" alt="Logo" /></router-link>
+                <router-link to="/"><img src="@/assets/logo.svg" alt="Logo Świeży Poranek Catering w Poznaniu" /></router-link>
             </div>
             <ul class="links">
                 <li :class="{ 'active': currentSection === 'home' }">

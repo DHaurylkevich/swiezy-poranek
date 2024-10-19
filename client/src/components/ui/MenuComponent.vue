@@ -8,7 +8,7 @@
                     <div class="title">
                         <p class="day">{{ weekMenu.day }}</p>
                         <button @click="openModal(weekMenu)" class="icon-button">
-                            <img src="@/assets/icons/pen-svgrepo-com.svg" alt="Редактировать">
+                            <img src="@/assets/icons/pen-svgrepo-com.svg" alt="Edytuj">
                         </button>
                     </div>
                     <div v-if="weekMenu.mealtime.length > 0">

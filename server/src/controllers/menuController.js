@@ -1,6 +1,5 @@
 const menuService = require('../services/menuService');
 
-// Получение всего меню
 exports.getMenu = async (req, res) => {
     try {
         const menu = await menuService.getMenu();
@@ -19,8 +18,6 @@ exports.getMenuIdsController = async (req, res) => {
     }
 };
 
-
-// Создание меню
 exports.createMenu = async (req, res) => {
     try {
         const newMenu = await menuService.createMenu(req.body);
@@ -30,7 +27,6 @@ exports.createMenu = async (req, res) => {
     }
 };
 
-// Обновление меню на конкретный день
 exports.updatedDayMenu = async (req, res) => {
     try {
         const updated = await menuService.updateDayMenu(req.params.id, req.body);
@@ -40,7 +36,6 @@ exports.updatedDayMenu = async (req, res) => {
     }
 };
 
-// Удаление блюда
 exports.deleteDish = async (req, res) => {
     try {
         await menuService.deleteDish(req.params.id);

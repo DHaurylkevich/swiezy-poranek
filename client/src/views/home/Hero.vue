@@ -4,8 +4,10 @@
             <div class="textual-content">
                 <div class="headline">
                     <div class="logo">
-                        <img rel="preload" class="logo-img" src="@/assets/logo.svg" alt="Company Logo" />
-                        <img rel="preload" class="food-img" src="@/assets/img/home/eat-half.webp" alt="Food Image" />
+                        <img rel="preload" class="logo-img" src="@/assets/logo.svg"
+                            alt="Logo Świeży Poranek Catering w Poznaniu" />
+                        <img rel="preload" class="food-img" src="@/assets/img/home/eat-half.webp"
+                            alt="Logo Świeży Poranek Catering w Poznaniu" />
                     </div>
                     <p class="text">
                         Catering <span class="color-text">Świeży
@@ -16,23 +18,20 @@
                 </div>
                 <div class="features-section">
                     <div class="feature">
-                        <img src="@/assets/img/home/delivery.png" alt="Feature Icon" />
+                        <img src="@/assets/img/home/delivery.png" alt="Darmowa dostawa catering Poznań" />
                         <p>Szybka darmowa dostawa</p>
                     </div>
                     <div class="feature">
-                        <img src="@/assets/img/home/fresh.png" alt="Feature Icon" />
+                        <img src="@/assets/img/home/fresh.png" alt="Świeże składniki catering" />
                         <p>Świeże składniki</p>
                     </div>
                 </div>
 
             </div>
             <div class="visual-content">
-                <img rel="preload" src="@/assets/img/home/eat.webp" alt="Food Image" />
+                <img rel="preload" src="@/assets/img/home/eat.webp" alt="Świeży Poranek Catering w Poznaniu" />
             </div>
         </div>
-        <!-- <div class="info">
-            <p>Jak działa?</p>
-        </div> -->
     </section>
 </template>
 <script>
@@ -156,18 +155,6 @@ export default {
     width: 696px;
     height: auto;
     object-fit: cover;
-}
-
-.info {
-    font-size: var(--font-size-large);
-    font-weight: bold;
-    text-align: center;
-    margin-top: 48px;
-    margin-bottom: 32px;
-    padding: 8px 16px;
-    color: var(--primary-color);
-    border: 3px solid var(--primary-color);
-    border-radius: 24px;
 }
 
 @media (max-width: 425px) {

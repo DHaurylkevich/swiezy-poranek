@@ -1,6 +1,5 @@
 const Menu = require('../models/menu');
 
-// Получение всего меню
 exports.getMenu = async () => {
     return await Menu.find();
 };
@@ -16,15 +15,12 @@ exports.getAllMenuIds = async () => {
     }
 };
 
-
-// Создание меню
 exports.createMenu = async (menuData) => {
     const { menus } = menuData;
     const newMenu = new Menu({ menus });
     return await newMenu.save();
 };
 
-// Обновление меню на конкретный день
 exports.updateDayMenu = async (id, dayMenuData) => {
     return await Menu.updateOne(
         { "menus._id": id },
@@ -32,7 +28,6 @@ exports.updateDayMenu = async (id, dayMenuData) => {
     );
 };
 
-// Удаление блюда
 exports.deleteDish = async (id) => {
     return await Menu.findOneAndDelete({ _id: id });
 };
