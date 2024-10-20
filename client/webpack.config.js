@@ -9,7 +9,7 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const webpack = require('webpack');
 
 module.exports = {
-    mode: "production",
+    mode: "development",
     entry: "./src/main.js",
     output: {
         path: path.resolve(__dirname, "dist"),
@@ -89,16 +89,7 @@ module.exports = {
             new CssMinimizerPlugin(),
         ],
         splitChunks: {
-            chunks: 'all',
-            maxSize: 244000,
-            cacheGroups: {
-                vendors: {
-                    test: /[\\/]node_modules[\\/]/,
-                    name: 'vendors',
-                    chunks: 'all',
-                    enforce: true,
-                },
-            },
+            chunks: 'all'
         },
     },
     plugins: [
@@ -107,18 +98,18 @@ module.exports = {
             template: "./public/index.html",
             title: "Świeży Poranek - Catering w Poznaniu",
             favicon: "./public/favicon.ico",
-            minify: {
-                collapseWhitespace: true,
-                removeComments: true,
-                removeRedundantAttributes: true,
-                useShortDoctype: true,
-                removeEmptyAttributes: true,
-                removeStyleLinkTypeAttributes: true,
-                keepClosingSlash: true,
-                minifyJS: true,
-                minifyCSS: true,
-                minifyURLs: true,
-            }
+            // minify: {
+            //     collapseWhitespace: true,
+            //     removeComments: true,
+            //     removeRedundantAttributes: true,
+            //     useShortDoctype: true,
+            //     removeEmptyAttributes: true,
+            //     removeStyleLinkTypeAttributes: true,
+            //     keepClosingSlash: true,
+            //     minifyJS: true,
+            //     minifyCSS: true,
+            //     minifyURLs: true,
+            // }
         }),
         new VueLoaderPlugin(),
         new MiniCssExtractPlugin({

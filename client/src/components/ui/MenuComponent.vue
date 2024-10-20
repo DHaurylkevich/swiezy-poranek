@@ -73,7 +73,7 @@
                             <button type="button" @click="addDish(mealtimeIndex)" class="btn-primary">Dodaj danie</button>
                         </div>
                     </div>
-
+                    
                     <button type="button" @click="addMealtime" class="btn-primary">Dodaj posiłek</button>
                 </form>
             </template>
@@ -87,12 +87,13 @@
 </template>
 
 <script>
+import AdminModal from "@/components/ui/Modal.vue";
 import { deleteMenu, getMenu, updatedDayMenu } from "@/services/menuServices";
 
 export default {
     name: "WeekMenu",
     components: {
-        AdminModal: () => import('@/components/ui/Modal.vue')
+        AdminModal
     },
     data() {
         return {
