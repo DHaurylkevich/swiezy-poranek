@@ -12,8 +12,7 @@ const app = express();
 connectDB();
 
 const allowedOrigins = [
-    "swiezyporanek.com",
-    "www.swiezyporanek.com",
+    "https://www.swiezyporanek.com/",
     "https://swiezy-poranek.vercel.app",
     "http://localhost:8000",
     "http://192.168.0.186:8000",
