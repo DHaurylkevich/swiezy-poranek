@@ -1,6 +1,7 @@
 const path = require('path');
 const { VueLoaderPlugin } = require('vue-loader');
 const TerserPlugin = require('terser-webpack-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -16,6 +17,11 @@ module.exports = {
         filename: "[name].[contenthash].js",
         clean: true,
         publicPath: '/',
+    },
+    performance: {
+        hints: false,
+        maxEntrypointSize: 512000,
+        maxAssetSize: 512000
     },
     resolve: {
         alias: {
@@ -77,33 +83,38 @@ module.exports = {
         ],
     },
     optimization: {
+        usedExports: true,
         minimize: true,
         minimizer: [
-            new TerserPlugin(),
-            '...',
+            new TerserPlugin(
+                {
+                    terserOptions: {
+                        compress: {
+                            drop_console: true,
+                        },
+                    },
+                }),
             new CssMinimizerPlugin(),
         ],
         splitChunks: {
             chunks: 'all',
         },
+        runtimeChunk: 'single',
     },
     plugins: [
         new HtmlWebpackPlugin({
             template: "./public/index.html",
             title: "Świeży Poranek - Catering w Poznaniu",
             favicon: "./public/favicon.ico",
-            minify: {
-                collapseWhitespace: true,
-                removeComments: true,
-                removeRedundantAttributes: true,
-                useShortDoctype: true,
-                removeEmptyAttributes: true,
-                removeStyleLinkTypeAttributes: true,
-                keepClosingSlash: true,
-                minifyJS: true,
-                minifyCSS: true,
-                minifyURLs: true,
-            }
+            scriptLoading: 'defer',
+            preload: ['main.js'],
+            prefetch: ['vendors~main.js'],
+        }),
+        new CompressionPlugin({
+            algorithm: 'gzip',
+            test: /\.(js|css)$/,
+            threshold: 10240,
+            minRatio: 0.8,
         }),
         new VueLoaderPlugin(),
         new MiniCssExtractPlugin({
