@@ -20,7 +20,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="(mealtime, mealIndex) in weekMenu.mealtime" :key="mealtime._id"
+                                <tr v-for="mealtime in weekMenu.mealtime" :key="mealtime._id"
                                     class="mealtime-row">
                                     <td>{{ mealtime.type }}</td>
                                     <td v-if="mealtime.dishes.length > 0">

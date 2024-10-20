@@ -61,7 +61,7 @@ export const updatePackage = async (id, formData) => {
     } catch (e) {
         console.error("Ошибка при обновлении пакета:", e);
         throw new Error(e.response?.data?.message || "Ошибка на сервере");
-    };
+    }
 };
 
 export const deletePackage = async (id, url) => {
@@ -76,5 +76,5 @@ export const deletePackage = async (id, url) => {
     } catch (e) {
         console.error("Ошибка при удалении пакета:", e);
         throw new Error(e.response?.data?.message || "Ошибка на сервере");
-    };
+    }
 };

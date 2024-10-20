@@ -3,7 +3,7 @@
         <div v-if="type === 'gallery'" class="carousel-inner">
             <ul class="carousel-items">
                 <li v-for="(item, index) in items" :key="index" class="image" ref="card">
-                    <img :src="item.url" alt="Zdjęcie Catering Świeży Poranek" loading="lazy"/>
+                    <img :src="item.url" alt="Zdjęcie Catering Świeży Poranek" loading="lazy" />
                 </li>
             </ul>
         </div>
@@ -11,7 +11,7 @@
             <ul class="carousel-items">
                 <li v-for="(item, index) in items" :key="index" class="card" ref="card">
                     <Card :key="index" :title="item.title" :image="item.url" :price="item.price"
-                        :description="item.description"/>
+                        :description="item.description" />
                 </li>
             </ul>
         </div>

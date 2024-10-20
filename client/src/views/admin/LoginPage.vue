@@ -41,7 +41,7 @@ export default {
                 this.$router.push('/admin');
             } catch (e) {
                 this.errorMessage = e.message;
-            };
+            }
         }
     }
 };

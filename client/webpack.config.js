@@ -10,7 +10,7 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const webpack = require('webpack');
 
 module.exports = {
-    mode: "production",
+    mode: "development",
     entry: "./src/main.js",
     output: {
         path: path.resolve(__dirname, "dist"),
@@ -97,11 +97,12 @@ module.exports = {
             new CssMinimizerPlugin(),
         ],
         splitChunks: {
-            chunks: 'all',
+            chunks: 'all'
         },
         runtimeChunk: 'single',
     },
     plugins: [
+        // new BundleAnalyzerPlugin(),
         new HtmlWebpackPlugin({
             template: "./public/index.html",
             title: "Świeży Poranek - Catering w Poznaniu",
@@ -147,5 +148,4 @@ module.exports = {
         historyApiFallback: true,
         hot: true,
     },
-    devtool: 'source-map',
 };

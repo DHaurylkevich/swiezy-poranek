@@ -33,7 +33,7 @@ const routes = [
           robots: 'index, follow'
         },
         children: [
-          
+
         ]
       },
       {
