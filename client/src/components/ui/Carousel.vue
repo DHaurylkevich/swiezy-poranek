@@ -3,15 +3,15 @@
         <div v-if="type === 'gallery'" class="carousel-inner">
             <ul class="carousel-items">
                 <li v-for="(item, index) in items" :key="index" class="image" ref="card">
-                    <img :src="item.url" :alt="item.title" />
+                    <img :src="item.url" alt="Zdjęcie Catering Świeży Poranek" loading="lazy" />
                 </li>
             </ul>
         </div>
         <div v-else class="carousel-inner">
             <ul class="carousel-items">
                 <li v-for="(item, index) in items" :key="index" class="card" ref="card">
-                    <Card :key="index" :title="item.title" :image="item.image" :price="item.price"
-                        :description="item.description"/>
+                    <Card :key="index" :title="item.title" :image="item.url" :price="item.price"
+                        :description="item.description" />
                 </li>
             </ul>
         </div>
@@ -102,24 +102,21 @@ img {
     height: auto;
 }
 
-
 .container-btn {
-    position: absolute;
-    z-index: 2;
+    padding-top: 16px;
+    margin-right: auto;
     display: flex;
+    justify-content: flex-end;
     gap: 8px;
-    bottom: -48px;
-    right: var(--spacing-inline);
 }
 
 .mini-btn {
-    background-color: var(--primary-color);
-    border: none;
+    background: none;
+    border: 2px solid;
     width: auto;
     height: auto;
     font-size: var(--font-size-medium);
     padding: 8px 20px;
-    z-index: 10;
 }
 
 @media (max-width: 425px) {

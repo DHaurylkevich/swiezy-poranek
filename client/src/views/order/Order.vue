@@ -5,13 +5,13 @@
             <router-view />
             <div v-if="isSummaryPage" class="buttons">
                 <router-link v-if="!isFirstStep" class="mini-btn" :to="previousStep">Wrócić</router-link>
-                <router-link class="mini-btn" :to="nextStep">Dalej</router-link>
+                <button v-if="!isSummaryPage" @click="goToNextStep" class="mini-btn">Dalej</button>
             </div>
             <div v-if="!isSummaryPage" class="container">
                 <BasketComponent class="basket" />
                 <div class="buttons">
                     <router-link v-if="!isFirstStep" class="mini-btn" :to="previousStep">Wrócić</router-link>
-                    <router-link class="mini-btn" :to="nextStep">Dalej</router-link>
+                    <button v-if="!isSummaryPage" @click="goToNextStep" class="mini-btn">Dalej</button>
                 </div>
             </div>
         </div>
@@ -21,6 +21,7 @@
 <script>
 import StepsSection from "./Steps.vue";
 import BasketComponent from '@/components/order/Basket.vue';
+import { mapGetters } from "vuex";
 
 export default {
     name: "OrderPage",
@@ -29,6 +30,7 @@ export default {
         BasketComponent
     },
     computed: {
+        ...mapGetters(["orderData"]),
         currentPath() {
             return this.$route.path;
         },
@@ -37,7 +39,8 @@ export default {
                 '/order/zestawy',
                 '/order/dodatki',
                 '/order/dane-dostawy',
-                '/order/podsumowanie'
+                '/order/podsumowanie',
+                '/order/confirm'
             ];
         },
         isSummaryPage() {
@@ -54,6 +57,9 @@ export default {
             const currentStepIndex = this.steps.indexOf(this.currentPath) + 1;
             return this.steps[currentStepIndex] || "#";
         },
+        isFormPage() {
+            return this.currentPath === '/order/dane-dostawy';
+        }
     },
     methods: {
         isStepActive() {
@@ -61,10 +67,22 @@ export default {
         },
         isBackActive() {
             return this.steps[this.steps.indexOf(this.currentPath) - 1];
+        },
+        goToNextStep() {
+            if (this.isFormPage) {
+                if (this.orderData.fullName) {
+                    this.$router.push(this.nextStep);
+                } else {
+                    alert('Wypełnij wszystkie pola obowiązkowe!');
+                }
+            } else {
+                this.$router.push(this.nextStep);
+            }
         }
     }
 };
 </script>
+
 
 <style scoped>
 .packet-page {
@@ -95,6 +113,7 @@ export default {
 .mini-btn {
     background-color: var(--primary-color);
     border-radius: 24px;
+    border: none;
     color: var(--background-color);
     font-weight: bold;
 }

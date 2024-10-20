@@ -1,23 +1,19 @@
 const express = require('express');
 const router = express.Router();
+const { authenticateJWT } = require("../middleware/auth");
 const packageController = require('../controllers/packageController');
-const upload = require("../middleware/upload");
+const uploadPackages = require("../middleware/upload").uploadPackages;
 
-// const { authenticateJWT, authorizeAdmin } = require('../middleware/auth');
+router.post('/create',authenticateJWT,  uploadPackages.single("image"), packageController.createPackage);
 
-// Создание нового набора 
-router.post('/create',  upload.single("image"), packageController.createPackage);
+router.get('/', packageController.getAllPackagesWithoutAllMenu);
 
-// Получение всех наборов
-router.get('/', packageController.getAllPackages);
+router.get('/packages', packageController.getAllPackages);
 
-// Получение набора по ID
 router.get('/:id', packageController.getPackageById);
 
-// Обновление набора
-router.put('/:id', upload.single('image'), packageController.updatePackage);
+router.put('/:id', authenticateJWT, uploadPackages.single("image"), packageController.updatePackage);
 
-// Удаление набора
-router.delete('/:id', packageController.deletePackage);
+router.delete('/:id', authenticateJWT, packageController.deletePackage);
 
 module.exports = router;

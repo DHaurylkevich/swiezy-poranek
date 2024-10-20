@@ -1,19 +1,27 @@
 const packageService = require("../services/packageService");
+const { deleteFromCloud } = require("../middleware/upload");
 
-// Получение всех пакетов
-exports.getAllPackages = async (req, res) => {
+exports.getAllPackagesWithoutAllMenu = async (req, res) => {
     try {
-        const packages = await packageService.getAllPackage(req);
+        const packages = await packageService.getAllPackagesWithoutAllMenu();
         res.status(200).json(packages);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 };
 
-// Получение пакета по ID
+exports.getAllPackages = async (req, res) => {
+    try {
+        const packages = await packageService.getAllPackages();
+        res.status(200).json(packages);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+}
+
 exports.getPackageById = async (req, res) => {
     try {
-        const package = await packageService.getPackageById(req, req.params.id);
+        const package = await packageService.getPackageById(req.params.id);
         if (!package) {
             return res.status(404).json({ error: 'Набор не найден' });
         }
@@ -23,31 +31,42 @@ exports.getPackageById = async (req, res) => {
     }
 };
 
-// Создание нового пакета
 exports.createPackage = async (req, res) => {
-    const { title, description, price, active } = req.body;
-    const image = req.file ? `${req.file.filename}` : "vege.png";
+    const { title, description, price, active, type, menu } = req.body;
+    let url = "https://res.cloudinary.com/da3vwohmo/image/upload/v1727780951/packages/standard.png";
+
+    if (req.file) {
+        url = req.file.path;
+    }
 
     try {
-        const createdPackage = await packageService.createPackage({ title, description, price, image, active });
-        res.status(201).json({ message: "Package created", package: createdPackage });
+        const createdPackage = await packageService.createPackage({ title, description, price, url, active, type, menu });
+        res.status(201).json({ message: "Пакет создан", package: createdPackage });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 };
 
-// Обновление пакета
 exports.updatePackage = async (req, res) => {
     const { id } = req.params;
-    const { title, description, price, active } = req.body;
-    let { image } = req.body;
+    const { title, description, price, active, type, menu } = req.body;
+    let url = req.body.url;
+    // let url = "https://res.cloudinary.com/da3vwohmo/image/upload/v1727780951/packages/standard.png";
 
-    if (!image && image !== "") {
-        image = req.file ? `${req.file.filename}` : "vege.png";
+
+    if (req.file) {
+        const deletedFromCloud = await deleteFromCloud(url);
+
+        if (!deletedFromCloud) {
+            return res.status(404).json({ error: "Фото не найдено" });
+        }
+
+
+        url = req.file.path;
     }
 
     try {
-        const updatedPackage = await packageService.updatePackage(id, { title, description, price, image, active });
+        const updatedPackage = await packageService.updatePackage(id, { title, description, price, url, active, type, menu });
         if (!updatedPackage) {
             return res.status(404).json({ error: 'Набор не найден' });
         }
@@ -57,14 +76,23 @@ exports.updatePackage = async (req, res) => {
     }
 };
 
-// Удаление пакета
 exports.deletePackage = async (req, res) => {
+    const { id } = req.params;
+    const { url } = req.body;
+
     try {
-        const deletedPackage = await packageService.deletePackage(req.params.id);
+        const deletedPackage = await packageService.deletePackage(id);
         if (!deletedPackage) {
-            return res.status(404).json({ error: 'Набор не найден' });
+            return res.status(404).json({ error: "Набор не найден" });
         }
-        res.status(200).json({ message: 'Набор удален' });
+        if (url) {
+            const deletedFromCloud = await deleteFromCloud(url);
+            if (!deletedFromCloud) {
+                return res.status(404).json({ error: "Фото не найдено" });
+            }
+        }
+
+        res.status(200).json({ message: "Набор удален" });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }

@@ -4,7 +4,7 @@
             <div class="card" v-for="(step, index) in steps" :key="index">
                 <div class="number">{{ index + 1 }}</div>
                 <div class="icon">
-                    <img :src="step.icon" :alt="step.alt">
+                    <img :src="step.icon" :alt="step.alt" loading="lazy">
                 </div>
                 <p class="text">{{ step.text }}</p>
             </div>
@@ -18,10 +18,10 @@ export default {
     data() {
         return {
             steps: [
-                { icon: require("@/assets/img/instruction/menu.svg"), alt: "Wybierasz dietę", text: "Wybierasz dietę" },
-                { icon: require("@/assets/img/instruction/shop.svg"), alt: "Zamawiasz zestaw", text: "Zamawiasz zestaw" },
-                { icon: require("@/assets/img/instruction/car.svg"), alt: "Otrzymujesz dostawe", text: "Otrzymujesz dostawę" },
-                { icon: require("@/assets/img/instruction/eat.svg"), alt: "Cieszysz się smakiem", text: "Cieszysz się smakiem" }
+                { icon: require("@/assets/img/instruction/menu.svg"), alt: "Wybierasz dietę dostępną cateringu Poznań", text: "Wybierasz dietę" },
+                { icon: require("@/assets/img/instruction/shop.svg"), alt: "Zamawiasz zestaw cateringu Świeży Poranek", text: "Zamawiasz zestaw" },
+                { icon: require("@/assets/img/instruction/car.svg"), alt: "Otrzymujesz dostawe od Cateringu Świeży Poranek", text: "Otrzymujesz dostawę" },
+                { icon: require("@/assets/img/instruction/eat.svg"), alt: "Cieszysz się smakiem smacznych dan od Cateringu Świeży Poranek Poznań", text: "Cieszysz się smakiem" }
             ]
         };
     }
@@ -55,11 +55,6 @@ export default {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-}
-
 .card .number {
     position: absolute;
     top: 10px;
@@ -82,7 +77,7 @@ export default {
 }
 
 .card .text {
-    font-size: var(--font-size-large);
+    font-size: var(--font-size-medium);
     font-weight: 600;
     text-align: center;
     padding-inline: 40px;
@@ -115,7 +110,6 @@ export default {
 @media (min-width: 426px) and (max-width: 576px) {
     .main-container {
         gap: 15px;
-
     }
 
     .card {
@@ -141,7 +135,6 @@ export default {
 @media (min-width: 769px) and (max-width: 1108px) {
     .main-container {
         gap: 24px;
-        /* padding: 50px 0; */
     }
 
     .card {
@@ -160,10 +153,4 @@ export default {
         line-height: 1.2;
     }
 }
-
-/* @media (min-width: 1024px) and (max-width: 1108px) {
-    .how-it-works {
-        padding: var(--spacing-inline) 150px;
-    }
-} */
 </style>

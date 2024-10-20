@@ -8,33 +8,35 @@
             </div>
             <div class="nav-links">
                 <router-link to="/admin/zestawy"
-                :class="{'active': isRouteActive('/admin/zestawy') }"
-                >FoodSet</router-link>
+                    :class="{ 'active': isRouteActive('/admin/zestawy') }">Zestawy</router-link>
+                <router-link to="/admin/menu" :class="{ 'active': isRouteActive('/admin/menu') }">Menu</router-link>
                 <router-link to="/admin/orders"
-                :class="{'active': isRouteActive('/admin/orders') }"
-                >Orders</router-link>
+                    :class="{ 'active': isRouteActive('/admin/orders') }">Zamówienia</router-link>
                 <router-link to="/admin/contacts"
-                :class="{'active': isRouteActive('/admin/contacts') }"
-                >Contacts</router-link>
+                    :class="{ 'active': isRouteActive('/admin/contacts') }">Contacts</router-link>
                 <router-link to="/admin/gallery"
-                :class="{'active': isRouteActive('/admin/gallery') }"
-                >Gallery</router-link>
+                    :class="{ 'active': isRouteActive('/admin/gallery') }">Gallery</router-link>
             </div>
         </div>
         <div class="logout">
-            <router-link to="/">
-                <button @click="logout">Exit</button>
-            </router-link>
+            <button @click="logout">Exit</button>
         </div>
     </nav>
 </template>
 
 <script>
+import { logoutAdmin } from "@/services/adminServices"
 export default {
     name: "AdminSidebar",
     methods: {
-        logout() {
-            // Логика выхода
+        async logout() {
+            try {
+                if (await logoutAdmin()) {
+                    this.$router.push("/");
+                }
+            } catch (err) {
+                console.log("ERROR")
+            }
         },
         isRouteActive(path) {
             return this.$route.path.startsWith(path);
@@ -72,6 +74,7 @@ export default {
     display: flex;
     flex-direction: column;
 }
+
 .nav-links a {
     display: flex;
     align-items: center;
@@ -111,6 +114,4 @@ export default {
 .logout button:hover {
     background-color: #c82333;
 }
-
-
 </style>

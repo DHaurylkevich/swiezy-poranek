@@ -40,7 +40,7 @@ export default {
                 await loginAdmin(this.email, this.password);
                 this.$router.push('/admin');
             } catch (e) {
-                this.errorMessage = e.message; 
+                this.errorMessage = e.message;
             }
         }
     }

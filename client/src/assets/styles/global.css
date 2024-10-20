@@ -1,23 +1,19 @@
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap');
-  /* <div> Автор иконок: <a href="https://www.flaticon.com/ru/authors/eucalyp" title="Eucalyp"> Eucalyp </a> from <a href="https://www.flaticon.com/ru/" title="Flaticon">www.flaticon.com'</a></div> */
+  @import url('https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap');
 
-  /* , "Poppins", sans-serif */
   :root {
     --font-family: "Red Hat Display", Arial, sans-serif;
     --primary-color: #FCB825;
     --background-color: #FFFFFF;
     --font-size-base: 1rem;
     --font-size-medium: 1.25rem;
-    --font-size-large: 1.5rem;
+    --font-size-large: 1.8rem;
     --width-btn: 128px;
     --hight-btn: 48px;
     --wight-card: 296px;
-    --spacing-unit: 8px;
     --spacing-inline: 92px;
     --card-size: 213px;
     --radius-section: 25px;
   }
-
 
   * {
     margin: 0;
@@ -36,7 +32,6 @@
     padding: 0;
     background-color: var(--background-color);
     color: var(--text-color);
-    /* line-height: 1.6; */
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -74,11 +69,11 @@
     font-weight: 600;
     text-align: center;
   }
-  
+
   a:hover {
     text-decoration: none;
   }
-  
+
   @media (max-width: 425px) {
     :root {
       --spacing-inline: 20px;
@@ -87,11 +82,12 @@
     }
   }
 
-  @media(min-width: 578px){
-  .order-section{
-    width: 70%;
+  @media(min-width: 578px) {
+    .order-section {
+      width: 70%;
+    }
   }
-}
+
   @media (min-width: 426px) and (max-width: 576px) {
     :root {
       --spacing-inline: 32px;

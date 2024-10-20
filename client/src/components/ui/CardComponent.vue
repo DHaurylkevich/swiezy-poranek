@@ -2,7 +2,7 @@
     <transition name="fade">
         <div class="card">
             <div class="card-img">
-                <img v-if="image" :src="image" :alt="title" class="package-image" />
+                <img v-if="image" :src="image" :alt="title" class="package-image" loading="lazy" />
             </div>
             <div class="card-body">
                 <h3 class="package-title">{{ title }}</h3>
@@ -46,7 +46,7 @@ export default {
             return new Intl.NumberFormat('pl-PL', {
                 style: 'currency',
                 currency: 'PLN',
-            }).format(this.price);
+            }).format(this.price) + "/day";
         }
     }
 }
@@ -84,6 +84,10 @@ export default {
     flex-direction: column;
     align-items: center;
     text-align: center;
+}
+
+.package-title{
+    font-size: var(--font-size-medium);
 }
 
 .btn {

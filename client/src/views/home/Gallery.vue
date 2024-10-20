@@ -26,11 +26,6 @@ export default {
     data() {
         return {
             carouselItems: [
-                // require("@/assets/img/gallery/img1.jpg"),
-                // require("@/assets/img/gallery/img2.jpg"),
-                // require("@/assets/img/gallery/img2.jpg"),
-                // require("@/assets/img/gallery/img2.jpg"),
-                // require("@/assets/img/gallery/img2.jpg"),
             ],
         }
     },
@@ -55,15 +50,15 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 24px;
-    padding-bottom: 80px;
+    padding-top: 50px;
+    padding-bottom: 50px;
 }
 
 .title-section {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-bottom: 24px;
+    padding-bottom: 32px;
 }
 
 .title-section .title {

@@ -1,28 +1,37 @@
 const axios = require("axios");
 
-const API_URL = "http://localhost:4242/api/admin";
+const API_URL = VUE_APP_API_URL + "/admin";
 
 export const loginAdmin = async (email, password) => {
     try {
-        const response = await axios.post(`${API_URL}/login`, {
-            email,
-            password
-        }, {
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
+        const response = await axios.post(`${API_URL}/login`, { email, password });
 
-        const token = response.data.token;
-        // localStorage.setItem('token', token);
-
-        return token;
+        localStorage.setItem('token', response.data.token);
     } catch (e) {
-        // Проверка и возврат ошибок
         if (e.response && e.response.data) {
             throw new Error(e.response.data.message || 'Login failed');
         } else {
             throw new Error('Network error');
         }
     }
+}
+
+export const checkAuth = async () => {
+    try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`${VUE_APP_API_URL}/auth/check`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        return response.data.isAuthenticated;
+    } catch (e) {
+        return false;
+    }
+}
+
+export const logoutAdmin = () => {
+    localStorage.removeItem('token');
+    return true;
 }

@@ -1,26 +1,26 @@
 <template>
     <div class="contact-edit">
-        <h1>Редактирование Галереи</h1>
+        <h1>Gallery</h1>
         <form @submit.prevent="uploadImage" class="form">
             <div class="form-group">
-                <label for="image">Фото</label>
+                <label for="image">Zdjęcie</label>
                 <input type="file" id="image" @change="onFileChange" />
             </div>
             <div class="form-group">
-                <label for="title">Заголовок</label>
-                <input type="text" id="title" v-model="formData.title" placeholder="Введите заголовок" />
+                <label for="title">Nazwa</label>
+                <input type="text" id="title" v-model="formData.title" placeholder="Napisz nazwu" />
             </div>
-            <button type="submit" class="submit-button">Сохранить</button>
+            <button type="submit" class="mini-btn">Zapisać</button>
         </form>
 
         <div v-if="images.length" class="gallery">
-            <h2>Загруженные изображения:</h2>
+            <h2>Dadane Zdjęcia:</h2>
             <ul class="gallery-list">
                 <li v-for="(image, index) in images" :key="index" class="gallery-item">
                     <img :src="image.url" :alt="image.title" class="gallery-image" />
                     <div class="gallery-item-info">
                         <p>{{ image.title }}</p>
-                        <button @click="handleDeleteImage(image._id)" class="delete-button">Удалить</button>
+                        <button @click="handleDeleteImage(image._id, image.url)" class="delete-button">Usunąć</button>
                     </div>
                 </li>
             </ul>
@@ -58,7 +58,6 @@ export default {
             try {
                 const response = await getImages();
                 this.images = response;
-                console.log(this.images)
             } catch (error) {
                 console.error("loadImages:", error);
             }
@@ -68,14 +67,16 @@ export default {
                 console.log(this.formData);
                 await saveImage(this.formData);
                 await this.loadImages();
+                alert("Gotowe!");
             } catch (e) {
                 console.error("uploadImage:", e);
             }
         },
-        async handleDeleteImage(id) {
+        async handleDeleteImage(id, url) {
             try {
-                await deleteImage(id);
+                await deleteImage(id, url);
                 await this.loadImages();
+                alert("Gotowe!");
             } catch (e) {
                 console.error("handleDeleteImage:", e);
             }
@@ -125,15 +126,18 @@ input[type="file"]:focus {
     outline: none;
 }
 
-.submit-button {
-    padding: 12px 24px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
+.mini-btn:hover {
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    background-color: var(--background-color);
+    color: var(--primary-color);
+    transition: background-color 0.2s ease;
+}
+
+.mini-btn {
+    background-color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    color: var(--background-color);
+    font-weight: bold;
 }
 
 .submit-button:hover {

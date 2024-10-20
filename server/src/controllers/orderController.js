@@ -1,41 +1,61 @@
-const orderService = require("../services/orderService");
+const orderService = require('../services/orderService');
 
 exports.createOrder = async (req, res) => {
     try {
-        const { clientName, email, phone, address, items, totalPrice } = req.body;
+        const { orderData, basketItems } = req.body;
+        orderData.items = basketItems;
 
-        const savedOrder = await orderService.createOrder(clientName, email, phone, address, items, totalPrice);
-        res.status(201).send(savedOrder);
-    } catch (err) {
-        console.error(err);
-        res.status(401).json({ message: err.message });
+        console.log('Order data before saving:', JSON.stringify(orderData, null, 2));
+
+        const newOrder = await orderService.createOrder(orderData);
+
+        return res.status(201).json(newOrder);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
     }
 }
 
-exports.getOrders = async (req, res) => {
+exports.getAllOrders = async (req, res) => {
     try {
-        const orders = await orderService.getSortOrders();
-        res.json(orders)
-    } catch (err) {
-        console.error(err);
-        res.status(401).json({ message: err.message });
+        const orders = await orderService.getAllOrders();
+        return res.status(200).json(orders);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
     }
 }
-/*
-exports.updateOrderById = async (req, res) => {
-    const { clientName, email, phone, address, items, totalPrice } = req.body;
-    const { id } = req.params;
 
-    try{ 
-        const updatedOrder = await orderService.updateOrderById(id, clientName, email, phone, address, items, totalPrice );
-        if (!updatedOrder) {
-            return res.status(404).send({ message: "Order not found" });
+exports.getOrderById = async (req, res) => {
+    try {
+        const orderId = req.params.id;
+        const order = await orderService.getOrderById(orderId);
+        return res.status(200).json(order);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
+
+exports.updateOrderStatus = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const status = req.body;
+        const order = await orderService.updateOrderStatus(id, status);
+        return res.status(200).json(order);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
+
+exports.deleteOrderById = async (req, res) => {
+    try {
+        const orderId = req.params.id;
+        const deletedOrder = await orderService.deleteOrderById(orderId);
+
+        if (!deletedOrder) {
+            return res.status(404).json({ message: 'Order not found' });
         }
 
-        res.json(updatedOrder);
-    }catch (err){
-        console.error(err);
-        res.status(500).json({ message: err.message });
+        return res.status(200).json({ message: 'Order successfully deleted' });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
     }
 }
-*/
