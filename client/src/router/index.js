@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { checkAuth } from "@/services/adminServices";
 
-const HomeLayout = () => import("../layout/DefaultLayout.vue");
+import HomeLayout from "../layout/DefaultLayout.vue";
 const AdminLayout = () => import("../layout/AdminLayout.vue");
 const AdminPackage = () => import("../views/admin/AdminPackage.vue");
 const AdminMenu = () => import("../views/admin/AdminMenu.vue");
@@ -9,9 +9,9 @@ const AdminOrders = () => import("../views/admin/AdminOrders.vue");
 const AdminContacts = () => import("../views/admin/AdminContacts.vue");
 const AdminGallery = () => import("../views/admin/AdminGallery.vue");
 const LoginPage = () => import("../views/admin/LoginPage.vue");
-const HomeSection = require("../views/home/Home.vue");
+import HomeSection from "../views/home/Home.vue";
 const OrderPage = () => import("../views/order/Order.vue");
-const SelectPackage = () => import("../views/order/SelectPackage.vue");
+import SelectPackage from "../views/order/SelectPackage.vue";
 const SelectAddons = () => import("../views/order/SelectAddons.vue");
 const AddressData = () => import("../views/order/AddressData.vue");
 const OrderSummary = () => import("../views/order/OrderSummary.vue");
