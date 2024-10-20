@@ -1,6 +1,6 @@
 <template>
     <div class="package-card" :class="{ 'selected': isSelected }">
-        <img v-if="image" :src=image :alt="title" class="package-image" />
+        <img v-if="image" :src=image alt="title zestawa catering Świeży Poranek w Poznaniu" class="package-image" />
         <div class="package-details">
             <p class="package-title">{{ title }}</p>
             <p v-if="this.price" class="package-price">{{ formattedPrice }}</p>

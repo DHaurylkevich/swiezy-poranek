@@ -1,9 +1,6 @@
 <template>
     <section class="food-set">
         <header class="section-title">
-            <!-- <div class="icon">
-                <img src="@/assets/img/foodset/sun.svg" alt="Sun Icon">
-            </div> -->
             <h2 class="text">Zestawy</h2>
         </header>
         <div v-if="packages.length >= 4" class="carousel-container">

@@ -26,11 +26,6 @@ export default {
     data() {
         return {
             carouselItems: [
-                // require("@/assets/img/gallery/img1.jpg"),
-                // require("@/assets/img/gallery/img2.jpg"),
-                // require("@/assets/img/gallery/img2.jpg"),
-                // require("@/assets/img/gallery/img2.jpg"),
-                // require("@/assets/img/gallery/img2.jpg"),
             ],
         }
     },

@@ -1,7 +1,7 @@
 <!-- src/views/ContactEdit.vue -->
 <template>
     <div class="contact-edit">
-        <h1>Редактирование контактной информации</h1>
+        <h1>Contacts</h1>
         <form @submit.prevent="handleSubmit">
             <div class="form-group">
                 <label for="facebook">Facebook</label>
@@ -14,7 +14,7 @@
             </div>
 
             <div class="form-group">
-                <label for="phone">Телефон</label>
+                <label for="phone">Telefon</label>
                 <input type="text" v-model="contact.phone" id="phone" />
             </div>
 
@@ -24,16 +24,16 @@
             </div>
 
             <div class="form-group">
-                <label for="address">Адрес</label>
+                <label for="address">Address</label>
                 <input type="text" v-model="contact.address" id="address" />
             </div>
 
             <div class="form-group">
-                <label for="openingHours">Часы работы</label>
+                <label for="openingHours">Godziny pracy</label>
                 <input type="text" v-model="contact.openingHours" id="openingHours" />
             </div>
 
-            <button type="submit">Сохранить</button>
+            <button class="mini-btn" type="submit">Zapisać</button>
         </form>
     </div>
 </template>
@@ -102,11 +102,17 @@ input[type="email"] {
     box-sizing: border-box;
 }
 
-button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
+.mini-btn:hover {
     cursor: pointer;
+    background-color: var(--background-color);
+    color: var(--primary-color);
+    transition: background-color 0.2s ease;
+}
+
+.mini-btn {
+    background-color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    color: var(--background-color);
+    font-weight: bold;
 }
 </style>

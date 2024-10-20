@@ -3,7 +3,7 @@
         <h1 class="header">Zamówienia</h1>
 
         <section class="orders">
-            <div class="order-card" v-for="(order, index) in rows" :key="order.id" @click="openOrderModal(order)">
+            <div class="order-card" v-for="order in rows" :key="order.id" @click="openOrderModal(order)">
                 <div class="main-info">
                     <h4>{{ order.fullName }}</h4>
                     <p class="order-status" :class="order.status.toLowerCase()">{{ order.status }}</p>
@@ -42,8 +42,8 @@
             <template #body>
                 <div v-if="currentRow">
                     <div class="modal-info">
-                        <p><strong>Imie Nazwisko:</strong> {{ currentRow.name }}</p>
-                        <p><strong>Email:</strong> {{ currentRow.email }}</p>
+                        <p><strong>Imie Nazwisko:</strong> {{ currentRow.fullName }}</p>
+                        <p v-if="currentRow.email"><strong>Email:</strong> {{ currentRow.email }}</p>
                         <p><strong>Telefon:</strong> {{ currentRow.phone }}</p>
                         <p><strong>Address:</strong> {{ currentRow.address }}</p>
                         <p><strong>Cena:</strong> {{ currentRow.fullPrice }}</p>
@@ -53,6 +53,18 @@
                             <option v-for="status in listStatus" :key="status.id" :value="status">{{ status }}</option>
                         </select>
                         <button @click="sendData(currentRow._id)">Zmienić status</button>
+                        <ul v-for="(item, index) in currentRow.items" :key="index">
+                            <li>
+                                <p>Zestaw: {{ item.title }}</p>
+                                <p>Cena: {{ item.price }}</p>
+                                <div v-for="(dishes, day) in groupByDay(item.dishes)" :key="day">
+                                    <span class="dish-day">{{ day }}:</span>
+                                    <ul class="dishes-list">
+                                        <li v-for="dish in dishes" :key="dish">{{ dish }}</li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </template>
@@ -89,6 +101,29 @@ export default {
         this.loadAllOrder();
     },
     methods: {
+        groupByDay(dishes) {
+            const groupedByDay = {};
+
+            dishes.forEach(dish => {
+                const day = dish.day;
+                if (!groupedByDay[day]) {
+                    groupedByDay[day] = [];
+                }
+                groupedByDay[day].push(dish.name || dish.type);
+            });
+
+            return groupedByDay;
+        },
+        formatDay(day) {
+            const dayNames = {
+                "Poniedziałek": "Pon",
+                "Wtorek": "Wto",
+                "Środa": "Śro",
+                "Czwartek": "Czw",
+                "Piątek": "Pią"
+            };
+            return dayNames[day] || day;
+        },
         openOrderModal(row = null) {
             this.showModal = true;
             this.currentRow = row;

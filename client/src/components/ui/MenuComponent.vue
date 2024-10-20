@@ -8,7 +8,7 @@
                     <div class="title">
                         <p class="day">{{ weekMenu.day }}</p>
                         <button @click="openModal(weekMenu)" class="icon-button">
-                            <img src="@/assets/icons/pen-svgrepo-com.svg" alt="Редактировать">
+                            <img src="@/assets/icons/pen-svgrepo-com.svg" alt="Edytuj">
                         </button>
                     </div>
                     <div v-if="weekMenu.mealtime.length > 0">
@@ -20,7 +20,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="(mealtime, mealIndex) in weekMenu.mealtime" :key="mealtime._id"
+                                <tr v-for="mealtime in weekMenu.mealtime" :key="mealtime._id"
                                     class="mealtime-row">
                                     <td>{{ mealtime.type }}</td>
                                     <td v-if="mealtime.dishes.length > 0">
@@ -73,7 +73,7 @@
                             <button type="button" @click="addDish(mealtimeIndex)" class="btn-primary">Dodaj danie</button>
                         </div>
                     </div>
-
+                    
                     <button type="button" @click="addMealtime" class="btn-primary">Dodaj posiłek</button>
                 </form>
             </template>

@@ -11,8 +11,9 @@ const app = express();
 
 connectDB();
 
-// Настройка CORS
 const allowedOrigins = [
+    "swiezyporanek.com",
+    "www.swiezyporanek.com",
     "https://swiezy-poranek.vercel.app",
     "http://localhost:8000",
     "http://192.168.0.186:8000",
@@ -23,23 +24,18 @@ app.use(cors({
     credentials: true
 }));
 
-// Логирование запросов
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(cookieParser());
 
-// Маршруты API
 app.use("/api", require("./src/routes"));
 
-// Статические файлы
 app.use('/uploads', express.static(path.join(__dirname, "./uploads")));
 
-// Главный маршрут
 app.get("/", (req, res) => {
     res.send("Server is running");
 });
 
-// Обработка ошибок
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Internal Server Error');

@@ -4,7 +4,6 @@ const API_URL = VUE_APP_API_URL + "/package";
 
 const getAuthToken = () => localStorage.getItem('token');
 
-// Получение всех пакетов
 export const getPackages = async () => {
     try {
         const token = getAuthToken();
@@ -20,7 +19,6 @@ export const getPackages = async () => {
     }
 }
 
-// Получение пакетов с меню
 export const getPackagesWithMenu = async () => {
     try {
         const token = getAuthToken();
@@ -36,7 +34,6 @@ export const getPackagesWithMenu = async () => {
     }
 }
 
-// Создание нового пакета
 export const createPackage = async (formData) => {
     try {
         const token = getAuthToken();
@@ -52,7 +49,6 @@ export const createPackage = async (formData) => {
     }
 };
 
-// Обновление пакета
 export const updatePackage = async (id, formData) => {
     try {
         const token = getAuthToken();
@@ -65,10 +61,9 @@ export const updatePackage = async (id, formData) => {
     } catch (e) {
         console.error("Ошибка при обновлении пакета:", e);
         throw new Error(e.response?.data?.message || "Ошибка на сервере");
-    };
+    }
 };
 
-// Удаление пакета
 export const deletePackage = async (id, url) => {
     try {
         const token = getAuthToken();
@@ -81,5 +76,5 @@ export const deletePackage = async (id, url) => {
     } catch (e) {
         console.error("Ошибка при удалении пакета:", e);
         throw new Error(e.response?.data?.message || "Ошибка на сервере");
-    };
+    }
 };

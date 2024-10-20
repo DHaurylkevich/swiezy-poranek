@@ -21,7 +21,7 @@
         </div>
         <div class="container legal">
             <div class="logo">
-                <img src="@/assets/logo.svg" alt="Logo" />
+                <img src="@/assets/logo.svg" alt="Logo Świeży Poranek Catering w Poznaniu" />
             </div>
             <p class="info">©2024 Swiezy Poranek</p>
             <small>Icons made by <a href="https://www.flaticon.com/ru/free-icons/"

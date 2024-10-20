@@ -21,7 +21,6 @@ exports.getContactById = async (req, res) => {
     }
 };
 
-// Создание нового контакта
 exports.createContact = async (req, res) => {
     try {
         const newContact = await contactService.createContact(req.body);
@@ -31,7 +30,6 @@ exports.createContact = async (req, res) => {
     }
 };
 
-// Обновление контакта
 exports.updateContact = async (req, res) => {
     try {
         const updatedContact = await contactService.updateContact(req.params.id, req.body);
@@ -44,7 +42,6 @@ exports.updateContact = async (req, res) => {
     }
 };
 
-// Удаление контакта
 exports.deleteContact = async (req, res) => {
     try {
         const deletedContact = await contactService.deleteContact(req.params.id);

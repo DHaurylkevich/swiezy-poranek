@@ -22,6 +22,9 @@ export default createStore({
                 });
             }
         },
+        clearBasket(state) {
+            state.basketItems = [];
+        },
         setPackages(state, packages) {
             state.packages = packages;
         },

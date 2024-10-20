@@ -35,20 +35,3 @@ export const logoutAdmin = () => {
     localStorage.removeItem('token');
     return true;
 }
-
-export const refreshTokenAdmin = async () => {
-    try {
-        const token = localStorage.getItem('token');
-        const response = await axios.get(`${VUE_APP_API_URL}/auth/refresh`, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
-
-        localStorage.setItem('token', response.data.token);
-
-        return true;
-    } catch (e) {
-        return false;
-    }
-}

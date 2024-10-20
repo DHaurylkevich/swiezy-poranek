@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { checkAuth } from "@/services/adminServices";
 
-const HomeLayout = () => import("../layout/DefaultLayout.vue");
+import HomeLayout from "../layout/DefaultLayout.vue";
 const AdminLayout = () => import("../layout/AdminLayout.vue");
 const AdminPackage = () => import("../views/admin/AdminPackage.vue");
 const AdminMenu = () => import("../views/admin/AdminMenu.vue");
@@ -33,7 +33,7 @@ const routes = [
           robots: 'index, follow'
         },
         children: [
-          
+
         ]
       },
       {

@@ -28,8 +28,8 @@
                             <button @click="addDish(mealIndex)" type="button" class="mini-btn dish">Dodaj danie</button>
                         </div>
                         <div class="btns">
-                            <button @click="addMealtime" type="button" class="mini-btn">Dodaj posiłek</button>
-                            <button @click="removeMealtime(mealIndex)" type="button" class="mini-btn">Usuń posiłek</button>
+                            <button @click="addMealtime" type="button" class="mini-btn mealtime">Dodaj posiłek</button>
+                            <button @click="removeMealtime(mealIndex)" type="button" class="mini-btn mealtime">Usuń posiłek</button>
                         </div>
                     </div>
                 </form>
@@ -175,6 +175,10 @@ export default {
     border: 1.5px solid var(--primary-color);
     cursor: pointer;
     transition: background-color 0.3s ease;
+}
+
+.mealtime{
+    width: 50%;
 }
 
 .mini-btn:hover {

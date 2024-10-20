@@ -47,6 +47,10 @@
                 </button>
             </div>
         </div>
+        <div class="s-info">
+            <small>Dalej twoje zamówienie zostanie przesłane do realizacji. Skontaktujemy się z
+                tobą w celu uzgodnienia szczegółów płatności.</small>
+        </div>
     </section>
 </template>
 
@@ -63,6 +67,7 @@ export default {
         ...mapState({
             basketItems: (state) => state.basketItems,
         }),
+        ...mapGetters(["clearBasket"]),
         totalPrice() {
             const price = this.basketItems.reduce((sum, item) => {
                 const uniqueDays = new Set(item.dishes.map(dish => dish.day));
@@ -73,7 +78,7 @@ export default {
             return new Intl.NumberFormat('pl-PL', {
                 style: 'currency',
                 currency: 'PLN',
-            }).format(price) + "/day";
+            }).format(price);
         },
     },
     methods: {
@@ -110,11 +115,12 @@ export default {
                 if (sendData.basketItems.length !== 0) {
                     const response = await createOrder(sendData);
                     if (response) {
+                        this.clearBasket();
                         this.$router.push('/confirm');
                     } else {
                         console.log(response);
                     }
-                }else{
+                } else {
                     alert('Koszyk jest pusty!');
                 }
             } catch (error) {
@@ -224,5 +230,11 @@ export default {
 .payment-button:hover {
     background-color: var(--background-color);
     color: var(--primary-color);
+}
+.s-info{
+    display: flex;
+    justify-content: end;
+    padding: 8px 0;
+    font-size: 0.7rem;
 }
 </style>

@@ -48,16 +48,6 @@ export default {
         ...mapState({
             basketItems: state => state.basketItems
         }),
-        // totalPrice() {
-        //     const price = this.basketItems.reduce((sum, item) => {
-        //         const dishCount = item.dishes ? item.dishes.length : 1;
-        //         return sum + (item.price * dishCount * item.count);
-        //     }, 0);
-        //     return new Intl.NumberFormat('pl-PL', {
-        //         style: 'currency',
-        //         currency: 'PLN',
-        //     }).format(price);
-        // }
         totalPrice() {
             const price = this.basketItems.reduce((sum, item) => {
                 const uniqueDays = new Set(item.dishes.map(dish => dish.day));

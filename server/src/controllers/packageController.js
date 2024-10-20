@@ -1,7 +1,6 @@
 const packageService = require("../services/packageService");
 const { deleteFromCloud } = require("../middleware/upload");
 
-// Получение всех пакетов
 exports.getAllPackagesWithoutAllMenu = async (req, res) => {
     try {
         const packages = await packageService.getAllPackagesWithoutAllMenu();
@@ -20,7 +19,6 @@ exports.getAllPackages = async (req, res) => {
     }
 }
 
-// Получение пакета по ID
 exports.getPackageById = async (req, res) => {
     try {
         const package = await packageService.getPackageById(req.params.id);
@@ -33,7 +31,6 @@ exports.getPackageById = async (req, res) => {
     }
 };
 
-// Создание нового пакета с загрузкой изображения в Cloudinary
 exports.createPackage = async (req, res) => {
     const { title, description, price, active, type, menu } = req.body;
     let url = "https://res.cloudinary.com/da3vwohmo/image/upload/v1727780951/packages/standard.png";
@@ -50,7 +47,6 @@ exports.createPackage = async (req, res) => {
     }
 };
 
-// Обновление пакета с возможной заменой изображения
 exports.updatePackage = async (req, res) => {
     const { id } = req.params;
     const { title, description, price, active, type, menu } = req.body;
@@ -80,7 +76,6 @@ exports.updatePackage = async (req, res) => {
     }
 };
 
-// Удаление пакета
 exports.deletePackage = async (req, res) => {
     const { id } = req.params;
     const { url } = req.body;
