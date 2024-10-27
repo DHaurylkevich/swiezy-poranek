@@ -4,6 +4,9 @@
         <div class="summary-details">
             <div class="basket">
                 <h3>Twoje zamówienie</h3>
+
+                <LoadingModal :isVisible="isLoading" />
+
                 <div v-if="basketItems.length" class="basket-container">
                     <details v-for="item in basketItems" :key="item.index" class="basket-item">
                         <summary class="item-header">
@@ -56,9 +59,18 @@
 
 <script>
 import { createOrder } from "@/services/orderServices";
-import { mapState, mapGetters } from "vuex";
+import { mapState, mapGetters, mapMutations } from "vuex";
+import LoadingModal from "@/components/ui/LoadingModal.vue"
 
 export default {
+    components: {
+        LoadingModal
+    },
+    data() {
+        return {
+            isLoading: false
+        };
+    },
     computed: {
         totalAmount() {
             return this.basketItems.reduce((total, item) => total + item.price, 0);
@@ -67,7 +79,6 @@ export default {
         ...mapState({
             basketItems: (state) => state.basketItems,
         }),
-        ...mapGetters(["clearBasket"]),
         totalPrice() {
             const price = this.basketItems.reduce((sum, item) => {
                 const uniqueDays = new Set(item.dishes.map(dish => dish.day));
@@ -82,6 +93,7 @@ export default {
         },
     },
     methods: {
+        ...mapMutations(["clearBasket"]),
         groupByDay(dishes) {
             const groupedByDay = {};
 
@@ -107,6 +119,7 @@ export default {
         },
         async sendInfo() {
             try {
+                this.isLoading = true;
                 this.orderData.fullPrice = this.totalPrice
                 const sendData = {
                     orderData: this.orderData,
@@ -130,7 +143,6 @@ export default {
     }
 };
 </script>
-
 
 <style scoped>
 .order-summary {
@@ -231,7 +243,8 @@ export default {
     background-color: var(--background-color);
     color: var(--primary-color);
 }
-.s-info{
+
+.s-info {
     display: flex;
     justify-content: end;
     padding: 8px 0;
