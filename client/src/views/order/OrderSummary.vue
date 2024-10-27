@@ -43,7 +43,7 @@
                     <li><strong>Telefon:</strong> <span>{{ orderData.phone }}</span></li>
                     <li v-if="orderData.email"><strong>Email:</strong> <span>{{ orderData.email }}</span></li>
                     <li><strong>Adres:</strong> <span>{{ orderData.address }}</span></li>
-                    <li v-if="orderData.comment"><strong>Komentarz:</strong> <span>{{ orderData.comment }}</span></li>
+                    <li v-if="orderData.description"><strong>Komentarz:</strong> <span>{{ orderData.description }}</span></li>
                 </ul>
                 <button @click="sendInfo" class="payment-button " id="submit">
                     <span id="button-text">Zamów</span>
