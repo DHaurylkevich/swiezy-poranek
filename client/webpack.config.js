@@ -133,7 +133,11 @@ module.exports = {
         new CopyWebpackPlugin({
             patterns: [
                 { from: 'public/robots.txt', to: '.' },
-                { from: 'public/sitemap.xml', to: '.' }
+                { from: 'public/sitemap.xml', to: '.' },
+                { from: 'public/logo.jpg', to: '.' },
+                { from: 'public/favicon-32x32.png', to: '.' },
+                { from: 'public/favicon-16x16.png', to: '.' },
+                { from: 'public/apple-touch-icon.png', to: '.' },
             ],
         }),
         new WebpackManifestPlugin({
