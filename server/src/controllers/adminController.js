@@ -20,8 +20,7 @@ exports.logoutAdmin = (req, res) => {
 
 exports.changePassword = async (req, res) => {
     try {
-        const { oldPassword, newPassword } = req.body;
-        const email = req.user.email
+        const { oldPassword, newPassword, email } = req.body;
 
         const password = await AdminService.changePassword(oldPassword, newPassword, email)
         if (!password) return res.status(400).json({ message: "Invalid credentials" });
