@@ -34,13 +34,13 @@ exports.deleteImage = async (req, res) => {
     try {
         const deletedImage = await imageService.deleteImage(id)
         if (!deletedImage) {
-            return res.status(404).json({ error: "Фото не найдено" });
+            return res.status(404).json({ error: "Image not found" });
         }
 
         const deletedFromCloud = await deleteFromCloud(url);
 
         if (!deletedFromCloud) {
-            return res.status(404).json({ error: "Фото не найден" });
+            return res.status(404).json({ error: "Image not found" });
         }
 
         res.status(200).json(deletedImage)

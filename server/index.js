@@ -14,6 +14,7 @@ connectDB();
 const allowedOrigins = [
     "https://www.swiezyporanek.com",
     "https://swiezy-poranek.vercel.app",
+    "https://swiezy-poranek-olive.vercel.app/",
     "http://localhost:8000",
     "http://192.168.0.186:8000",
 ];
