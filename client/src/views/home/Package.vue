@@ -78,6 +78,13 @@ export default {
     width: 100%;
 }
 
+.cards-container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
 @media (max-width: 576px) {
     .food-set {
         padding-bottom: 80px;

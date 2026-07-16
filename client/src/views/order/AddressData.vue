@@ -21,7 +21,7 @@
             </div>
             <div class="form-group">
                 <label for="comment">Komentarz</label>
-                <textarea id="comment" v-model="formData.comment"
+                <textarea id="comment" v-model="formData.description"
                     placeholder="Komentarz dotyczący dostawy (opcjonalnie)"></textarea>
             </div>
 
@@ -42,7 +42,7 @@ export default {
                 email: '',
                 address: '',
                 deliveryDate: '',
-                comment: ''
+                description: ''
             }
         };
     },

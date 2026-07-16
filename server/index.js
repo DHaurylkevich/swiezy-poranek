@@ -14,13 +14,16 @@ connectDB();
 const allowedOrigins = [
     "https://www.swiezyporanek.com",
     "https://swiezy-poranek.vercel.app",
+    "https://swiezy-poranek-olive.vercel.app",
     "http://localhost:8000",
     "http://192.168.0.186:8000",
 ];
 
 app.use(cors({
     origin: allowedOrigins,
-    credentials: true
+    credentials: true,
+    methods: "GET,POST,PUT,DELETE,OPTIONS",
+    allowedHeaders: "Content-Type, Authorization"
 }));
 app.options('*', cors());
 

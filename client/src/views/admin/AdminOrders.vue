@@ -47,6 +47,7 @@
                         <p><strong>Telefon:</strong> {{ currentRow.phone }}</p>
                         <p><strong>Address:</strong> {{ currentRow.address }}</p>
                         <p><strong>Cena:</strong> {{ currentRow.fullPrice }}</p>
+                        <p v-if="currentRow.description"><strong>Opis:</strong> {{ currentRow.description }}</p>
                         <p><strong>Data zamówienia:</strong> {{ currentRow.createdAt }}</p>
                         <select v-model="selectedItem">
                             <option :value="selectedItem" disabled>{{ selectedItem }}</option>

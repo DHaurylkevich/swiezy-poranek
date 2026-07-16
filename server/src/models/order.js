@@ -3,7 +3,6 @@ const Schema = mongoose.Schema;
 
 const dishItemSchema = new Schema({
     name: String,
-    type: String,
     day: String,
     index: String,
     calories: Number
@@ -13,7 +12,6 @@ const itemOrderSchema = new Schema({
     index: String,
     title: String,
     price: Number,
-    type: String,
     dishes: [dishItemSchema],
     count: { type: Number, default: 1 }
 })
